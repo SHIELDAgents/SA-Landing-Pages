@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE MATRIX // PROTOCOL ACCESS</title>
+    <title>SHIELD // Protocols</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         * {
@@ -13,12 +13,15 @@
         }
 
         body {
-            background-color: #030a03;
+            background-color: #030703;
             color: #00ff66;
             font-family: 'Share Tech Mono', monospace;
-            min-height: 100vh;
-            overflow-x: hidden;
+            height: 100vh;
+            overflow: hidden;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Matrix digital rain canvas background */
@@ -29,11 +32,11 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            opacity: 0.25;
+            opacity: 0.18;
             pointer-events: none;
         }
 
-        /* Scanline overlay */
+        /* Scanlines */
         .scanlines {
             position: fixed;
             top: 0;
@@ -42,206 +45,156 @@
             height: 100vh;
             background: linear-gradient(
                 rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.25) 50%
+                rgba(0, 0, 0, 0.3) 50%
             ), linear-gradient(
                 90deg,
-                rgba(255, 0, 0, 0.03),
+                rgba(255, 0, 0, 0.02),
                 rgba(0, 255, 0, 0.01),
-                rgba(0, 0, 255, 0.03)
+                rgba(0, 0, 255, 0.02)
             );
             background-size: 100% 3px, 6px 100%;
             z-index: 2;
             pointer-events: none;
         }
 
+        /* Main Minimalist Container */
         .container {
             position: relative;
             z-index: 3;
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
             padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            justify-content: space-between;
-        }
-
-        header {
             text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 1px dashed #00ff66;
-            padding-bottom: 20px;
-            width: 100%;
-            max-width: 800px;
         }
 
-        .terminal-prompt {
-            font-size: 0.9rem;
-            color: #00cc55;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+        /* Header / Brand */
+        .brand-header {
+            margin-bottom: 50px;
         }
 
         h1 {
-            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-size: clamp(3rem, 6vw, 4.5rem);
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 8px;
             color: #ffffff;
-            text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 30px #00ff66;
-            margin-bottom: 15px;
+            text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6);
+            margin-bottom: 10px;
+            animation: flicker 4s infinite;
         }
 
-        .subtitle {
+        @keyframes flicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+                text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6);
+                opacity: 1;
+            }
+            20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+                text-shadow: none;
+                opacity: 0.85;
+            }
+        }
+
+        .slogan {
             font-size: 1.1rem;
-            color: #00ff66;
-            letter-spacing: 1px;
+            color: #00cc55;
+            letter-spacing: 4px;
+            text-transform: uppercase;
             opacity: 0.9;
         }
 
-        /* Options Grid */
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+        /* Floating & Swiping Options Carousel / List */
+        .options-container {
             width: 100%;
-            margin-bottom: 40px;
-        }
-
-        .option-card {
-            background: rgba(0, 20, 5, 0.85);
-            border: 1px solid #00ff66;
-            border-radius: 4px;
-            padding: 30px 25px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 0 15px rgba(0, 255, 102, 0.1), 0 0 10px rgba(0, 255, 102, 0.2);
+            gap: 20px;
+            perspective: 1000px;
         }
 
-        .option-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 10px;
-            height: 10px;
-            border-top: 2px solid #ffffff;
-            border-left: 2px solid #ffffff;
-        }
-
-        .option-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 10px;
-            height: 10px;
-            border-bottom: 2px solid #ffffff;
-            border-right: 2px solid #ffffff;
-        }
-
-        .option-card:hover {
-            transform: translateY(-5px);
-            border-color: #ffffff;
-            box-shadow: inset 0 0 25px rgba(0, 255, 102, 0.3), 0 0 25px rgba(0, 255, 102, 0.5);
-            background: rgba(0, 30, 8, 0.95);
-        }
-
-        .card-header {
-            margin-bottom: 20px;
-        }
-
-        .card-id {
-            font-size: 0.8rem;
-            color: #008833;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
+        .option-item {
+            background: rgba(0, 15, 5, 0.6);
+            border: 1px solid rgba(0, 255, 102, 0.3);
+            border-radius: 6px;
+            padding: 22px 30px;
+            font-size: 1.25rem;
             color: #ffffff;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 5px #00ff66;
-            margin-bottom: 15px;
-        }
-
-        .card-desc {
-            font-size: 1rem;
-            color: #aaffcc;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .matrix-btn {
-            background: transparent;
-            color: #00ff66;
-            border: 1px solid #00ff66;
-            padding: 12px 20px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            width: 100%;
             position: relative;
             overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            animation: float 6s ease-in-out infinite;
         }
 
-        .matrix-btn::before {
+        .option-item:nth-child(1) { animation-delay: 0s; }
+        .option-item:nth-child(2) { animation-delay: 2s; }
+        .option-item:nth-child(3) { animation-delay: 4s; }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px);
+            }
+            50% {
+                transform: translateY(-6px) translateX(3px);
+            }
+        }
+
+        .option-item::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: rgba(0, 255, 102, 0.2);
-            transition: transform 0.3s ease;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 255, 102, 0.15),
+                transparent
+            );
+            transition: 0.5s;
         }
 
-        .matrix-btn:hover {
-            background: #00ff66;
-            color: #030a03;
-            box-shadow: 0 0 15px #00ff66;
-            font-weight: bold;
+        .option-item:hover {
+            background: rgba(0, 35, 12, 0.85);
+            border-color: #00ff66;
+            color: #00ff66;
+            transform: scale(1.03) translateX(6px);
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.4), inset 0 0 10px rgba(0, 255, 102, 0.2);
+            text-shadow: 0 0 8px rgba(0, 255, 102, 0.8);
         }
 
-        .matrix-btn:hover::before {
-            transform: translateX(100%);
+        .option-item:hover::before {
+            left: 100%;
         }
 
-        footer {
-            text-align: center;
-            font-size: 0.85rem;
+        /* Subtle indicator */
+        .option-item::after {
+            content: '>';
+            position: absolute;
+            right: 25px;
             color: #008833;
-            border-top: 1px solid rgba(0, 255, 102, 0.2);
-            padding-top: 20px;
-            width: 100%;
-            letter-spacing: 1px;
+            transition: 0.3s;
         }
 
-        .status-blink {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: #00ff66;
-            border-radius: 50%;
-            margin-right: 5px;
-            box-shadow: 0 0 8px #00ff66;
-            animation: blink 1s infinite;
+        .option-item:hover::after {
+            color: #00ff66;
+            transform: translateX(4px);
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 15px;
+            }
+            .option-item {
+                font-size: 1rem;
+                padding: 18px 20px;
+            }
         }
     </style>
 </head>
@@ -251,51 +204,20 @@
     <canvas id="matrix-canvas"></canvas>
 
     <div class="container">
-        <header>
-            <div class="terminal-prompt">root@system-nexus:~# init --secure-protocols</div>
-            <h1>Secure Agents Network</h1>
-            <div class="subtitle"><span class="status-blink"></span>SELECT YOUR DIRECTIVE // ENTER THE MATRIX</div>
-        </header>
+        <div class="brand-header">
+            <h1>SHIELD</h1>
+            <div class="slogan">Protocols</div>
+        </div>
 
-        <main class="options-grid">
-            <!-- Option 1 -->
-            <div class="option-card">
-                <div class="card-header">
-                    <div class="card-id">PROTOCOL [01]</div>
-                    <div class="card-title">Protect IP</div>
-                    <div class="card-desc">Deploy impenetrable cryptographic fortresses around your intellectual property, source code, and digital assets. Shield against espionage and unauthorized extraction.</div>
-                </div>
-                <a href="#protect-ip" class="matrix-btn" onclick="executeAction('Protect IP')">EXECUTE PROTOCOL</a>
-            </div>
-
-            <!-- Option 2 -->
-            <div class="option-card">
-                <div class="card-header">
-                    <div class="card-id">PROTOCOL [02]</div>
-                    <div class="card-title">Delete Leaked Content</div>
-                    <div class="card-desc">Initiate aggressive automated sweep operations. Eradicate unauthorized leaks, copyright infringements, and exposed personal data across darknets and public servers instantly.</div>
-                </div>
-                <a href="#delete-leaks" class="matrix-btn" onclick="executeAction('Delete Leaked Content')">EXECUTE PROTOCOL</a>
-            </div>
-
-            <!-- Option 3 -->
-            <div class="option-card">
-                <div class="card-header">
-                    <div class="card-id">PROTOCOL [03]</div>
-                    <div class="card-title">Make Money with Protocols</div>
-                    <div class="card-desc">Recruit into the high-yield syndicate network. Leverage advanced autonomous protocols, decentralized bounties, and elite security nodes to generate substantial digital yield.</div>
-                </div>
-                <a href="#make-money" class="matrix-btn" onclick="executeAction('Make Money with Protocols')">EXECUTE PROTOCOL</a>
-            </div>
-        </main>
-
-        <footer>
-            SECURE AGENTS NETWORK // ALL RIGHTS RESERVED // SECURE CONNECTION ESTABLISHED
-        </footer>
+        <div class="options-container">
+            <div class="option-item" onclick="selectOption('Protect my IP')">Protect my IP</div>
+            <div class="option-item" onclick="selectOption('Delete Leaked Content')">Delete Leaked Content</div>
+            <div class="option-item" onclick="selectOption('Make Money w/ Protocols')">Make Money w/ Protocols</div>
+        </div>
     </div>
 
     <script>
-        // Matrix digital rain script
+        // Matrix digital rain background
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -311,7 +233,7 @@
         const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+-<>/?\\|';
         const alphabet = katakana + latin;
 
-        const fontSize = 16;
+        const fontSize = 14;
         let columns = Math.floor(canvas.width / fontSize);
 
         const rainDrops = [];
@@ -320,7 +242,7 @@
         }
 
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(3, 10, 3, 0.05)';
+            ctx.fillStyle = 'rgba(3, 7, 3, 0.08)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             ctx.fillStyle = '#00ff66';
@@ -340,11 +262,11 @@
             }
         }
 
-        setInterval(drawMatrix, 30);
+        setInterval(drawMatrix, 35);
 
-        function executeAction(protocolName) {
-            event.preventDefault();
-            alert(`CONNECTING TO TERMINAL...\nExecuting Protocol: [ ${protocolName} ]\nStand by for secure handshake.`);
+        function selectOption(optionName) {
+            console.log(`Selected: ${optionName}`);
+            // Add action redirection or handshake simulation if desired
         }
     </script>
 </body>
