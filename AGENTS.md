@@ -10,7 +10,7 @@ SHIELDAgents landing pages — high-converting security, protocol, and asset-pro
 
 ## Conventions
 - `index.html` is the primary and only entry point and must always stay at the repository root.
-- After every change, commit and push to GitHub automatically (`git add`, `git commit`, `git push origin master`).
+- Commit locally after each change (`git add` and `git commit`), but **never push automatically**. Only push to GitHub when explicitly instructed by the user.
 - When deploying updates live, run `npx wrangler pages deploy . --project-name=sa-landing-pages` from the repository root.
 - Never create new HTML files or subpages unless explicitly requested.
 
