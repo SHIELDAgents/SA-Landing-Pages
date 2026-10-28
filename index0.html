@@ -11,10 +11,10 @@
     
     <style>
         :root {
-            --shield-green: #00ff88;       /* ONLY SHIELD title is green & glitching */
-            --cyber-blue: #0088ff;         /* Serious, cold, dark cybersecurity blue */
-            --cyber-blue-glow: rgba(0, 136, 255, 0.7);
-            --ice-blue: #72c3ff;          /* Cold ice blue accent */
+            --shield-green: #00ff88;      /* ONLY SHIELD title is green & glitching */
+            --cyber-blue: #0055aa;         /* Darker, serious, cold cybersecurity blue */
+            --cyber-blue-glow: rgba(0, 85, 170, 0.8);
+            --ice-blue: #3399ff;          /* Brighter cold blue for visibility */
             --pitch-black: #000000;
             --text-high-contrast: #FFFFFF;
             --silver-gradient: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 50%, #B0B0B0 100%);
@@ -38,7 +38,7 @@
             justify-content: center;
         }
 
-        /* Matrix digital rain background canvas - High Res, Darker Cold Cyber Blue, Fluid & Vivid */
+        /* Matrix digital rain background canvas - Very dark black background, high visibility characters */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -46,7 +46,7 @@
             width: 100vw;
             height: 100vh;
             z-index: 1;
-            opacity: 0.45;
+            opacity: 0.5; /* Higher opacity for better visibility */
             pointer-events: none;
         }
 
@@ -59,7 +59,7 @@
             height: 100vh;
             background: linear-gradient(
                 rgba(0, 0, 0, 0) 50%, 
-                rgba(0, 0, 0, 0.5) 50%
+                rgba(0, 0, 0, 0.6) 50%
             );
             background-size: 100% 4px;
             z-index: 2;
@@ -116,7 +116,7 @@
 
         .title-shield::before {
             left: -2px;
-            text-shadow: -2px 0 #0088ff;
+            text-shadow: -2px 0 var(--cyber-blue);
             animation: glitchAnim1 1.8s infinite linear alternate-reverse;
         }
 
@@ -182,7 +182,7 @@
             100% { background-position: 200% center; }
         }
 
-        /* Subtitle - Serious Cold Cybersecurity Blue (Solid, No Glitch) */
+        /* Subtitle - Serious Cold Cybersecurity Blue */
         .subtitle {
             font-size: 1rem;
             color: var(--cyber-blue);
@@ -193,7 +193,7 @@
             text-shadow: 0 0 14px rgba(0, 136, 255, 0.8);
         }
 
-        /* Main Copy / Tagline Block - Maximum High Contrast Against Pitch Black */
+        /* Main Copy / Tagline Block */
         .tagline-block {
             font-size: 21px;
             line-height: 1.6;
@@ -202,345 +202,126 @@
             margin-bottom: 38px;
             font-weight: 600;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 1), 0 0 20px rgba(0, 0, 0, 0.95), 0 0 35px rgba(0, 0, 0, 1);
-            background: rgba(0, 0, 0, 0.82);
+            background: rgba(0, 0, 0, 0.88);
             padding: 16px 24px;
             border-radius: 12px;
-            border: 1px solid rgba(0, 136, 255, 0.3);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.95), 0 0 15px rgba(0, 136, 255, 0.15);
-            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 136, 255, 0.4);
+            box-shadow: 0 0 35px rgba(0, 0, 0, 1), 0 0 20px rgba(0, 136, 255, 0.2);
+            backdrop-filter: blur(16px);
         }
 
-        .tagline-block p {
-            margin-bottom: 6px;
-        }
-
-        .tagline-block p:last-child {
-            margin-bottom: 0;
-            color: #E8E8E8;
-        }
-
-        /* Offer Buttons Container Stack */
-        .button-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            width: 100%;
-            align-items: center;
-        }
-
-        /* Button / Offer Styling - Cold Dark Cybersecurity Blue */
+        /* Button Styling - Cold Dark Cybersecurity Blue */
         .cyber-btn {
             width: 460px;
             min-height: 92px;
-            background: rgba(0, 0, 0, 0.88);
+            background: rgba(0, 0, 0, 0.9);
             border: 2px solid var(--cyber-blue);
             border-radius: 12px;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(16px);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 28px;
-            text-decoration: none;
             color: #FFFFFF;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.95), 0 0 18px rgba(0, 136, 255, 0.25), inset 0 0 12px rgba(0, 136, 255, 0.15);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 1), 0 0 20px rgba(0, 136, 255, 0.3), inset 0 0 15px rgba(0, 136, 255, 0.2);
             position: relative;
             overflow: hidden;
-        }
-
-        .cyber-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(0, 136, 255, 0.25),
-                transparent
-            );
-            transition: 0.5s;
         }
 
         .cyber-btn:hover {
             background: rgba(0, 20, 45, 0.95);
             border-color: #33a3ff;
-            box-shadow: 0 0 38px rgba(0, 136, 255, 0.55), inset 0 0 20px rgba(0, 136, 255, 0.3);
+            box-shadow: 0 0 45px rgba(0, 136, 255, 0.6), inset 0 0 25px rgba(0, 136, 255, 0.4);
             transform: translateY(-2px) scale(1.015);
-        }
-
-        .cyber-btn:hover::before {
-            left: 100%;
-        }
-
-        /* Button Left Icon Wrap */
-        .btn-icon-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            flex-shrink: 0;
         }
 
         .btn-svg-icon {
             width: 38px;
             height: 38px;
             color: var(--cyber-blue);
-            filter: drop-shadow(0 0 10px rgba(0, 136, 255, 0.95));
+            filter: drop-shadow(0 0 12px rgba(0, 136, 255, 1));
         }
 
-        /* Button Text Layout & Enhanced Typography */
-        .btn-content {
-            flex-grow: 1;
-            text-align: left;
-            padding-left: 22px;
-            padding-right: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        .btn-line1 { font-size: 16px; color: #E0E0E0; margin-bottom: 4px; }
+        .btn-line2 { font-size: 20px; font-weight: 800; color: #FFFFFF; text-shadow: 0 0 12px rgba(0, 136, 255, 0.5); }
+        .btn-arrow { color: var(--cyber-blue); font-size: 28px; }
 
-        .btn-line1 {
-            font-size: 16px;
-            color: #E0E0E0;
-            font-weight: 600;
-            letter-spacing: 1px;
-            line-height: 1.25;
-            margin-bottom: 4px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
-        }
-
-        .btn-line2 {
-            font-size: 20px;
-            font-weight: 800;
-            color: #FFFFFF;
-            letter-spacing: 1.8px;
-            line-height: 1.25;
-            text-shadow: 0 0 10px rgba(0, 136, 255, 0.4), 0 2px 5px rgba(0, 0, 0, 0.9);
-        }
-
-        /* Right Arrow Indicator */
-        .btn-arrow {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--cyber-blue);
-            transition: transform 0.3s ease, color 0.3s ease;
-            text-shadow: 0 0 12px rgba(0, 136, 255, 0.9);
-            flex-shrink: 0;
-        }
-
-        .cyber-btn:hover .btn-arrow {
-            transform: translateX(6px);
-            color: #FFFFFF;
-            text-shadow: 0 0 15px var(--cyber-blue);
-        }
-
-        /* Responsive Breakpoints */
-        @media (max-width: 520px) {
-            .cyber-btn {
-                width: 100%;
-                min-width: unset;
-                height: 88px;
-                padding: 0 18px;
-            }
-
-            .btn-content {
-                padding-left: 14px;
-            }
-
-            .btn-line1 {
-                font-size: 14px;
-            }
-
-            .btn-line2 {
-                font-size: 17px;
-            }
-
-            .tagline-block {
-                font-size: 18px;
-                padding: 12px 14px;
-            }
-
-            .brand-title-wrap {
-                gap: 10px;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <!-- Cyber Scanlines -->
     <div class="scanlines"></div>
-
-    <!-- High-Res Vivid Cold Cyber-Blue Matrix Code Rain Canvas -->
     <canvas id="matrix-canvas"></canvas>
 
-    <!-- Main Hero Center Stack -->
     <main class="hero-container">
-        
-        <!-- Main Title Group -->
         <div class="brand-title-wrap">
             <h1 class="title-shield" data-text="SHIELD">SHIELD</h1>
             <h1 class="title-ap">AP</h1>
         </div>
-
-        <!-- Subtitle -->
         <div class="subtitle">ANTI-AGENT PROTOCOL</div>
 
-        <!-- Tagline Explanation Block -->
         <div class="tagline-block">
             <p>AI bots scrape your IP, clone your face, and leak your content in seconds.</p>
             <p>Value your peace. We shield it.</p>
         </div>
 
-        <!-- Three Stacked Action Buttons -->
         <div class="button-stack">
-            
-            <!-- Button 1: IP Protection -->
-            <a href="#" class="cyber-btn" role="button">
-                <div class="btn-icon-wrap">
-                    <!-- Shield with Lock Icon -->
-                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        <rect x="9" y="10" width="6" height="5" rx="1" fill="currentColor"/>
-                        <path d="M10 10V8.5a2 2 0 0 1 4 0V10" stroke-width="2"/>
-                    </svg>
-                </div>
-                <div class="btn-content">
-                    <div class="btn-line1">Protect my</div>
-                    <div class="btn-line2">INTELLECTUAL PROPERTY</div>
-                </div>
+            <a href="#" class="cyber-btn">
+                <div class="btn-icon-wrap"><svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><rect x="9" y="10" width="6" height="5" rx="1" fill="currentColor"/><path d="M10 10V8.5a2 2 0 0 1 4 0V10" stroke-width="2"/></svg></div>
+                <div class="btn-content"><div class="btn-line1">Protect my</div><div class="btn-line2">INTELLECTUAL PROPERTY</div></div>
                 <div class="btn-arrow">&gt;</div>
             </a>
-
-            <!-- Button 2: Delete Leaked Content -->
-            <a href="#" class="cyber-btn" role="button">
-                <div class="btn-icon-wrap">
-                    <!-- Magnifying Glass with X Icon -->
-                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="10.5" cy="10.5" r="6.5"/>
-                        <line x1="15.5" y1="15.5" x2="21" y2="21" stroke-width="2.5"/>
-                        <line x1="8.5" y1="8.5" x2="12.5" y2="12.5" stroke-width="2"/>
-                        <line x1="12.5" y1="8.5" x2="8.5" y2="12.5" stroke-width="2"/>
-                    </svg>
-                </div>
-                <div class="btn-content">
-                    <div class="btn-line1">Delete my</div>
-                    <div class="btn-line2">LEAKED Content</div>
-                </div>
+            <a href="#" class="cyber-btn">
+                <div class="btn-icon-wrap"><svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21" stroke-width="2.5"/><line x1="8.5" y1="8.5" x2="12.5" y2="12.5" stroke-width="2"/><line x1="12.5" y1="8.5" x2="8.5" y2="12.5" stroke-width="2"/></svg></div>
+                <div class="btn-content"><div class="btn-line1">Delete my</div><div class="btn-line2">LEAKED Content</div></div>
                 <div class="btn-arrow">&gt;</div>
             </a>
-
-            <!-- Button 3: Monetization & Protocols -->
-            <a href="#" class="cyber-btn" role="button">
-                <div class="btn-icon-wrap">
-                    <!-- Cash Bill with Wings Icon -->
-                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="5" y="8" width="14" height="8" rx="1.5"/>
-                        <circle cx="12" cy="12" r="2"/>
-                        <path d="M5 10C3 8 1 9 1 12c0 2 2 2.5 4 1.5"/>
-                        <path d="M19 10c2-2 4-1 4 2 0 2-2 2.5-4 1.5"/>
-                    </svg>
-                </div>
-                <div class="btn-content">
-                    <div class="btn-line1">Print cash</div>
-                    <div class="btn-line2">w/ PROTOCOLS</div>
-                </div>
+            <a href="#" class="cyber-btn">
+                <div class="btn-icon-wrap"><svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="8" width="14" height="8" rx="1.5"/><circle cx="12" cy="12" r="2"/><path d="M5 10C3 8 1 9 1 12c0 2 2 2.5 4 1.5"/><path d="M19 10c2-2 4-1 4 2 0 2-2 2.5-4 1.5"/></svg></div>
+                <div class="btn-content"><div class="btn-line1">Print cash</div><div class="btn-line2">w/ PROTOCOLS</div></div>
                 <div class="btn-arrow">&gt;</div>
             </a>
-
         </div>
-
     </main>
 
-    <!-- Matrix Code Rain Script (Hi-DPI Sharp, Darker Cold Cyber Blue, Smooth Fluid Animation) -->
     <script>
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-
-        let dpr = window.devicePixelRatio || 1;
-        let fontSize = 21;
-        let columns = 0;
-        let drops = [];
-
-        // Katakana + Binary + High Tech Cyber Symbols
+        let fontSize = 21, columns = 0, drops = [];
         const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン01010189@#$%&*+-<>/?\\|{}[]';
 
         function resizeCanvas() {
-            dpr = window.devicePixelRatio || 1;
-            canvas.width = Math.floor(window.innerWidth * dpr);
-            canvas.height = Math.floor(window.innerHeight * dpr);
-            
-            canvas.style.width = window.innerWidth + 'px';
-            canvas.style.height = window.innerHeight + 'px';
-
-            ctx.scale(dpr, dpr);
-
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             columns = Math.floor(window.innerWidth / fontSize);
             drops = [];
-            for (let i = 0; i < columns; i++) {
-                drops[i] = {
-                    y: Math.random() * -40,
-                    speed: 0.08 + Math.random() * 0.12 // Slower, smooth fluid rain speed
-                };
-            }
+            for (let i = 0; i < columns; i++) drops[i] = { y: Math.random() * -40, speed: 0.05 + Math.random() * 0.08 };
         }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
         function drawMatrix() {
-            // Pitch Black clear pass for deep contrast
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.09)';
-            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
             ctx.font = `700 ${fontSize}px 'JetBrains Mono', monospace`;
-
             for (let i = 0; i < drops.length; i++) {
-                const drop = drops[i];
-                const x = i * fontSize;
-                const headY = Math.floor(drop.y) * fontSize;
-
-                if (headY > 0 && headY < window.innerHeight + fontSize * 15) {
-                    // Leading character: Ultra-bright white/cold blue glow
-                    const leadText = chars.charAt(Math.floor(Math.random() * chars.length));
-                    ctx.fillStyle = '#ffffff';
-                    ctx.shadowColor = '#0088ff';
-                    ctx.shadowBlur = 12;
-                    ctx.fillText(leadText, x, headY);
-
-                    // Trailing characters in serious cold cyber blue (#0088ff & #33a3ff)
-                    const trailLength = 12;
-                    for (let j = 1; j < trailLength; j++) {
+                const drop = drops[i]; const headY = Math.floor(drop.y) * fontSize;
+                if (headY > 0 && headY < window.innerHeight + 300) {
+                    ctx.fillStyle = '#ffffff'; ctx.shadowColor = '#0055aa'; ctx.shadowBlur = 15;
+                    ctx.fillText(chars.charAt(Math.floor(Math.random() * chars.length)), i * fontSize, headY);
+                    for (let j = 1; j < 12; j++) {
                         const trailY = headY - (j * fontSize);
                         if (trailY > 0 && trailY < window.innerHeight) {
-                            const trailText = chars.charAt((i + j * 7) % chars.length);
-                            ctx.fillStyle = j < 4 ? '#009dff' : '#0066cc';
-                            ctx.shadowColor = '#0066cc';
-                            ctx.shadowBlur = 6;
-                            ctx.fillText(trailText, x, trailY);
+                            ctx.fillStyle = j < 3 ? '#3399ff' : '#0055aa';
+                            ctx.shadowColor = '#0055aa'; ctx.shadowBlur = 5;
+                            ctx.fillText(chars.charAt((i + j) % chars.length), i * fontSize, trailY);
                         }
                     }
                 }
-
-                // Move drop down at a slow, fluid, continuous rate
                 drop.y += drop.speed;
-
-                if (drop.y * fontSize > window.innerHeight + fontSize * 15 && Math.random() > 0.98) {
-                    drop.y = Math.random() * -15;
-                    drop.speed = 0.08 + Math.random() * 0.12;
-                }
+                if (drop.y * fontSize > window.innerHeight + 300 && Math.random() > 0.99) drop.y = -5;
             }
-
             requestAnimationFrame(drawMatrix);
         }
-
-        // Start silky-smooth 60fps fluid animation loop
         requestAnimationFrame(drawMatrix);
     </script>
 </body>
