@@ -11,9 +11,10 @@
     
     <style>
         :root {
-            --shield-green: #00ff88;      /* ONLY SHIELD title is green & glitching */
-            --neon-blue: #00f0ff;         /* Cyber security neon glowy blue for UI accents */
-            --ice-blue: #a7e7ff;          /* Ice blue for matrix rain & AP glow */
+            --shield-green: #00ff88;       /* ONLY SHIELD title is green & glitching */
+            --cyber-blue: #0088ff;         /* Serious, cold, dark cybersecurity blue */
+            --cyber-blue-glow: rgba(0, 136, 255, 0.7);
+            --ice-blue: #72c3ff;          /* Cold ice blue accent */
             --pitch-black: #000000;
             --text-high-contrast: #FFFFFF;
             --silver-gradient: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 50%, #B0B0B0 100%);
@@ -37,7 +38,7 @@
             justify-content: center;
         }
 
-        /* Matrix digital rain background canvas - High Res & Vivid Ice Blue */
+        /* Matrix digital rain background canvas - High Res, Darker Cold Cyber Blue, Fluid & Vivid */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -45,7 +46,7 @@
             width: 100vw;
             height: 100vh;
             z-index: 1;
-            opacity: 0.35;
+            opacity: 0.45;
             pointer-events: none;
         }
 
@@ -58,7 +59,7 @@
             height: 100vh;
             background: linear-gradient(
                 rgba(0, 0, 0, 0) 50%, 
-                rgba(0, 0, 0, 0.45) 50%
+                rgba(0, 0, 0, 0.5) 50%
             );
             background-size: 100% 4px;
             z-index: 2;
@@ -115,7 +116,7 @@
 
         .title-shield::before {
             left: -2px;
-            text-shadow: -2px 0 #00f0ff;
+            text-shadow: -2px 0 #0088ff;
             animation: glitchAnim1 1.8s infinite linear alternate-reverse;
         }
 
@@ -160,7 +161,7 @@
             100% { clip: rect(20px, 9999px, 40px, 0); }
         }
 
-        /* AP Title - ROCK SOLID Metallic Chrome, NO Flicker, NO Glitch */
+        /* AP Title - ROCK SOLID Metallic Chrome, Serious Cold Outer Glow, NO Glitch */
         .title-ap {
             font-size: clamp(3.2rem, 8.5vw, 5.4rem);
             font-weight: 900;
@@ -170,7 +171,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: inline-block;
-            filter: drop-shadow(0 0 25px rgba(167, 231, 255, 0.95)) drop-shadow(0 0 55px rgba(167, 231, 255, 0.65));
+            filter: drop-shadow(0 0 25px rgba(0, 136, 255, 0.85)) drop-shadow(0 0 55px rgba(0, 136, 255, 0.5));
             animation: chromeShine 4s linear infinite;
             transform: none !important;
             opacity: 1 !important;
@@ -181,18 +182,18 @@
             100% { background-position: 200% center; }
         }
 
-        /* Subtitle - Cyber Security Neon Glowy Blue (Solid, No Glitch) */
+        /* Subtitle - Serious Cold Cybersecurity Blue (Solid, No Glitch) */
         .subtitle {
             font-size: 1rem;
-            color: var(--neon-blue);
+            color: var(--cyber-blue);
             letter-spacing: 5px;
             text-transform: uppercase;
             font-weight: 800;
             margin-bottom: 24px;
-            text-shadow: 0 0 14px rgba(0, 240, 255, 0.7);
+            text-shadow: 0 0 14px rgba(0, 136, 255, 0.8);
         }
 
-        /* Main Copy / Tagline Block - High Contrast Standout Copy */
+        /* Main Copy / Tagline Block - Maximum High Contrast Against Pitch Black */
         .tagline-block {
             font-size: 21px;
             line-height: 1.6;
@@ -201,12 +202,12 @@
             margin-bottom: 38px;
             font-weight: 600;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 1), 0 0 20px rgba(0, 0, 0, 0.95), 0 0 35px rgba(0, 0, 0, 1);
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.82);
             padding: 16px 24px;
             border-radius: 12px;
-            border: 1px solid rgba(0, 240, 255, 0.25);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.95), 0 0 15px rgba(0, 240, 255, 0.1);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.95), 0 0 15px rgba(0, 136, 255, 0.15);
+            backdrop-filter: blur(12px);
         }
 
         .tagline-block p {
@@ -227,15 +228,15 @@
             align-items: center;
         }
 
-        /* Button / Offer Styling - Cyber Security Neon Blue Accents */
+        /* Button / Offer Styling - Cold Dark Cybersecurity Blue */
         .cyber-btn {
             width: 460px;
             min-height: 92px;
-            background: rgba(0, 0, 0, 0.85);
-            border: 2px solid var(--neon-blue);
+            background: rgba(0, 0, 0, 0.88);
+            border: 2px solid var(--cyber-blue);
             border-radius: 12px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -244,7 +245,7 @@
             color: #FFFFFF;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.95), 0 0 18px rgba(0, 240, 255, 0.25), inset 0 0 12px rgba(0, 240, 255, 0.12);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.95), 0 0 18px rgba(0, 136, 255, 0.25), inset 0 0 12px rgba(0, 136, 255, 0.15);
             position: relative;
             overflow: hidden;
         }
@@ -259,16 +260,16 @@
             background: linear-gradient(
                 90deg,
                 transparent,
-                rgba(0, 240, 255, 0.25),
+                rgba(0, 136, 255, 0.25),
                 transparent
             );
             transition: 0.5s;
         }
 
         .cyber-btn:hover {
-            background: rgba(0, 25, 45, 0.92);
-            border-color: #33f3ff;
-            box-shadow: 0 0 38px rgba(0, 240, 255, 0.55), inset 0 0 20px rgba(0, 240, 255, 0.25);
+            background: rgba(0, 20, 45, 0.95);
+            border-color: #33a3ff;
+            box-shadow: 0 0 38px rgba(0, 136, 255, 0.55), inset 0 0 20px rgba(0, 136, 255, 0.3);
             transform: translateY(-2px) scale(1.015);
         }
 
@@ -289,8 +290,8 @@
         .btn-svg-icon {
             width: 38px;
             height: 38px;
-            color: var(--neon-blue);
-            filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.95));
+            color: var(--cyber-blue);
+            filter: drop-shadow(0 0 10px rgba(0, 136, 255, 0.95));
         }
 
         /* Button Text Layout & Enhanced Typography */
@@ -311,7 +312,7 @@
             letter-spacing: 1px;
             line-height: 1.25;
             margin-bottom: 4px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
         }
 
         .btn-line2 {
@@ -320,23 +321,23 @@
             color: #FFFFFF;
             letter-spacing: 1.8px;
             line-height: 1.25;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4), 0 2px 5px rgba(0, 0, 0, 0.9);
+            text-shadow: 0 0 10px rgba(0, 136, 255, 0.4), 0 2px 5px rgba(0, 0, 0, 0.9);
         }
 
         /* Right Arrow Indicator */
         .btn-arrow {
             font-size: 28px;
             font-weight: 900;
-            color: var(--neon-blue);
+            color: var(--cyber-blue);
             transition: transform 0.3s ease, color 0.3s ease;
-            text-shadow: 0 0 12px rgba(0, 240, 255, 0.9);
+            text-shadow: 0 0 12px rgba(0, 136, 255, 0.9);
             flex-shrink: 0;
         }
 
         .cyber-btn:hover .btn-arrow {
             transform: translateX(6px);
             color: #FFFFFF;
-            text-shadow: 0 0 15px var(--neon-blue);
+            text-shadow: 0 0 15px var(--cyber-blue);
         }
 
         /* Responsive Breakpoints */
@@ -376,7 +377,7 @@
     <!-- Cyber Scanlines -->
     <div class="scanlines"></div>
 
-    <!-- High-Res Vivid Ice-Blue & Neon-Cyan Matrix Code Rain Canvas -->
+    <!-- High-Res Vivid Cold Cyber-Blue Matrix Code Rain Canvas -->
     <canvas id="matrix-canvas"></canvas>
 
     <!-- Main Hero Center Stack -->
@@ -457,22 +458,24 @@
 
     </main>
 
-    <!-- Matrix Code Rain Script (Hi-DPI Retina Sharp Rendering) -->
+    <!-- Matrix Code Rain Script (Hi-DPI Sharp, Darker Cold Cyber Blue, Smooth Fluid Animation) -->
     <script>
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
 
         let dpr = window.devicePixelRatio || 1;
-        let fontSize = 20;
+        let fontSize = 21;
         let columns = 0;
         let drops = [];
+
+        // Katakana + Binary + High Tech Cyber Symbols
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン01010189@#$%&*+-<>/?\\|{}[]';
 
         function resizeCanvas() {
             dpr = window.devicePixelRatio || 1;
             canvas.width = Math.floor(window.innerWidth * dpr);
             canvas.height = Math.floor(window.innerHeight * dpr);
             
-            // Set display size
             canvas.style.width = window.innerWidth + 'px';
             canvas.style.height = window.innerHeight + 'px';
 
@@ -481,53 +484,64 @@
             columns = Math.floor(window.innerWidth / fontSize);
             drops = [];
             for (let i = 0; i < columns; i++) {
-                drops[i] = Math.floor(Math.random() * -40);
+                drops[i] = {
+                    y: Math.random() * -40,
+                    speed: 0.08 + Math.random() * 0.12 // Slower, smooth fluid rain speed
+                };
             }
         }
 
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // High-density Katakana + Binary + Matrix Symbols
-        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン01010189@#$%&*+-<>/?\\|{}[]';
-
         function drawMatrix() {
-            // Pitch black background clear pass with smooth tail fading
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+            // Pitch Black clear pass for deep contrast
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.09)';
             ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
             ctx.font = `700 ${fontSize}px 'JetBrains Mono', monospace`;
 
             for (let i = 0; i < drops.length; i++) {
-                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                const drop = drops[i];
                 const x = i * fontSize;
-                const y = drops[i] * fontSize;
+                const headY = Math.floor(drop.y) * fontSize;
 
-                if (y > 0) {
-                    // Leading character is ultra-bright white-cyan
-                    if (Math.random() > 0.82) {
-                        ctx.fillStyle = '#ffffff';
-                        ctx.shadowColor = '#00f0ff';
-                        ctx.shadowBlur = 14;
-                    } else {
-                        // Trail characters are vivid ice-blue & neon cyan
-                        ctx.fillStyle = Math.random() > 0.5 ? '#a7e7ff' : '#00f0ff';
-                        ctx.shadowColor = '#00f0ff';
-                        ctx.shadowBlur = 8;
+                if (headY > 0 && headY < window.innerHeight + fontSize * 15) {
+                    // Leading character: Ultra-bright white/cold blue glow
+                    const leadText = chars.charAt(Math.floor(Math.random() * chars.length));
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowColor = '#0088ff';
+                    ctx.shadowBlur = 12;
+                    ctx.fillText(leadText, x, headY);
+
+                    // Trailing characters in serious cold cyber blue (#0088ff & #33a3ff)
+                    const trailLength = 12;
+                    for (let j = 1; j < trailLength; j++) {
+                        const trailY = headY - (j * fontSize);
+                        if (trailY > 0 && trailY < window.innerHeight) {
+                            const trailText = chars.charAt((i + j * 7) % chars.length);
+                            ctx.fillStyle = j < 4 ? '#009dff' : '#0066cc';
+                            ctx.shadowColor = '#0066cc';
+                            ctx.shadowBlur = 6;
+                            ctx.fillText(trailText, x, trailY);
+                        }
                     }
-
-                    ctx.fillText(text, x, y);
                 }
 
-                if (y > window.innerHeight && Math.random() > 0.975) {
-                    drops[i] = 0;
+                // Move drop down at a slow, fluid, continuous rate
+                drop.y += drop.speed;
+
+                if (drop.y * fontSize > window.innerHeight + fontSize * 15 && Math.random() > 0.98) {
+                    drop.y = Math.random() * -15;
+                    drop.speed = 0.08 + Math.random() * 0.12;
                 }
-                drops[i]++;
             }
+
+            requestAnimationFrame(drawMatrix);
         }
 
-        // Smooth continuous rain rendering
-        setInterval(drawMatrix, 55);
+        // Start silky-smooth 60fps fluid animation loop
+        requestAnimationFrame(drawMatrix);
     </script>
 </body>
 </html>
