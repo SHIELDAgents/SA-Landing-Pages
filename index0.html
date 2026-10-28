@@ -60,9 +60,9 @@
                 rgba(0, 0, 0, 0.4) 50%
             ), linear-gradient(
                 90deg,
-                rgba(0, 115, 230, 0.02),
-                rgba(0, 195, 255, 0.01),
-                rgba(0, 0, 0, 0.03)
+                rgba(0, 0, 0, 0),
+                rgba(0, 0, 0, 0),
+                rgba(0, 0, 0, 0)
             );
             background-size: 100% 4px, 6px 100%;
             z-index: 2;
@@ -489,9 +489,10 @@
             // Semi-transparent true black rect to leave glowing tails
             ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.shadowBlur = 0;
 
             // Cold cybersecurity blue & vivid bright characters for high visibility
-            ctx.fillStyle = '#66b3ff';
+            ctx.fillStyle = '#7fc4ff';
             ctx.shadowColor = '#0073e6';
             ctx.shadowBlur = 12;
             ctx.font = `bold ${fontSize}px 'JetBrains Mono', monospace`;
@@ -503,14 +504,14 @@
 
                 if (y > 0) {
                     // Head of the drop is brilliant white-cyan for high contrast
-                    if (Math.random() > 0.85) {
+                    if (Math.random() > 0.8) {
                         ctx.fillStyle = '#ffffff';
                         ctx.shadowColor = '#3399ff';
-                        ctx.shadowBlur = 16;
+                        ctx.shadowBlur = 18;
                     } else {
-                        ctx.fillStyle = '#66b3ff';
+                        ctx.fillStyle = '#7fc4ff';
                         ctx.shadowColor = '#0073e6';
-                        ctx.shadowBlur = 10;
+                        ctx.shadowBlur = 12;
                     }
                     ctx.fillText(text, x, y);
                 }
