@@ -16,6 +16,7 @@
             --black: #000000;
             --cyber-blue: #0073e6;          /* On-brand cybersecurity blue */
             --cyber-blue-bright: #3d9bff;   /* Lighter tint for icons, arrows, hover */
+            --matrix-blue: #a7e7ff;         /* Matrix rain blue, used for buttons */
             --text-high-contrast: #F0F0F0;
             --silver-gradient: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 50%, #B0B0B0 100%);
         }
@@ -46,7 +47,7 @@
             width: 100vw;
             height: 100vh;
             z-index: 1;
-            opacity: 0.45;
+            opacity: 0.25;
             pointer-events: none;
         }
 
@@ -90,91 +91,63 @@
             margin-bottom: 8px;
         }
 
-        /* SHIELD Title - Aggressive Glitch, Flicker & Vanishing Effect */
+        /* SHIELD Title - index.html look with an intense electric flicker */
         .title-shield {
-            position: relative;
-            font-size: clamp(3.2rem, 8vw, 5.2rem);
+            font-size: clamp(3rem, 6vw, 4.5rem);
             font-weight: 800;
-            letter-spacing: 10px;
-            color: var(--neon-green);
+            letter-spacing: 8px;
+            color: #ffffff;
             text-transform: uppercase;
-            text-shadow: 0 0 4px rgba(0, 255, 136, 0.35);
-            animation: shieldAttack 2.2s infinite ease-in-out;
+            text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6);
+            animation: electricFlicker 3.4s infinite;
             display: inline-block;
         }
 
-        .title-shield::before,
-        .title-shield::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            clip: rect(0, 0, 0, 0);
+        /* Electricity cutting out and surging back on, with irregular stutters */
+        @keyframes electricFlicker {
+            0%, 100% { opacity: 1; text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6); }
+            3% { opacity: 0.15; text-shadow: none; }
+            4% { opacity: 1; text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6); }
+            6% { opacity: 0.05; text-shadow: none; }
+            7% { opacity: 0.9; }
+            8% { opacity: 0.1; text-shadow: none; }
+            9% { opacity: 1; text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6); }
+            24% { opacity: 1; }
+            25% { opacity: 0.2; text-shadow: none; }
+            26% { opacity: 0.8; }
+            27% { opacity: 0.05; text-shadow: none; }
+            28% { opacity: 1; text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6); }
+            41% { opacity: 1; }
+            42% { opacity: 0.1; text-shadow: none; }
+            43% { opacity: 1; text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6); }
+            44% { opacity: 0.3; text-shadow: none; }
+            45% { opacity: 0.95; }
+            47% { opacity: 0.02; text-shadow: none; }
+            48% { opacity: 1; text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6); }
+            68% { opacity: 1; }
+            69% { opacity: 0.12; text-shadow: none; }
+            70% { opacity: 1; text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6); }
+            72% { opacity: 0.4; text-shadow: none; }
+            73% { opacity: 1; text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6); }
+            88% { opacity: 1; }
+            89% { opacity: 0.05; text-shadow: none; }
+            90% { opacity: 0.9; }
+            91% { opacity: 0.1; text-shadow: none; }
+            92% { opacity: 1; text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6); }
         }
 
-        /* Glitch pseudo-element 1 */
-        .title-shield::before {
-            left: -2px;
-            text-shadow: -2px 0 #00ffff;
-            animation: glitchAnim1 1.8s infinite linear alternate-reverse;
-        }
-
-        /* Glitch pseudo-element 2 */
-        .title-shield::after {
-            left: 2px;
-            text-shadow: 2px 0 var(--neon-green);
-            animation: glitchAnim2 2.5s infinite linear alternate-reverse;
-        }
-
-        @keyframes shieldAttack {
-            0% { opacity: 1; transform: translate(0, 0); }
-            5% { opacity: 0.7; transform: translate(-3px, 1px); }
-            6% { opacity: 0.2; transform: translate(4px, -2px); filter: blur(1px); }
-            7% { opacity: 0.9; transform: translate(0, 0); filter: none; }
-            30% { opacity: 1; transform: translate(0, 0); }
-            31% { opacity: 0.1; transform: translate(-5px, 0); } /* Vanishing glitch flash */
-            32% { opacity: 0.85; transform: translate(2px, -1px); }
-            33% { opacity: 1; transform: translate(0, 0); }
-            65% { opacity: 1; transform: translate(0, 0); }
-            66% { opacity: 0.6; transform: translate(3px, 2px); }
-            67% { opacity: 0.3; transform: translate(-2px, -1px); }
-            68% { opacity: 1; transform: translate(0, 0); }
-            95% { opacity: 0.85; transform: translate(0, 0); }
-            97% { opacity: 0.15; transform: translate(5px, -1px); } /* Quick vanish distortion */
-            100% { opacity: 1; transform: translate(0, 0); }
-        }
-
-        @keyframes glitchAnim1 {
-            0% { clip: rect(10px, 9999px, 30px, 0); }
-            20% { clip: rect(40px, 9999px, 60px, 0); }
-            40% { clip: rect(15px, 9999px, 45px, 0); }
-            60% { clip: rect(70px, 9999px, 85px, 0); }
-            80% { clip: rect(25px, 9999px, 50px, 0); }
-            100% { clip: rect(5px, 9999px, 35px, 0); }
-        }
-
-        @keyframes glitchAnim2 {
-            0% { clip: rect(50px, 9999px, 80px, 0); }
-            25% { clip: rect(10px, 9999px, 25px, 0); }
-            50% { clip: rect(65px, 9999px, 90px, 0); }
-            75% { clip: rect(30px, 9999px, 55px, 0); }
-            100% { clip: rect(20px, 9999px, 40px, 0); }
-        }
-
-        /* AP Title - Rock Solid, Metallic Chrome Plated, Luminous Ice-Blue Outer Glow */
+        /* AP Title - Chrome plated, brighter specular sweep and stronger ice-blue glow */
         .title-ap {
             font-size: clamp(3.2rem, 8vw, 5.2rem);
             font-weight: 900;
             letter-spacing: 4px;
-            background: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 40%, #A0A0A0 70%, #FFFFFF 100%);
+            background: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 30%, #8A96A0 50%, #FFFFFF 70%, #E0E0E0 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: inline-block;
-            filter: drop-shadow(0 0 25px rgba(167, 231, 255, 0.95)) drop-shadow(0 0 50px rgba(167, 231, 255, 0.6));
-            animation: chromeShine 4s linear infinite;
+            filter: drop-shadow(0 0 18px rgba(167, 231, 255, 1)) drop-shadow(0 0 40px rgba(167, 231, 255, 0.8));
+            animation: chromeShine 3s linear infinite;
             /* AP stays solid, NO glitch or flicker */
             transform: none !important;
             opacity: 1 !important;
@@ -221,11 +194,22 @@
             text-shadow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(167, 231, 255, 0.2);
         }
 
-        /* Slogan - golden security-tech tone with a matching glow */
+        /* Slogan - gold metallic paint with a restrained glow for readability */
         .slogan {
-            color: #f5c542;
             font-weight: 800;
-            text-shadow: 0 0 6px rgba(245, 197, 66, 0.7), 0 0 16px rgba(212, 175, 55, 0.9), 0 0 32px rgba(212, 175, 55, 0.6);
+            background: linear-gradient(135deg, #8a6d1f 0%, #f7e08a 22%, #d4af37 42%, #fff3b0 52%, #b8860b 72%, #f5d76e 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: metalSheen 5s linear infinite;
+            filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.7)) drop-shadow(0 0 3px rgba(212, 175, 55, 0.35));
+        }
+
+        @keyframes metalSheen {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
         }
 
         /* Stacked Buttons Container */
@@ -241,8 +225,8 @@
         .cyber-btn {
             width: 440px;
             min-height: 90px;
-            background: rgba(0, 115, 230, 0.12);
-            border: 2px solid var(--cyber-blue);
+            background: rgba(167, 231, 255, 0.12);
+            border: 2px solid var(--matrix-blue);
             border-radius: 12px;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -254,7 +238,7 @@
             color: #FFFFFF;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 0 12px rgba(0, 115, 230, 0.55), 0 0 2px var(--cyber-blue), inset 0 0 12px rgba(0, 115, 230, 0.15);
+            box-shadow: 0 0 12px rgba(167, 231, 255, 0.55), 0 0 2px var(--matrix-blue), inset 0 0 12px rgba(167, 231, 255, 0.15);
             position: relative;
             overflow: hidden;
         }
@@ -269,16 +253,16 @@
             background: linear-gradient(
                 90deg,
                 transparent,
-                rgba(0, 115, 230, 0.35),
+                rgba(167, 231, 255, 0.35),
                 transparent
             );
             transition: 0.5s;
         }
 
         .cyber-btn:hover {
-            background: rgba(0, 115, 230, 0.25);
-            border-color: var(--cyber-blue-bright);
-            box-shadow: 0 0 28px rgba(0, 115, 230, 0.85), 0 0 4px var(--cyber-blue-bright), inset 0 0 18px rgba(0, 115, 230, 0.3);
+            background: rgba(167, 231, 255, 0.25);
+            border-color: var(--matrix-blue);
+            box-shadow: 0 0 28px rgba(167, 231, 255, 0.85), 0 0 4px var(--matrix-blue), inset 0 0 18px rgba(167, 231, 255, 0.3);
             transform: translateY(-4px) scale(1.03);
         }
 
@@ -307,7 +291,7 @@
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(61, 155, 255, 0.5) 0%, rgba(0, 115, 230, 0.15) 45%, transparent 70%);
+            background: radial-gradient(circle, rgba(167, 231, 255, 0.5) 0%, rgba(167, 231, 255, 0.15) 45%, transparent 70%);
             animation: iconPulse 2.4s ease-in-out infinite;
         }
 
@@ -316,13 +300,13 @@
             width: 42px;
             height: 42px;
             color: #cfe9ff;
-            filter: drop-shadow(0 0 4px #3d9bff) drop-shadow(0 0 12px rgba(0, 115, 230, 0.95));
+            filter: drop-shadow(0 0 4px #a7e7ff) drop-shadow(0 0 12px rgba(167, 231, 255, 0.95));
             transition: transform 0.3s ease, filter 0.3s ease;
         }
 
         .cyber-btn:hover .btn-svg-icon {
             transform: scale(1.12);
-            filter: drop-shadow(0 0 6px #7fbfff) drop-shadow(0 0 18px #0073e6);
+            filter: drop-shadow(0 0 6px #d6f4ff) drop-shadow(0 0 18px #a7e7ff);
         }
 
         @keyframes iconPulse {
@@ -338,7 +322,7 @@
             color: #FFFFFF;
             line-height: 0.6;
             vertical-align: -0.2em;
-            text-shadow: 0 0 6px #3d9bff, 0 0 14px var(--cyber-blue);
+            text-shadow: 0 0 6px #a7e7ff, 0 0 14px var(--matrix-blue);
             margin: 0 1px;
         }
 
@@ -376,16 +360,16 @@
         .btn-arrow {
             font-size: 26px;
             font-weight: 800;
-            color: var(--cyber-blue-bright);
+            color: var(--matrix-blue);
             transition: transform 0.3s ease, color 0.3s ease;
-            text-shadow: 0 0 10px rgba(0, 115, 230, 0.9);
+            text-shadow: 0 0 10px rgba(167, 231, 255, 0.9);
             flex-shrink: 0;
         }
 
         .cyber-btn:hover .btn-arrow {
             transform: translateX(5px);
             color: #FFFFFF;
-            text-shadow: 0 0 12px var(--cyber-blue-bright);
+            text-shadow: 0 0 12px var(--matrix-blue);
         }
 
         /* Responsive Breakpoints */
@@ -521,6 +505,9 @@
         const alphabet = katakana + latin;
 
         const fontSize = 14;
+        // Wider spacing than the glyph size keeps the rain airy and less intrusive
+        const colSpacing = 24;
+        const rowSpacing = 22;
         let columns = 0;
         let rainDrops = [];
 
@@ -533,7 +520,7 @@
             canvas.height = Math.floor(height * dpr);
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-            columns = Math.ceil(width / fontSize);
+            columns = Math.ceil(width / colSpacing);
             // Staggered start rows so columns don't all begin in unison
             rainDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
 
@@ -558,8 +545,8 @@
 
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                const x = i * fontSize;
-                const y = rainDrops[i] * fontSize;
+                const x = i * colSpacing;
+                const y = rainDrops[i] * rowSpacing;
 
                 ctx.fillText(text, x, y);
 
