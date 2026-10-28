@@ -31,7 +31,7 @@
             height: 100%;
             background-color: #000000 !important; /* Always pitch black */
             color: var(--text-high-contrast);
-            font-family: 'JetBrains Mono', 'Share Tech Mono', monospace;
+            font-family: 'Share Tech Mono', monospace;
             overflow-x: hidden;
             display: flex;
             align-items: center;
@@ -61,7 +61,7 @@
                 rgba(0, 0, 0, 0) 50%,
                 rgba(0, 0, 0, 0.4) 50%
             );
-            background-size: 100% 4px;
+            background-size: 100% 3px;
             z-index: 2;
             pointer-events: none;
         }
@@ -289,16 +289,51 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 56px;
+            height: 56px;
             flex-shrink: 0;
+            position: relative;
+        }
+
+        /* Soft blue halo behind each symbol so it reads at a glance */
+        .btn-icon-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(61, 155, 255, 0.5) 0%, rgba(0, 115, 230, 0.15) 45%, transparent 70%);
+            animation: iconPulse 2.4s ease-in-out infinite;
         }
 
         .btn-svg-icon {
-            width: 36px;
-            height: 36px;
-            color: var(--cyber-blue-bright);
-            filter: drop-shadow(0 0 8px rgba(0, 115, 230, 0.9));
+            position: relative;
+            width: 42px;
+            height: 42px;
+            color: #cfe9ff;
+            filter: drop-shadow(0 0 4px #3d9bff) drop-shadow(0 0 12px rgba(0, 115, 230, 0.95));
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .cyber-btn:hover .btn-svg-icon {
+            transform: scale(1.12);
+            filter: drop-shadow(0 0 6px #7fbfff) drop-shadow(0 0 18px #0073e6);
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { opacity: 0.6; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1.08); }
+        }
+
+        /* Oversized $ standing in for the "s" in "cash" */
+        .big-dollar {
+            display: inline-block;
+            font-size: 1.9em;
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 0.6;
+            vertical-align: -0.2em;
+            text-shadow: 0 0 6px #3d9bff, 0 0 14px var(--cyber-blue);
+            margin: 0 1px;
         }
 
         /* Button Text Layout */
@@ -458,7 +493,7 @@
                     </svg>
                 </div>
                 <div class="btn-content">
-                    <div class="btn-line1">Print cash</div>
+                    <div class="btn-line1">Print ca<span class="big-dollar">$</span>h</div>
                     <div class="btn-line2">w/ PROTOCOLS</div>
                 </div>
                 <div class="btn-arrow">&gt;</div>
@@ -471,16 +506,17 @@
     <!-- Matrix Code Rain Script -->
     <script>
         const canvas = document.getElementById('matrix-canvas');
-        // Opaque context: the canvas is always solid pitch black behind the rain
+        // Opaque context keeps the background solid pitch black
         const ctx = canvas.getContext('2d', { alpha: false });
 
-        // Characters: Katakana + Binary + Cyber Symbols
-        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン01010189@#$%&*+-<>/?\\|{}[]';
+        // Same glyph set and 14px grid as the reference matrix background
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+-<>/?\\|';
+        const alphabet = katakana + latin;
 
-        // Smaller glyphs = more columns = denser, sharper rain
-        const fontSize = 16;
+        const fontSize = 14;
         let columns = 0;
-        let drops = [];
+        let rainDrops = [];
 
         function resizeCanvas() {
             // Render at device pixel ratio so glyphs stay crisp on retina screens
@@ -492,11 +528,8 @@
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
             columns = Math.ceil(width / fontSize);
-            // Each column carries its own fractional y and speed (px per ms) for smooth motion
-            drops = Array.from({ length: columns }, () => ({
-                y: Math.random() * -height,
-                speed: 0.05 + Math.random() * 0.1
-            }));
+            // Staggered start rows so columns don't all begin in unison
+            rainDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
 
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, width, height);
@@ -505,47 +538,34 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        let lastTime = performance.now();
-
-        function drawMatrix(now) {
-            // Clamp the step so a backgrounded tab doesn't jump on return
-            const dt = Math.min(now - lastTime, 50);
-            lastTime = now;
-
+        function drawMatrix() {
             const width = window.innerWidth;
             const height = window.innerHeight;
 
-            // Translucent black wash every frame leaves smooth, glowing tails
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+            // Translucent black wash leaves the fading tails
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
             ctx.fillRect(0, 0, width, height);
 
             // Re-applied every frame: resizing the canvas resets context state
-            ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
             ctx.fillStyle = '#a7e7ff';
-            ctx.shadowColor = '#a7e7ff';
-            ctx.shadowBlur = 8;
+            ctx.font = fontSize + "px 'Share Tech Mono', monospace";
 
-            for (let i = 0; i < drops.length; i++) {
-                const drop = drops[i];
-                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                const x = i * fontSize;
+                const y = rainDrops[i] * fontSize;
 
-                if (drop.y > 0) {
-                    ctx.fillText(text, i * fontSize, drop.y);
+                ctx.fillText(text, x, y);
+
+                if (y > height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
                 }
-
-                drop.y += drop.speed * dt;
-
-                if (drop.y > height && Math.random() > 0.975) {
-                    drop.y = Math.random() * -height * 0.3;
-                }
+                rainDrops[i]++;
             }
-
-            requestAnimationFrame(drawMatrix);
         }
 
-        // Frame-synced animation: smooth at the display's refresh rate
-        requestAnimationFrame(drawMatrix);
+        // Same 65ms row cadence as the reference matrix
+        setInterval(drawMatrix, 65);
     </script>
 </body>
 </html>
