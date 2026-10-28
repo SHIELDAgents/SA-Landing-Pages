@@ -93,12 +93,13 @@
 
         /* SHIELD Title - index.html look with an intense electric flicker */
         .title-shield {
-            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-size: clamp(2.4rem, 4.6vw, 3.4rem);
             font-weight: 800;
-            letter-spacing: 8px;
+            letter-spacing: 6px;
+            line-height: 1;
             color: #ffffff;
             text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.7), 0 0 40px rgba(0, 255, 102, 0.42);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35);
             animation: electricFlicker 3.4s infinite;
             display: inline-block;
             position: relative;
@@ -108,11 +109,11 @@
         .title-shield::after {
             content: '';
             position: absolute;
-            top: -16px;
-            bottom: -16px;
-            left: -18px;
-            right: -10px; /* letter-spacing leaves trailing space on the right */
-            padding: 12px; /* frame thickness: two block cells */
+            top: -10px;
+            bottom: -10px;
+            left: -10px;
+            right: -2px; /* letter-spacing adds 6px of trailing space; this keeps the frame centered on the glyphs */
+            padding: 6px; /* frame thickness: one block cell */
             background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='24'><rect x='0.5' y='0.5' width='5' height='5' fill='%2300ff66'/><rect x='6.5' y='0.5' width='5' height='5' fill='%2300ff66'/><rect x='12.5' y='0.5' width='5' height='5' fill='%2300ff66'/><rect x='18.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='30.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='36.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='42.5' y='0.5' width='5' height='5' fill='%2300ff66'/><rect x='0.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='18.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='24.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='30.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='42.5' y='6.5' width='5' height='5' fill='%2300ff66'/><rect x='0.5' y='12.5' width='5' height='5' fill='%23a7e7ff'/><rect x='6.5' y='12.5' width='5' height='5' fill='%23a7e7ff'/><rect x='18.5' y='12.5' width='5' height='5' fill='%2300ff66'/><rect x='24.5' y='12.5' width='5' height='5' fill='%2300ff66'/><rect x='42.5' y='12.5' width='5' height='5' fill='%2300ff66'/><rect x='6.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='12.5' y='18.5' width='5' height='5' fill='%2300ff66'/><rect x='18.5' y='18.5' width='5' height='5' fill='%2300ff66'/><rect x='30.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='36.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='42.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/></svg>") 0 0 / 48px 24px repeat;
             -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
             -webkit-mask-composite: xor;
@@ -137,7 +138,7 @@
             45%  { opacity: 0.85; background-position: 18px 0; transform: translateX(0); }
             70%  { opacity: 0.85; background-position: 6px 12px; }
             72%  { opacity: 0; }
-            73%  { opacity: 1; filter: brightness(1.8) drop-shadow(0 0 6px rgba(0, 255, 102, 0.9)); }
+            73%  { opacity: 1; filter: brightness(1.8) drop-shadow(0 0 6px rgba(0, 255, 102, 0.85)); }
             75%  { opacity: 0.1; }
             77%  { opacity: 0.9; background-position: 0 0; filter: drop-shadow(0 0 4px rgba(0, 255, 102, 0.6)); }
             100% { opacity: 0.85; }
@@ -145,35 +146,35 @@
 
         /* Electricity cutting out and surging back on, with irregular stutters */
         @keyframes electricFlicker {
-            0%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.7), 0 0 40px rgba(0, 255, 102, 0.42); }
+            0%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
             3% { opacity: 0.15; text-shadow: none; }
-            4% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.7), 0 0 40px rgba(0, 255, 102, 0.42); }
+            4% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
             6% { opacity: 0.05; text-shadow: none; }
             7% { opacity: 0.9; }
             8% { opacity: 0.1; text-shadow: none; }
-            9% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.7), 0 0 40px rgba(0, 255, 102, 0.42); }
+            9% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
             24% { opacity: 1; }
             25% { opacity: 0.2; text-shadow: none; }
             26% { opacity: 0.8; }
             27% { opacity: 0.05; text-shadow: none; }
-            28% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.7), 0 0 40px rgba(0, 255, 102, 0.42); }
+            28% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
             41% { opacity: 1; }
             42% { opacity: 0.1; text-shadow: none; }
-            43% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.7), 0 0 40px rgba(0, 255, 102, 0.42); }
+            43% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
             44% { opacity: 0.3; text-shadow: none; }
             45% { opacity: 0.95; }
             47% { opacity: 0.02; text-shadow: none; }
-            48% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.7), 0 0 40px rgba(0, 255, 102, 0.42); }
+            48% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
             68% { opacity: 1; }
             69% { opacity: 0.12; text-shadow: none; }
-            70% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.7), 0 0 40px rgba(0, 255, 102, 0.42); }
+            70% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
             72% { opacity: 0.4; text-shadow: none; }
-            73% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.7), 0 0 40px rgba(0, 255, 102, 0.42); }
+            73% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
             88% { opacity: 1; }
             89% { opacity: 0.05; text-shadow: none; }
             90% { opacity: 0.9; }
             91% { opacity: 0.1; text-shadow: none; }
-            92% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.7), 0 0 40px rgba(0, 255, 102, 0.42); }
+            92% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
         }
 
         /* AP Title - Chrome plated, brighter specular sweep and stronger ice-blue glow */
@@ -181,12 +182,13 @@
             font-size: clamp(3.2rem, 8vw, 5.2rem);
             font-weight: 900;
             letter-spacing: 4px;
+            line-height: 1;
             background: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 30%, #8A96A0 50%, #FFFFFF 70%, #E0E0E0 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: inline-block;
-            filter: drop-shadow(0 0 18px rgba(167, 231, 255, 1)) drop-shadow(0 0 40px rgba(167, 231, 255, 0.8));
+            filter: drop-shadow(0 0 18px rgba(167, 231, 255, 0.85)) drop-shadow(0 0 40px rgba(167, 231, 255, 0.5));
             animation: chromeShine 3s linear infinite;
             /* AP stays solid, NO glitch or flicker */
             transform: none !important;
@@ -247,7 +249,7 @@
             /* The inherited dark text-shadow bleeds through the transparent fill and dulls the gold */
             text-shadow: none;
             animation: metalSheen 4s linear infinite;
-            filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.45)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+            filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.35));
         }
 
         @keyframes metalSheen {
@@ -374,7 +376,7 @@
             -webkit-text-fill-color: transparent;
             color: transparent;
             animation: silverShine 2.8s linear infinite;
-            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55)) drop-shadow(0 0 8px rgba(167, 231, 255, 0.45));
+            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 8px rgba(167, 231, 255, 0.6));
         }
 
         @keyframes silverShine {
