@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIELD AP // Anti-Agent Protocol</title>
+    <!-- Cyber & Monospace Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --neon-green: #00ff88;
+            --ice-blue: #a7e7ff;
+            --black: #000000;
+            --text-high-contrast: #F0F0F0;
+            --silver-gradient: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 50%, #B0B0B0 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: var(--black);
+            color: var(--text-high-contrast);
+            font-family: 'JetBrains Mono', 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Matrix digital rain background canvas */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            opacity: 0.20;
+            pointer-events: none;
+        }
+
+        /* Cyber scanlines overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.4) 50%
+            ), linear-gradient(
+                90deg,
+                rgba(0, 255, 136, 0.02),
+                rgba(167, 231, 255, 0.01),
+                rgba(0, 0, 0, 0.03)
+            );
+            background-size: 100% 4px, 6px 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Hero Main Container */
+        .hero-container {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 800px;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: auto;
+        }
+
+        /* Main Title Header Group */
+        .brand-title-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 8px;
+        }
+
+        /* SHIELD Title - Aggressive Glitch, Flicker & Vanishing Effect */
+        .title-shield {
+            position: relative;
+            font-size: clamp(3.2rem, 8vw, 5.2rem);
+            font-weight: 800;
+            letter-spacing: 10px;
+            color: var(--neon-green);
+            text-transform: uppercase;
+            text-shadow: 0 0 20px var(--neon-green), 0 0 40px var(--neon-green);
+            animation: shieldAttack 2.2s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        .title-shield::before,
+        .title-shield::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            clip: rect(0, 0, 0, 0);
+        }
+
+        /* Glitch pseudo-element 1 */
+        .title-shield::before {
+            left: -2px;
+            text-shadow: -2px 0 #00ffff;
+            animation: glitchAnim1 1.8s infinite linear alternate-reverse;
+        }
+
+        /* Glitch pseudo-element 2 */
+        .title-shield::after {
+            left: 2px;
+            text-shadow: 2px 0 var(--neon-green);
+            animation: glitchAnim2 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes shieldAttack {
+            0% { opacity: 1; transform: translate(0, 0); }
+            5% { opacity: 0.7; transform: translate(-3px, 1px); }
+            6% { opacity: 0.2; transform: translate(4px, -2px); filter: blur(1px); }
+            7% { opacity: 0.9; transform: translate(0, 0); filter: none; }
+            30% { opacity: 1; transform: translate(0, 0); }
+            31% { opacity: 0.1; transform: translate(-5px, 0); } /* Vanishing glitch flash */
+            32% { opacity: 0.85; transform: translate(2px, -1px); }
+            33% { opacity: 1; transform: translate(0, 0); }
+            65% { opacity: 1; transform: translate(0, 0); }
+            66% { opacity: 0.6; transform: translate(3px, 2px); }
+            67% { opacity: 0.3; transform: translate(-2px, -1px); }
+            68% { opacity: 1; transform: translate(0, 0); }
+            95% { opacity: 0.85; transform: translate(0, 0); }
+            97% { opacity: 0.15; transform: translate(5px, -1px); } /* Quick vanish distortion */
+            100% { opacity: 1; transform: translate(0, 0); }
+        }
+
+        @keyframes glitchAnim1 {
+            0% { clip: rect(10px, 9999px, 30px, 0); }
+            20% { clip: rect(40px, 9999px, 60px, 0); }
+            40% { clip: rect(15px, 9999px, 45px, 0); }
+            60% { clip: rect(70px, 9999px, 85px, 0); }
+            80% { clip: rect(25px, 9999px, 50px, 0); }
+            100% { clip: rect(5px, 9999px, 35px, 0); }
+        }
+
+        @keyframes glitchAnim2 {
+            0% { clip: rect(50px, 9999px, 80px, 0); }
+            25% { clip: rect(10px, 9999px, 25px, 0); }
+            50% { clip: rect(65px, 9999px, 90px, 0); }
+            75% { clip: rect(30px, 9999px, 55px, 0); }
+            100% { clip: rect(20px, 9999px, 40px, 0); }
+        }
+
+        /* AP Title - Rock Solid, Metallic Chrome Plated, Luminous Ice-Blue Outer Glow */
+        .title-ap {
+            font-size: clamp(3.2rem, 8vw, 5.2rem);
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 40%, #A0A0A0 70%, #FFFFFF 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            filter: drop-shadow(0 0 25px rgba(167, 231, 255, 0.95)) drop-shadow(0 0 50px rgba(167, 231, 255, 0.6));
+            animation: chromeShine 4s linear infinite;
+            /* AP stays solid, NO glitch or flicker */
+            transform: none !important;
+            opacity: 1 !important;
+        }
+
+        @keyframes chromeShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Subtitle */
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--neon-green);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 22px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Tagline Copy Block */
+        .tagline-block {
+            font-size: 20px;
+            line-height: 1.5;
+            color: var(--text-high-contrast);
+            max-width: 680px;
+            margin-bottom: 35px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+            font-weight: 500;
+        }
+
+        .tagline-block p {
+            margin-bottom: 6px;
+        }
+
+        .tagline-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Stacked Buttons Container */
+        .button-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+            align-items: center;
+        }
+
+        /* Button Styling */
+        .cyber-btn {
+            width: 440px;
+            min-height: 90px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--neon-green);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            text-decoration: none;
+            color: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(0, 255, 136, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 255, 136, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .cyber-btn:hover {
+            background: rgba(0, 255, 136, 0.22);
+            border-color: #33ff99;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.45), inset 0 0 15px rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Icon Container & SVGs */
+        .btn-icon-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+        }
+
+        .btn-svg-icon {
+            width: 36px;
+            height: 36px;
+            color: var(--neon-green);
+            filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.8));
+        }
+
+        /* Button Text Layout */
+        .btn-content {
+            flex-grow: 1;
+            text-align: left;
+            padding-left: 20px;
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .btn-line1 {
+            font-size: 15px;
+            color: var(--text-high-contrast);
+            opacity: 0.9;
+            font-weight: 500;
+            letter-spacing: 1px;
+            line-height: 1.2;
+            margin-bottom: 3px;
+        }
+
+        .btn-line2 {
+            font-size: 19px;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Right Arrow Indicator */
+        .btn-arrow {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--neon-green);
+            transition: transform 0.3s ease, color 0.3s ease;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+            flex-shrink: 0;
+        }
+
+        .cyber-btn:hover .btn-arrow {
+            transform: translateX(5px);
+            color: #FFFFFF;
+            text-shadow: 0 0 12px var(--neon-green);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 520px) {
+            .cyber-btn {
+                width: 100%;
+                min-width: unset;
+                height: 85px;
+                padding: 0 18px;
+            }
+
+            .btn-content {
+                padding-left: 14px;
+            }
+
+            .btn-line1 {
+                font-size: 14px;
+            }
+
+            .btn-line2 {
+                font-size: 16px;
+            }
+
+            .tagline-block {
+                font-size: 17px;
+                padding: 0 10px;
+            }
+
+            .brand-title-wrap {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cyber Scanlines -->
+    <div class="scanlines"></div>
+
+    <!-- Matrix Code Rain Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Main Hero Center Stack -->
+    <main class="hero-container">
+        
+        <!-- Main Title Group -->
+        <div class="brand-title-wrap">
+            <h1 class="title-shield" data-text="SHIELD">SHIELD</h1>
+            <h1 class="title-ap">AP</h1>
+        </div>
+
+        <!-- Subtitle -->
+        <div class="subtitle">ANTI-AGENT PROTOCOL</div>
+
+        <!-- Tagline Explanation Block -->
+        <div class="tagline-block">
+            <p>AI bots scrape your IP, clone your face, and leak your content in seconds.</p>
+            <p>Value your peace. We shield it.</p>
+        </div>
+
+        <!-- Three Stacked Action Buttons -->
+        <div class="button-stack">
+            
+            <!-- Button 1: IP Protection -->
+            <a href="#" class="cyber-btn" role="button">
+                <div class="btn-icon-wrap">
+                    <!-- Shield with Lock Icon -->
+                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <rect x="9" y="10" width="6" height="5" rx="1" fill="currentColor"/>
+                        <path d="M10 10V8.5a2 2 0 0 1 4 0V10" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="btn-content">
+                    <div class="btn-line1">Protect my</div>
+                    <div class="btn-line2">INTELLECTUAL PROPERTY</div>
+                </div>
+                <div class="btn-arrow">&gt;</div>
+            </a>
+
+            <!-- Button 2: Delete Leaked Content -->
+            <a href="#" class="cyber-btn" role="button">
+                <div class="btn-icon-wrap">
+                    <!-- Magnifying Glass with X Icon -->
+                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="10.5" cy="10.5" r="6.5"/>
+                        <line x1="15.5" y1="15.5" x2="21" y2="21" stroke-width="2.5"/>
+                        <line x1="8.5" y1="8.5" x2="12.5" y2="12.5" stroke-width="2"/>
+                        <line x1="12.5" y1="8.5" x2="8.5" y2="12.5" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="btn-content">
+                    <div class="btn-line1">Delete my</div>
+                    <div class="btn-line2">LEAKED Content</div>
+                </div>
+                <div class="btn-arrow">&gt;</div>
+            </a>
+
+            <!-- Button 3: Monetization & Protocols -->
+            <a href="#" class="cyber-btn" role="button">
+                <div class="btn-icon-wrap">
+                    <!-- Cash Bill with Wings Icon -->
+                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Main Banknote -->
+                        <rect x="5" y="8" width="14" height="8" rx="1.5"/>
+                        <circle cx="12" cy="12" r="2"/>
+                        <!-- Left Wing -->
+                        <path d="M5 10C3 8 1 9 1 12c0 2 2 2.5 4 1.5"/>
+                        <!-- Right Wing -->
+                        <path d="M19 10c2-2 4-1 4 2 0 2-2 2.5-4 1.5"/>
+                    </svg>
+                </div>
+                <div class="btn-content">
+                    <div class="btn-line1">Print cash</div>
+                    <div class="btn-line2">w/ PROTOCOLS</div>
+                </div>
+                <div class="btn-arrow">&gt;</div>
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- Matrix Code Rain Script -->
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Characters: Katakana + Binary + Cyber Symbols
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン01010189@#$%&*+-<>/?\\|{}[]';
+        
+        // Larger character size (18px)
+        const fontSize = 18;
+        let columns = Math.floor(canvas.width / fontSize);
+
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.floor(Math.random() * -50);
+        }
+
+        function drawMatrix() {
+            // Semi-transparent black rect to leave glowing tails
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Ice Blue with strong neon glow
+            ctx.fillStyle = '#a7e7ff';
+            ctx.shadowColor = '#a7e7ff';
+            ctx.shadowBlur = 10;
+            ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                if (y > 0) {
+                    ctx.fillText(text, x, y);
+                }
+
+                if (y > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        // Slow continuous rain fall (60ms)
+        setInterval(drawMatrix, 60);
+    </script>
+</body>
+</html>

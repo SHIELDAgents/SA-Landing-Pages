@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIELD AP | Anti-Agent Protocol</title>
+    <style>
+        :root {
+            --green: #00ff88;
+            --ice-blue: #a7e7ff;
+            --black: #000000;
+            --text-main: #F0F0F0;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--black);
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--text-main);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Matrix Background */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.22;
+        }
+
+        /* Hero Content */
+        .hero {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .title-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+        }
+
+        .shield {
+            color: var(--green);
+            text-shadow: 0 0 20px var(--green), 0 0 40px var(--green);
+            animation: glitch 0.2s infinite;
+        }
+
+        @keyframes glitch {
+            0% { opacity: 1; transform: translate(0); }
+            20% { opacity: 0.6; transform: translate(-2px, 1px); }
+            40% { opacity: 0.9; transform: translate(2px, -1px); }
+            60% { opacity: 0.7; transform: translate(-1px, 2px); }
+            100% { opacity: 1; transform: translate(0); }
+        }
+
+        .ap {
+            background: linear-gradient(135deg, #E0E0E0, #FFFFFF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 40px var(--ice-blue), 0 0 70px rgba(167, 231, 255, 0.6);
+            position: relative;
+            animation: shine 3s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .subtitle {
+            color: var(--green);
+            letter-spacing: 5px;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 20px;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        /* Buttons */
+        .btn-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            min-width: 440px;
+            height: 90px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--green);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            color: var(--text-main);
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 136, 0.25);
+        }
+
+        .btn-text { text-align: left; }
+        .btn-text div:first-child { font-size: 14px; opacity: 0.8; }
+        .btn-text div:last-child { font-size: 18px; font-weight: bold; }
+        .icon { width: 36px; height: 36px; fill: var(--green); }
+        .arrow { font-size: 24px; color: var(--green); font-weight: bold; }
+
+        @media (max-width: 600px) {
+            .btn { min-width: 320px; }
+            .title-group { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix"></canvas>
+
+    <div class="hero">
+        <div class="title-group">
+            <h1 class="shield">SHIELD</h1>
+            <h1 class="ap">AP</h1>
+        </div>
+        <div class="subtitle">ANTI-AGENT PROTOCOL</div>
+        <div class="tagline">
+            AI bots scrape your IP, clone your face, and leak your content in seconds.<br>
+            Value your peace. We shield it.
+        </div>
+
+        <div class="btn-stack">
+            <a href="#" class="btn">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/><path d="M12 8c-1.1 0-2 .9-2 2v2H8v6h8v-6h-2v-2c0-1.1-.9-2-2-2zm0 2c.55 0 1 .45 1 1v1h-2v-1c0-.55.45-1 1-1z"/></svg>
+                <div class="btn-text"><div>Protect my</div><div>INTELLECTUAL PROPERTY</div></div>
+                <div class="arrow">&gt;</div>
+            </a>
+            <a href="#" class="btn">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm-2-2h4v-1h-4v1zm0-3h4V8h-4v1z"/></svg>
+                <div class="btn-text"><div>Delete my</div><div>LEAKED Content</div></div>
+                <div class="arrow">&gt;</div>
+            </a>
+            <a href="#" class="btn">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 7.28V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.98 1-1.72V9c0-.74-.41-1.37-1-1.72zM20 9v6h-7V9h7zM5 19V5h14v2H11c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h8v2H5zM15 12c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/></svg>
+                <div class="btn-text"><div>Print cash</div><div>w/ PROTOCOLS</div></div>
+                <div class="arrow">&gt;</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789$#%@&';
+        const fontSize = 18;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#a7e7ff';
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = '#a7e7ff';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(draw, 60);
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
