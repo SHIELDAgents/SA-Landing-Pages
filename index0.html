@@ -44,7 +44,7 @@
             width: 100vw;
             height: 100vh;
             z-index: 1;
-            opacity: 0.95; /* Highly visible characters raining down */
+            opacity: 0.45; /* Character opacity 45% */
             pointer-events: none;
         }
 
@@ -231,7 +231,7 @@
         .cyber-btn {
             width: 440px;
             min-height: 90px;
-            background: rgba(0, 115, 230, 0.1);
+            background: rgba(0, 0, 0, 0.55);
             border: 2px solid var(--cyber-blue);
             border-radius: 12px;
             backdrop-filter: blur(8px);
@@ -244,7 +244,11 @@
             color: #FFFFFF;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(0, 115, 230, 0.08);
+            /* Glowy outline */
+            box-shadow:
+                0 0 10px rgba(0, 115, 230, 0.55),
+                0 0 22px rgba(0, 115, 230, 0.35),
+                inset 0 0 14px rgba(0, 115, 230, 0.15);
             position: relative;
             overflow: hidden;
         }
@@ -266,10 +270,19 @@
         }
 
         .cyber-btn:hover {
-            background: rgba(0, 115, 230, 0.25);
+            background: rgba(0, 20, 40, 0.7);
             border-color: #3399ff;
-            box-shadow: 0 0 30px rgba(0, 115, 230, 0.6), inset 0 0 15px rgba(0, 115, 230, 0.3);
-            transform: translateY(-2px) scale(1.01);
+            /* Stronger glow on hover */
+            box-shadow:
+                0 0 18px rgba(51, 153, 255, 0.8),
+                0 0 38px rgba(0, 115, 230, 0.5),
+                inset 0 0 18px rgba(0, 115, 230, 0.25);
+            /* Subtle hover movement */
+            transform: translateY(-3px);
+        }
+
+        .cyber-btn:active {
+            transform: translateY(-1px);
         }
 
         .cyber-btn:hover::before {
@@ -492,9 +505,9 @@
             ctx.shadowBlur = 0;
 
             // Cold cybersecurity blue & vivid bright characters for high visibility
-            ctx.fillStyle = '#7fc4ff';
-            ctx.shadowColor = '#0073e6';
-            ctx.shadowBlur = 12;
+            ctx.fillStyle = '#4db8ff';
+            ctx.shadowColor = '#0088ff';
+            ctx.shadowBlur = 16;
             ctx.font = `bold ${fontSize}px 'JetBrains Mono', monospace`;
 
             for (let i = 0; i < drops.length; i++) {
@@ -505,13 +518,13 @@
                 if (y > 0) {
                     // Head of the drop is brilliant white-cyan for high contrast
                     if (Math.random() > 0.8) {
-                        ctx.fillStyle = '#ffffff';
-                        ctx.shadowColor = '#3399ff';
-                        ctx.shadowBlur = 18;
+                        ctx.fillStyle = '#ccebff';
+                        ctx.shadowColor = '#0088ff';
+                        ctx.shadowBlur = 22;
                     } else {
-                        ctx.fillStyle = '#7fc4ff';
+                        ctx.fillStyle = '#2f9bff';
                         ctx.shadowColor = '#0073e6';
-                        ctx.shadowBlur = 12;
+                        ctx.shadowBlur = 16;
                     }
                     ctx.fillText(text, x, y);
                 }
