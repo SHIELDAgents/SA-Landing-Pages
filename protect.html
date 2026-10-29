@@ -10,15 +10,15 @@
 
     <style>
         :root {
-            --green: #00bf63;
-            --green-rgb: 0, 191, 99;
-            --ice: #a7e7ff;
-            --ice-rgb: 167, 231, 255;
+            /* Cyber blues, darkened a notch for a deeper space feel */
+            --blue: #008ad6;
+            --blue-deep: #0066bb;
+            --blue-bright: #2f86d6;
+            --blue-rgb: 0, 138, 214;
+            --ice: #8fd8f2;
+            --ice-rgb: 143, 216, 242;
             --silver: #C0C0C0;
-            --cyber-blue: #00a3ff;
-            --gold-rgb: 212, 175, 55;
             --text: #F0F0F0;
-            --shield-glow: 0 0 10px rgba(var(--green-rgb), 0.6), 0 0 20px rgba(var(--green-rgb), 0.6), 0 0 40px rgba(var(--green-rgb), 0.35);
         }
 
         * {
@@ -40,7 +40,7 @@
             flex-direction: column;
         }
 
-        /* Matrix rain: green glyphs plus an ice-blue layer at 12% */
+        /* Rain canvas: blue glyphs glowing through space */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -70,111 +70,22 @@
             width: 100%;
             max-width: 900px;
             margin: 0 auto;
-            padding: 50px 20px 30px;
+            padding: 60px 20px 30px;
             text-align: center;
         }
 
-        /* ---------- HEADER / BRAND ---------- */
-        .brand-title-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 18px;
-            margin-bottom: 8px;
-        }
-
-        .title-shield {
-            font-size: clamp(2.4rem, 4.6vw, 3.4rem);
-            font-weight: 800;
-            letter-spacing: 6px;
-            line-height: 1;
-            color: #ffffff;
-            text-transform: uppercase;
-            text-shadow: var(--shield-glow);
-            animation: electricFlicker 3.4s infinite;
-            display: inline-block;
-            position: relative;
-        }
-
-        /* Tetris-block frame moving around SHIELD */
-        .title-shield::after {
-            content: '';
-            position: absolute;
-            top: -10px;
-            bottom: -10px;
-            left: -10px;
-            right: -2px; /* letter-spacing adds 6px of trailing space; keeps the frame centered on the glyphs */
-            padding: 6px;
-            background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='24'><rect x='0.5' y='0.5' width='5' height='5' fill='%2300bf63'/><rect x='6.5' y='0.5' width='5' height='5' fill='%2300bf63'/><rect x='12.5' y='0.5' width='5' height='5' fill='%2300bf63'/><rect x='18.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='30.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='36.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='42.5' y='0.5' width='5' height='5' fill='%2300bf63'/><rect x='0.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='18.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='24.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='30.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='42.5' y='6.5' width='5' height='5' fill='%2300bf63'/><rect x='0.5' y='12.5' width='5' height='5' fill='%23a7e7ff'/><rect x='6.5' y='12.5' width='5' height='5' fill='%23a7e7ff'/><rect x='18.5' y='12.5' width='5' height='5' fill='%2300bf63'/><rect x='24.5' y='12.5' width='5' height='5' fill='%2300bf63'/><rect x='42.5' y='12.5' width='5' height='5' fill='%2300bf63'/><rect x='6.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='12.5' y='18.5' width='5' height='5' fill='%2300bf63'/><rect x='18.5' y='18.5' width='5' height='5' fill='%2300bf63'/><rect x='30.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='36.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='42.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/></svg>") 0 0 / 48px 24px repeat;
-            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor;
-            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            mask-composite: exclude;
-            filter: drop-shadow(0 0 4px rgba(var(--green-rgb), 0.6));
-            pointer-events: none;
-            animation: screenBlink 1.8s steps(1, end) infinite;
-        }
-
-        @keyframes screenBlink {
-            0%   { opacity: 0.85; background-position: 0 0; transform: translateX(0); }
-            6%   { opacity: 0; }
-            9%   { opacity: 1; background-position: 6px 0; transform: translateX(-2px); }
-            12%  { opacity: 0; }
-            14%  { opacity: 0.9; background-position: 0 6px; transform: translateX(0); }
-            38%  { opacity: 0.85; background-position: 12px 6px; }
-            40%  { opacity: 0; }
-            41%  { opacity: 1; transform: translateX(3px); }
-            43%  { opacity: 0; }
-            45%  { opacity: 0.85; background-position: 18px 0; transform: translateX(0); }
-            70%  { opacity: 0.85; background-position: 6px 12px; }
-            72%  { opacity: 0; }
-            73%  { opacity: 1; filter: brightness(1.8) drop-shadow(0 0 6px rgba(var(--green-rgb), 0.85)); }
-            75%  { opacity: 0.1; }
-            77%  { opacity: 0.9; background-position: 0 0; filter: drop-shadow(0 0 4px rgba(var(--green-rgb), 0.6)); }
-            100% { opacity: 0.85; }
-        }
-
-        /* Electric flicker on SHIELD: cut-outs and irregular stutters */
-        @keyframes electricFlicker {
-            0%, 100% { opacity: 1; text-shadow: var(--shield-glow); }
-            3%  { opacity: 0.15; text-shadow: none; }
-            4%  { opacity: 1; text-shadow: var(--shield-glow); }
-            6%  { opacity: 0.05; text-shadow: none; }
-            7%  { opacity: 0.9; }
-            8%  { opacity: 0.1; text-shadow: none; }
-            9%  { opacity: 1; text-shadow: var(--shield-glow); }
-            25% { opacity: 0.2; text-shadow: none; }
-            26% { opacity: 0.8; }
-            27% { opacity: 0.05; text-shadow: none; }
-            28% { opacity: 1; text-shadow: var(--shield-glow); }
-            42% { opacity: 0.1; text-shadow: none; }
-            43% { opacity: 1; text-shadow: var(--shield-glow); }
-            44% { opacity: 0.3; text-shadow: none; }
-            45% { opacity: 0.95; }
-            47% { opacity: 0.02; text-shadow: none; }
-            48% { opacity: 1; text-shadow: var(--shield-glow); }
-            69% { opacity: 0.12; text-shadow: none; }
-            70% { opacity: 1; text-shadow: var(--shield-glow); }
-            72% { opacity: 0.4; text-shadow: none; }
-            73% { opacity: 1; text-shadow: var(--shield-glow); }
-            89% { opacity: 0.05; text-shadow: none; }
-            90% { opacity: 0.9; }
-            91% { opacity: 0.1; text-shadow: none; }
-            92% { opacity: 1; text-shadow: var(--shield-glow); }
-        }
-
-        /* AP: solid chrome-silver with ice-blue glow, NO flicker */
+        /* ---------- HEADER ---------- */
         .title-ap {
-            font-size: clamp(3.2rem, 8vw, 5.2rem);
+            font-size: clamp(3.6rem, 9vw, 5.6rem);
             font-weight: 900;
             letter-spacing: 4px;
             line-height: 1;
+            display: inline-block;
             background: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 30%, #8A96A0 50%, #FFFFFF 70%, #E0E0E0 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: inline-block;
             filter: drop-shadow(0 0 18px rgba(var(--ice-rgb), 0.85)) drop-shadow(0 0 40px rgba(var(--ice-rgb), 0.5));
             animation: chromeShine 3s linear infinite;
         }
@@ -184,15 +95,16 @@
             100% { background-position: 200% center; }
         }
 
+        /* Translucent subtitle, matching index.html */
         .subtitle {
             font-size: 0.95rem;
-            color: var(--cyber-blue);
+            color: var(--blue);
             letter-spacing: 5px;
             text-transform: uppercase;
             font-weight: 700;
             margin-top: 18px;
             margin-bottom: 22px;
-            text-shadow: 0 0 10px rgba(0, 163, 255, 0.6);
+            text-shadow: 0 0 10px rgba(var(--blue-rgb), 0.6);
             opacity: 0.39;
             filter: url(#rough-text);
         }
@@ -204,36 +116,10 @@
             max-width: 680px;
             margin: 0 auto;
             font-weight: 500;
-        }
-
-        .tagline-block p + p {
-            margin-top: 6px;
-        }
-
-        /* Lead line: soft light halo off the black background */
-        .tagline-block p:first-child {
             text-shadow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(var(--ice-rgb), 0.2);
         }
 
-        /* Slogan: gold metallic paint with a restrained glow */
-        .slogan {
-            font-weight: 800;
-            background: linear-gradient(110deg, #b8860b 0%, #f5d76e 20%, #fffbe6 30%, #f5d76e 40%, #d4af37 55%, #ffe58a 70%, #fff8dc 78%, #d4af37 90%, #b8860b 100%);
-            background-size: 250% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            animation: metalSheen 4s linear infinite;
-            filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 10px rgba(var(--gold-rgb), 0.35));
-        }
-
-        @keyframes metalSheen {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
-        /* ---------- 70%: IP OFFER (hero, benefits, middle CTA) ---------- */
+        /* ---------- 70%: IP OFFER ---------- */
         .hero-headline {
             margin-top: 46px;
             font-size: clamp(1.8rem, 4.4vw, 2.9rem);
@@ -248,32 +134,52 @@
             display: block;
             color: var(--ice);
             text-transform: uppercase;
-            text-shadow: 0 0 14px rgba(var(--ice-rgb), 0.7);
+            text-shadow: 0 0 14px rgba(var(--ice-rgb), 0.6);
         }
 
+        /* Benefit cells: interactive, held inside a translucent blue aura */
         .benefits {
             max-width: 680px;
             margin: 50px auto 0;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            text-align: left;
+            gap: 14px;
         }
 
         .benefit {
             display: flex;
             gap: 16px;
-            padding: 14px 18px;
-            border-left: 2px solid var(--green);
-            background: rgba(var(--green-rgb), 0.04);
+            align-items: flex-start;
+            width: 100%;
+            padding: 16px 20px;
+            text-align: left;
+            font: inherit;
+            color: inherit;
+            background: linear-gradient(135deg, rgba(var(--blue-rgb), 0.14), rgba(0, 0, 0, 0.55));
+            border: 1px solid rgba(var(--blue-rgb), 0.35);
+            border-radius: 10px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 0 18px rgba(var(--blue-rgb), 0.25), inset 0 0 12px rgba(var(--blue-rgb), 0.08);
+            cursor: pointer;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+
+        .benefit:hover,
+        .benefit:focus-visible,
+        .benefit.is-active {
+            outline: none;
+            border-color: rgba(var(--ice-rgb), 0.7);
+            transform: translateY(-3px);
+            box-shadow: 0 0 34px rgba(var(--blue-rgb), 0.6), 0 0 8px rgba(var(--ice-rgb), 0.35), inset 0 0 18px rgba(var(--blue-rgb), 0.22);
         }
 
         .benefit-num {
-            color: var(--green);
+            color: var(--ice);
             font-weight: 800;
             font-size: 1.1rem;
             line-height: 1.2;
-            text-shadow: 0 0 8px rgba(var(--green-rgb), 0.6);
+            text-shadow: 0 0 8px rgba(var(--ice-rgb), 0.6);
         }
 
         .benefit-title {
@@ -303,7 +209,7 @@
             width: 360px;
             padding: 28px 20px;
             background: rgba(0, 0, 0, 0.75);
-            border: 1px solid rgba(var(--green-rgb), 0.35);
+            border: 1px solid rgba(var(--blue-rgb), 0.35);
             border-radius: 12px;
             display: flex;
             flex-direction: column;
@@ -325,10 +231,10 @@
 
         .card-price {
             margin: 12px 0 16px;
-            color: var(--green);
+            color: var(--blue-bright);
             font-size: 1.1rem;
             font-weight: 800;
-            text-shadow: 0 0 8px rgba(var(--green-rgb), 0.5);
+            text-shadow: 0 0 8px rgba(var(--blue-rgb), 0.5);
         }
 
         .card-list {
@@ -342,7 +248,7 @@
 
         .card-list li::before {
             content: '> ';
-            color: var(--green);
+            color: var(--blue-bright);
         }
 
         .card-free {
@@ -362,7 +268,7 @@
             margin-top: auto;
         }
 
-        /* Button base: same 2px border and box language as index.html */
+        /* Middle buttons: 320x64, 2px border, translucent blue */
         .btn-card {
             display: flex;
             align-items: center;
@@ -370,23 +276,23 @@
             width: 320px;
             height: 64px;
             max-width: 100%;
-            border: 2px solid var(--green);
+            border: 2px solid var(--blue);
             border-radius: 10px;
-            background: rgba(var(--green-rgb), 0.1);
+            background: rgba(var(--blue-rgb), 0.1);
             color: #FFFFFF;
             text-decoration: none;
             font-size: 1rem;
             font-weight: 800;
             letter-spacing: 1.5px;
             cursor: pointer;
-            box-shadow: 0 0 12px rgba(var(--green-rgb), 0.5), inset 0 0 12px rgba(var(--green-rgb), 0.12);
+            box-shadow: 0 0 12px rgba(var(--blue-rgb), 0.5), inset 0 0 12px rgba(var(--blue-rgb), 0.12);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
         }
 
         .btn-card:hover {
-            background: rgba(var(--green-rgb), 0.22);
+            background: rgba(var(--blue-rgb), 0.22);
             transform: translateY(-3px);
-            box-shadow: 0 0 26px rgba(var(--green-rgb), 0.85), inset 0 0 16px rgba(var(--green-rgb), 0.25);
+            box-shadow: 0 0 26px rgba(var(--blue-rgb), 0.85), inset 0 0 16px rgba(var(--blue-rgb), 0.25);
         }
 
         /* Card B: silver to ice gradient, glow, scale 1.05 */
@@ -399,7 +305,7 @@
         }
 
         .btn-card-premium:hover {
-            background: linear-gradient(90deg, #d8d8d8, #c4f0ff);
+            background: linear-gradient(90deg, #d8d8d8, #bfe9fa);
             transform: scale(1.08) translateY(-3px);
             box-shadow: 0 0 32px rgba(var(--ice-rgb), 0.95), 0 0 6px var(--ice);
         }
@@ -411,7 +317,7 @@
             margin-top: 90px;
             padding: 80px 20px 70px;
             border-top: 2px solid var(--silver);
-            background: radial-gradient(ellipse at center, rgba(var(--green-rgb), 0.05) 0%, rgba(0, 0, 0, 0) 70%), #000000;
+            background: radial-gradient(ellipse at center, rgba(var(--blue-rgb), 0.06) 0%, rgba(0, 0, 0, 0) 70%), #000000;
             text-align: center;
         }
 
@@ -426,20 +332,21 @@
             line-height: 1.15;
             letter-spacing: 2px;
             color: #FFFFFF;
-            text-shadow: 0 0 14px rgba(var(--ice-rgb), 0.5);
+            text-shadow: 0 0 14px rgba(var(--ice-rgb), 0.45);
         }
 
         .print-headline .line2 {
             display: block;
-            background: linear-gradient(90deg, #C0C0C0, #FFFFFF, #a7e7ff, #C0C0C0);
+            background: linear-gradient(90deg, #C0C0C0, #FFFFFF, #8fd8f2, #C0C0C0);
             background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(var(--ice-rgb), 0.5));
+            filter: drop-shadow(0 0 10px rgba(var(--ice-rgb), 0.45));
             animation: chromeShine 4s linear infinite;
         }
 
+        /* Oversized silver $ standing in for the "s" */
         .big-dollar {
             display: inline-block;
             font-size: 1.52em;
@@ -493,7 +400,7 @@
             margin: 14px 0 8px;
             font-size: 1.9rem;
             font-weight: 900;
-            background: linear-gradient(90deg, #FFFFFF, #a7e7ff, #C0C0C0);
+            background: linear-gradient(90deg, #FFFFFF, #8fd8f2, #C0C0C0);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -506,18 +413,11 @@
             line-height: 1.5;
         }
 
-        .offer-range {
-            color: #7A7A7A;
-            font-size: 0.75rem;
-            margin-top: 4px;
-        }
-
-        /* Final shiny button: 480x88, silver to ice, thicker than the middle buttons */
+        /* Final button: 480x88, silver to ice, thicker than the middle buttons */
         .btn-final {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 18px;
             position: relative;
             overflow: hidden;
             width: 480px;
@@ -533,7 +433,6 @@
             font-size: 1.35rem;
             font-weight: 900;
             letter-spacing: 2px;
-            text-transform: uppercase;
             box-shadow: 0 0 28px rgba(var(--ice-rgb), 0.8), 0 0 6px var(--ice), 0 8px 24px rgba(0, 0, 0, 0.7);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
         }
@@ -560,18 +459,14 @@
             box-shadow: 0 0 40px rgba(var(--ice-rgb), 1), 0 0 8px var(--ice), 0 12px 28px rgba(0, 0, 0, 0.7);
         }
 
-        .btn-final-icon {
-            width: 32px;
-            height: 32px;
-            flex-shrink: 0;
-            color: #000000;
-            position: relative;
-            animation: moneyFly 2.6s ease-in-out infinite;
-        }
-
-        @keyframes moneyFly {
-            0%, 100% { transform: translate(0, 0) rotate(-6deg); }
-            50% { transform: translate(5px, -6px) rotate(8deg); }
+        /* The $ on the button: bigger than the caps, with a dark edge so the silver reads on the silver gradient */
+        .btn-final .big-dollar {
+            font-size: 1.9em;
+            background: linear-gradient(110deg, #5a5a5a 0%, #ffffff 30%, #b5b5b5 48%, #ffffff 62%, #6e6e6e 85%, #e6e6e6 100%);
+            background-size: 250% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
         }
 
         .footer {
@@ -579,14 +474,13 @@
             z-index: 2;
             text-align: center;
             padding: 30px 20px;
-            border-top: 1px solid rgba(var(--green-rgb), 0.2);
+            border-top: 1px solid rgba(var(--blue-rgb), 0.2);
             color: #6F6F6F;
             font-size: 0.8rem;
             letter-spacing: 3px;
             text-transform: uppercase;
         }
 
-        /* Responsive */
         @media (max-width: 720px) {
             .offers {
                 grid-template-columns: 1fr;
@@ -600,9 +494,6 @@
             .btn-final {
                 width: 100%;
                 font-size: 1.1rem;
-            }
-            .brand-title-wrap {
-                gap: 10px;
             }
         }
 
@@ -634,14 +525,10 @@
 
         <!-- HEADER -->
         <header>
-            <div class="brand-title-wrap">
-                <h1 class="title-shield" data-text="SHIELD">SHIELD</h1>
-                <h1 class="title-ap">AP</h1>
-            </div>
+            <h1 class="title-ap">AP</h1>
             <div class="subtitle">Anti-Agent Protocol</div>
             <div class="tagline-block">
                 <p>AI bots scrape your IP, clone your face, and leak your content in seconds.</p>
-                <p class="slogan">Value your peace. We shield it.</p>
             </div>
         </header>
 
@@ -653,43 +540,43 @@
             </h2>
         </section>
 
-        <!-- TOP 5 BENEFITS -->
+        <!-- TOP 5 BENEFITS: interactive cells -->
         <section class="benefits">
-            <div class="benefit">
+            <button type="button" class="benefit" aria-pressed="false">
                 <span class="benefit-num">01</span>
-                <div>
-                    <div class="benefit-title">BI-WEEKLY LEAK SCANS</div>
-                    <div class="benefit-text">2 deep scans/month across 200M+ sites, Telegram, Reddit, Google.</div>
-                </div>
-            </div>
-            <div class="benefit">
+                <span>
+                    <span class="benefit-title" style="display:block">BI-WEEKLY LEAK SCANS</span>
+                    <span class="benefit-text" style="display:block">2 deep scans/month across 200M+ sites, Telegram, Reddit, Google.</span>
+                </span>
+            </button>
+            <button type="button" class="benefit" aria-pressed="false">
                 <span class="benefit-num">02</span>
-                <div>
-                    <div class="benefit-title">AI LABYRINTH + BOT BLOCK</div>
-                    <div class="benefit-text">Cloudflare-grade. One-click block + decoy pages waste scraper bots.</div>
-                </div>
-            </div>
-            <div class="benefit">
+                <span>
+                    <span class="benefit-title" style="display:block">AI LABYRINTH + BOT BLOCK</span>
+                    <span class="benefit-text" style="display:block">Cloudflare-grade. One-click block + decoy pages waste scraper bots.</span>
+                </span>
+            </button>
+            <button type="button" class="benefit" aria-pressed="false">
                 <span class="benefit-num">03</span>
-                <div>
-                    <div class="benefit-title">AUTO DMCA TAKEDOWNS</div>
-                    <div class="benefit-text">Auto notices to host + Google. 4-24h Google delist, 2-4 days site removal. Private filing.</div>
-                </div>
-            </div>
-            <div class="benefit">
+                <span>
+                    <span class="benefit-title" style="display:block">AUTO DMCA TAKEDOWNS</span>
+                    <span class="benefit-text" style="display:block">Auto notices to host + Google. 4-24h Google delist, 2-4 days site removal. Private filing.</span>
+                </span>
+            </button>
+            <button type="button" class="benefit" aria-pressed="false">
                 <span class="benefit-num">04</span>
-                <div>
-                    <div class="benefit-title">VOICE &amp; FACE CLONE SHIELD</div>
-                    <div class="benefit-text">Under ELVIS + NO FAKES Act. Invisible watermark + content credentials.</div>
-                </div>
-            </div>
-            <div class="benefit">
+                <span>
+                    <span class="benefit-title" style="display:block">VOICE &amp; FACE CLONE SHIELD</span>
+                    <span class="benefit-text" style="display:block">Under ELVIS + NO FAKES Act. Invisible watermark + content credentials.</span>
+                </span>
+            </button>
+            <button type="button" class="benefit" aria-pressed="false">
                 <span class="benefit-num">05</span>
-                <div>
-                    <div class="benefit-title">OWNED VAULT</div>
-                    <div class="benefit-text">Receipts + files in PWA Vault. No platform can delete.</div>
-                </div>
-            </div>
+                <span>
+                    <span class="benefit-title" style="display:block">OWNED VAULT</span>
+                    <span class="benefit-text" style="display:block">Receipts + files in PWA Vault. No platform can delete.</span>
+                </span>
+            </button>
         </section>
 
         <!-- MIDDLE CTA: two cards, Card B highlighted -->
@@ -734,33 +621,24 @@
                 </div>
                 <div class="offer">
                     <div class="offer-title">Status IRL</div>
-                    <div class="offer-price">$1,500</div>
+                    <div class="offer-price">$1.5k+</div>
                     <div class="offer-note">IRL perception shift, 1hr attractive person.</div>
                 </div>
                 <div class="offer">
                     <div class="offer-title">Ghost Protocol</div>
-                    <div class="offer-price">$3,400</div>
+                    <div class="offer-price">$3.4k+</div>
                     <div class="offer-note">Full ghost team.</div>
-                    <div class="offer-range">($3.3k-$3.4k range)</div>
                 </div>
             </div>
 
-            <a href="/protocols" class="btn-final" role="button">
-                <svg class="btn-final-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="2" y="6" width="20" height="12" rx="2"/>
-                    <circle cx="12" cy="12" r="2.5"/>
-                    <path d="M6 9.5c-1.2-1-2.8-.6-3 1s1 2.2 2 2"/>
-                    <path d="M18 9.5c1.2-1 2.8-.6 3 1s-1 2.2-2 2"/>
-                </svg>
-                <span>Start Printing</span>
-            </a>
+            <a href="/protocols" class="btn-final" role="button"><span class="big-dollar">$</span>tart Printing NOW</a>
         </div>
     </section>
 
     <footer class="footer">SHIELD AP // Anti-Agent Protocol</footer>
 
     <script>
-        // Matrix rain: green glyph layer plus ice-blue layer at 12%, one shared opaque canvas
+        // Rain: blue glyphs glowing through space, plus a fainter ice layer; one shared opaque canvas
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d', { alpha: false });
 
@@ -769,10 +647,11 @@
         const alphabet = katakana + latin;
 
         const fontSize = 14;
+        // Wide spacing keeps the rain airy and in the background
         const colSpacing = 24;
         const rowSpacing = 22;
         let columns = 0;
-        let greenDrops = [];
+        let blueDrops = [];
         let iceDrops = [];
 
         function resizeCanvas() {
@@ -784,15 +663,17 @@
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
             columns = Math.ceil(width / colSpacing);
-            greenDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
+            blueDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
             iceDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
 
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, width, height);
         }
 
-        function drawDrops(drops, color, xOffset, height) {
+        function drawDrops(drops, color, glow, xOffset, height) {
             ctx.fillStyle = color;
+            ctx.shadowColor = glow;
+            ctx.shadowBlur = 8;
             for (let i = 0; i < drops.length; i++) {
                 const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
                 const x = i * colSpacing + xOffset;
@@ -812,15 +693,25 @@
             const height = window.innerHeight;
 
             // Translucent black wash leaves the fading tails
+            ctx.shadowBlur = 0;
             ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
             ctx.fillRect(0, 0, width, height);
 
             // Re-applied every frame: resizing the canvas resets context state
             ctx.font = fontSize + "px 'Share Tech Mono', monospace";
 
-            drawDrops(greenDrops, 'rgba(0, 191, 99, 0.5)', 0, height);
-            drawDrops(iceDrops, 'rgba(167, 231, 255, 0.12)', colSpacing / 2, height);
+            // Half the previous opacity, so the rain sits further back
+            drawDrops(blueDrops, 'rgba(0, 138, 214, 0.25)', 'rgba(0, 138, 214, 0.8)', 0, height);
+            drawDrops(iceDrops, 'rgba(143, 216, 242, 0.06)', 'rgba(143, 216, 242, 0.6)', colSpacing / 2, height);
         }
+
+        // Benefit cells: click toggles the activated aura
+        document.querySelectorAll('.benefit').forEach((cell) => {
+            cell.addEventListener('click', () => {
+                const active = cell.classList.toggle('is-active');
+                cell.setAttribute('aria-pressed', String(active));
+            });
+        });
 
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
