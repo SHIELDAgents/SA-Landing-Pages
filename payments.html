@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypted Settlement // SHIELD AP</title>
+    <meta name="description" content="SHIELD AP Encrypted Settlement Terminal: Activate Anti-Agent IP Protection, Leak Deletion, or Protocol Escrow via BTCPay (Bitcoin / Lightning) or Wompi.">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SHIELD AP">
+    <!-- Cyber & Monospace Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- Wompi Official Checkout Widget -->
+    <script src="https://checkout.wompi.co/widget.js" async></script>
+
+    <style>
+        :root {
+            /* Cyber blues & ice */
+            --blue: #008ad6;
+            --blue-deep: #0066bb;
+            --blue-bright: #2f86d6;
+            --blue-rgb: 0, 138, 214;
+            --ice: #8fd8f2;
+            --ice-rgb: 143, 216, 242;
+            --ice-blue: #a7e7ff;
+            --silver: #C0C0C0;
+            --text: #F0F0F0;
+
+            /* Accents */
+            --shield-green: #00bf63;
+            --shield-green-rgb: 0, 191, 99;
+            --btc-orange: #F7931A;
+            --btc-orange-rgb: 247, 147, 26;
+            --aura-pastel: #F4B8E4;
+            --aura-pastel-rgb: 244, 184, 228;
+            --worry-red: #FF1A24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+            background-color: #000000 !important;
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Matrix digital rain background canvas */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        /* Cyber scanlines overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
+            background-size: 100% 3px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .topbar {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 22px 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: var(--ice-blue);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(167, 231, 255, 0.5);
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #FFFFFF;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--shield-green);
+            padding: 4px 10px;
+            border: 1px solid rgba(var(--shield-green-rgb), 0.45);
+            border-radius: 999px;
+            background: rgba(var(--shield-green-rgb), 0.08);
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--shield-green);
+            box-shadow: 0 0 8px var(--shield-green);
+        }
+
+        .page {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 16px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* ---------- HEADER: CENTERED AP WITH METALLIC LUXURY SHINE ---------- */
+        header {
+            text-align: center;
+            margin-top: 8px;
+            margin-bottom: 12px;
+        }
+
+        .title-ap {
+            font-size: clamp(3.6rem, 9vw, 5.6rem);
+            font-weight: 900;
+            letter-spacing: 6px;
+            line-height: 1;
+            display: inline-block;
+            background: linear-gradient(135deg, 
+                #8E9BA8 0%, 
+                #FFFFFF 18%, 
+                #5D6C7C 36%, 
+                #E8EFF5 52%, 
+                #505F6E 68%, 
+                #FFFFFF 84%, 
+                #8E9BA8 100%
+            );
+            background-size: 240% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            filter: drop-shadow(0 0 18px rgba(var(--ice-rgb), 0.85)) drop-shadow(0 0 42px rgba(var(--ice-rgb), 0.45));
+            animation: luxuryMetallicShine 3.4s linear infinite;
+        }
+
+        @keyframes luxuryMetallicShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 240% center; }
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--blue);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 16px;
+            margin-bottom: 18px;
+            text-shadow: 0 0 10px rgba(var(--blue-rgb), 0.6);
+            opacity: 0.45;
+            filter: url(#rough-text);
+        }
+
+        .tagline-block {
+            font-size: 16px;
+            line-height: 1.55;
+            color: var(--text);
+            max-width: 680px;
+            margin: 0 auto;
+            text-shadow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(var(--ice-rgb), 0.2);
+        }
+
+        /* ---------- TERMINAL SHELL ---------- */
+        .terminal {
+            width: 100%;
+            max-width: 780px;
+            margin-top: 36px;
+            padding: 32px 26px;
+            background: rgba(4, 10, 18, 0.86);
+            border: 1px solid rgba(var(--blue-rgb), 0.45);
+            border-radius: 14px;
+            box-shadow: 0 0 34px rgba(var(--blue-rgb), 0.25), inset 0 0 18px rgba(var(--blue-rgb), 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align: left;
+        }
+
+        .section-label {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--ice-blue);
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        /* ---------- PLAN SELECTOR ---------- */
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .plan-option {
+            position: relative;
+            padding: 18px 16px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.72);
+            border: 1px solid rgba(var(--blue-rgb), 0.35);
+            color: #FFFFFF;
+            cursor: pointer;
+            text-align: left;
+            font: inherit;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        .plan-option:hover {
+            border-color: rgba(var(--ice-rgb), 0.7);
+            transform: translateY(-2px);
+        }
+
+        .plan-option.is-selected {
+            border: 2px solid var(--ice);
+            background: linear-gradient(135deg, rgba(var(--blue-rgb), 0.22), rgba(0, 0, 0, 0.85));
+            box-shadow: 0 0 24px rgba(var(--blue-rgb), 0.5), inset 0 0 14px rgba(var(--ice-rgb), 0.14);
+        }
+
+        .plan-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            color: var(--ice);
+            background: rgba(var(--blue-rgb), 0.2);
+            border: 1px solid rgba(var(--ice-rgb), 0.4);
+        }
+
+        .plan-badge.save {
+            color: #000000;
+            background: linear-gradient(90deg, var(--silver), var(--ice));
+            border: none;
+        }
+
+        .plan-name {
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+
+        .plan-price {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--ice-blue);
+            margin-bottom: 6px;
+            text-shadow: 0 0 10px rgba(var(--ice-rgb), 0.5);
+        }
+
+        .plan-price span {
+            font-size: 0.82rem;
+            color: #9A9A9A;
+            font-weight: 400;
+        }
+
+        .plan-desc {
+            font-size: 0.82rem;
+            color: #B4BCC4;
+            line-height: 1.45;
+        }
+
+        /* Protocol Quick-Switch Bar (if user came from a Status / IRL / Aura / Ghost Protocol) */
+        .protocol-switch-wrap {
+            margin-bottom: 26px;
+        }
+
+        .protocol-select {
+            width: 100%;
+            height: 48px;
+            padding: 0 14px;
+            border-radius: 8px;
+            background: #000000;
+            border: 1px solid rgba(var(--ice-rgb), 0.4);
+            color: #FFFFFF;
+            font: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .protocol-select:focus {
+            border-color: var(--ice);
+            box-shadow: 0 0 14px rgba(var(--ice-rgb), 0.45);
+        }
+
+        /* ---------- OPERATIVE / ASSET INTAKE FIELDS ---------- */
+        .intake-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #B8C2CC;
+        }
+
+        .field input {
+            height: 50px;
+            padding: 0 14px;
+            background: #000000;
+            border: 1px solid rgba(var(--ice-rgb), 0.35);
+            border-radius: 8px;
+            color: #FFFFFF;
+            font: inherit;
+            font-size: 0.92rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .field input:focus {
+            border-color: var(--ice);
+            box-shadow: 0 0 12px rgba(var(--ice-rgb), 0.4);
+        }
+
+        .field input::placeholder {
+            color: #626A73;
+        }
+
+        /* ---------- SUMMARY BAR ---------- */
+        .order-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 18px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(var(--ice-rgb), 0.35);
+            margin-bottom: 24px;
+        }
+
+        .summary-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .summary-plan {
+            font-size: 0.98rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 1px;
+        }
+
+        .summary-note {
+            font-size: 0.78rem;
+            color: #9A9A9A;
+        }
+
+        .summary-amount {
+            font-size: 1.65rem;
+            font-weight: 900;
+            color: var(--ice-blue);
+            text-shadow: 0 0 12px rgba(var(--ice-rgb), 0.6);
+        }
+
+        /* ---------- DUAL PAYMENT RAILS: BTCPAY & WOMPI ---------- */
+        .rails-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn-rail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            min-height: 78px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        /* Rail 1: BTCPay Server (Bitcoin / Lightning) */
+        .btn-btcpay {
+            background: linear-gradient(135deg, rgba(var(--btc-orange-rgb), 0.18), rgba(0, 0, 0, 0.9));
+            border: 2px solid var(--btc-orange);
+            color: #FFFFFF;
+            box-shadow: 0 0 22px rgba(var(--btc-orange-rgb), 0.38), inset 0 0 14px rgba(var(--btc-orange-rgb), 0.12);
+        }
+
+        .btn-btcpay:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, rgba(var(--btc-orange-rgb), 0.28), rgba(0, 0, 0, 0.92));
+            box-shadow: 0 0 32px rgba(var(--btc-orange-rgb), 0.7), inset 0 0 18px rgba(var(--btc-orange-rgb), 0.22);
+        }
+
+        /* Rail 2: Wompi (Card / Fiat / Instant Gateway) */
+        .btn-wompi {
+            background: linear-gradient(90deg, var(--silver), var(--ice));
+            border: 2px solid var(--ice);
+            color: #000000;
+            box-shadow: 0 0 24px rgba(var(--ice-rgb), 0.7);
+        }
+
+        .btn-wompi:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(90deg, #d8d8d8, #bfe9fa);
+            box-shadow: 0 0 36px rgba(var(--ice-rgb), 0.95);
+        }
+
+        .rail-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .rail-top svg {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        .rail-sub {
+            font-size: 0.76rem;
+            letter-spacing: 1px;
+            opacity: 0.85;
+        }
+
+        .security-foot {
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.78rem;
+            color: #88929C;
+        }
+
+        /* ---------- BTCPAY & SETTLEMENT MODAL ---------- */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.is-open {
+            display: flex;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 460px;
+            background: rgba(6, 12, 20, 0.98);
+            border: 2px solid var(--btc-orange);
+            border-radius: 14px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 0 42px rgba(var(--btc-orange-rgb), 0.45), 0 16px 48px rgba(0, 0, 0, 0.95);
+        }
+
+        .modal-badge {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--btc-orange);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        .modal-desc {
+            font-size: 0.88rem;
+            color: #C0C8D0;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .qr-frame {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 16px;
+            padding: 12px;
+            background: #FFFFFF;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .invoice-box {
+            background: #000000;
+            border: 1px solid rgba(var(--btc-orange-rgb), 0.5);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .invoice-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--btc-orange);
+            margin-bottom: 4px;
+        }
+
+        .invoice-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #FFFFFF;
+            word-break: break-all;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-modal-primary {
+            flex: 1;
+            height: 48px;
+            border-radius: 8px;
+            border: 1px solid var(--btc-orange);
+            background: var(--btc-orange);
+            color: #000000;
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .btn-modal-close {
+            height: 48px;
+            padding: 0 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: transparent;
+            color: #B8B8B8;
+            font: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 700px) {
+            .plan-grid,
+            .intake-grid,
+            .rails-grid {
+                grid-template-columns: 1fr;
+            }
+            .terminal {
+                padding: 22px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hidden SVG filter: rough edges for the subtitle -->
+    <svg width="0" height="0" style="position: absolute;" aria-hidden="true">
+        <filter id="rough-text" x="-5%" y="-30%" width="110%" height="160%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="7" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+            <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="3" result="grain"/>
+            <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3 2.2" result="specks"/>
+            <feComposite in="rough" in2="specks" operator="in"/>
+        </filter>
+    </svg>
+
+    <div class="scanlines"></div>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="topbar">
+        <a class="back-link" href="index.html">&larr; Back to SHIELD AP</a>
+        <span class="status-pill"><span class="status-dot"></span>ESCROW &amp; SHIELD TERMINAL ONLINE</span>
+    </div>
+
+    <main class="page">
+
+        <header>
+            <h1 class="title-ap">AP</h1>
+            <div class="subtitle">Anti-Agent Protocol // Encrypted Settlement</div>
+            <div class="tagline-block">
+                <p>Deploy continuous IP protection, execute instant leak takedowns, or fund a live Protocol in escrow via zero-trace BTCPay or Wompi instant checkout.</p>
+            </div>
+        </header>
+
+        <section class="terminal" aria-label="Encrypted Checkout Terminal">
+
+            <div class="section-label">01 // SELECT PROTECTION TIER OR PROTOCOL</div>
+
+            <!-- Primary SHIELD AP Subscription Cards -->
+            <div class="plan-grid">
+                <button type="button" class="plan-option is-selected" data-plan-card="monthly">
+                    <span class="plan-badge">INSTANT DISPATCH</span>
+                    <div class="plan-name">Monthly Shield // IP &amp; Leak Deletion</div>
+                    <div class="plan-price">$49.99 <span>/ month</span></div>
+                    <div class="plan-desc">30-min leak scans, unlimited DMCA takedowns (Telegram, Reddit, Discord, EroMe, Google), AI Labyrinth bot block &amp; Owned Vault.</div>
+                </button>
+
+                <button type="button" class="plan-option" data-plan-card="yearly">
+                    <span class="plan-badge save">SAVE 33% // SOVEREIGN LOCK</span>
+                    <div class="plan-name">Annual Shield // Full Year Protection</div>
+                    <div class="plan-price">$399 <span>/ year</span></div>
+                    <div class="plan-desc">12 months continuous Anti-Agent Protocol, priority 24/7 takedown queue, voice/face clone shield &amp; permanent Vault retention.</div>
+                </button>
+            </div>
+
+            <!-- Full Catalog Dropdown (includes SHIELD & AURA Protocols) -->
+            <div class="protocol-switch-wrap">
+                <label for="plan-selector" class="section-label" style="display:block;margin-bottom:8px;">OR DEPLOY A SPECIFIC PRINTFLOW PROTOCOL</label>
+                <select id="plan-selector" class="protocol-select">
+                    <option value="monthly" data-title="Monthly Shield // IP & Leak Deletion" data-usd="49.99">SHIELD AP — Monthly IP &amp; Leak Deletion ($49.99/mo)</option>
+                    <option value="yearly" data-title="Annual Shield // Full Year Protection" data-usd="399.00">SHIELD AP — Annual IP &amp; Leak Deletion ($399/yr)</option>
+                    <option value="status_shield" data-title="SHIELD Protocol // Status Shield" data-usd="139.00">SHIELD Protocol — Status Shield ($139)</option>
+                    <option value="irl_ghost" data-title="SHIELD Protocol // IRL Ghost (1hr Deposit)" data-usd="1400.00">SHIELD Protocol — IRL Ghost ($1,400+)</option>
+                    <option value="ghost_protocol" data-title="SHIELD Protocol // Ghost Protocol" data-usd="3500.00">SHIELD Protocol — Ghost Protocol ($3,500+)</option>
+                    <option value="status_tag" data-title="AURA Protocol // Status Tag" data-usd="169.00">AURA Protocol — Status Tag ($169)</option>
+                    <option value="irl_status" data-title="AURA Protocol // IRL Status (1hr Deposit)" data-usd="1700.00">AURA Protocol — IRL Status ($1,700+)</option>
+                    <option value="aura_protocol" data-title="AURA Protocol // Aura Protocol" data-usd="3700.00">AURA Protocol — Aura Protocol ($3,700+)</option>
+                </select>
+            </div>
+
+            <div class="section-label">02 // PROTECTED HANDLE &amp; DISPATCH DETAILS</div>
+            <div class="intake-grid">
+                <div class="field">
+                    <label for="creator-handle">Primary @Handle or Domain</label>
+                    <input type="text" id="creator-handle" placeholder="@username or onlyfans.com/..." autocomplete="off" required>
+                </div>
+                <div class="field">
+                    <label for="creator-email">Encrypted Receipt Email</label>
+                    <input type="email" id="creator-email" placeholder="you@domain.com" autocomplete="email" required>
+                </div>
+                <div class="field full">
+                    <label for="creator-alias">Protected Stage Name / Whitelist URLs (Optional — Legal Name Never Exposed)</label>
+                    <input type="text" id="creator-alias" placeholder="Stage alias + official links to whitelist from DMCA sweeps">
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-left">
+                    <div class="summary-plan" id="summary-plan-title">Monthly Shield // IP &amp; Leak Deletion</div>
+                    <div class="summary-note">Private corporate filing · Instant Auth Token issued on settlement</div>
+                </div>
+                <div class="summary-amount" id="summary-plan-amount">$49.99</div>
+            </div>
+
+            <div class="section-label">03 // SELECT ENCRYPTED SETTLEMENT RAIL</div>
+            <div class="rails-grid">
+                <!-- Rail 1: BTCPay Server -->
+                <button type="button" class="btn-rail btn-btcpay" id="btn-pay-btcpay">
+                    <div class="rail-top">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        </svg>
+                        <span>Pay w/ BTCPay</span>
+                    </div>
+                    <div class="rail-sub">Bitcoin On-Chain &amp; Lightning Network</div>
+                </button>
+
+                <!-- Rail 2: Wompi Gateway -->
+                <button type="button" class="btn-rail btn-wompi" id="btn-pay-wompi">
+                    <div class="rail-top">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="2" y="5" width="20" height="14" rx="2"/>
+                            <line x1="2" y1="10" x2="22" y2="10"/>
+                        </svg>
+                        <span>Pay w/ Wompi &gt;</span>
+                    </div>
+                    <div class="rail-sub">Card · Apple/Google Pay · Instant Fiat</div>
+                </button>
+            </div>
+
+            <div class="security-foot">
+                <span>ESCROW STATE: 01_PURCHASED &rarr; AUTO_DISPATCH</span>
+                <span>256-BIT ZERO-LEAK VAULT BINDING</span>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- BTCPay Invoice Modal -->
+    <div class="modal-backdrop" id="btcpay-modal" role="dialog" aria-modal="true" aria-labelledby="btcpay-modal-title">
+        <div class="modal-card">
+            <div class="modal-badge">BTCPAY SERVER // LIGHTNING &amp; ON-CHAIN</div>
+            <h3 class="modal-title" id="btcpay-modal-title">Zero-Trace BTC Invoice</h3>
+            <p class="modal-desc" id="btcpay-modal-desc">Scan with any Lightning or Bitcoin wallet, or copy the invoice payload below. Your Creator Auth Token activates on 1st confirmation.</p>
+            <div class="qr-frame" id="btcpay-qr">
+                <!-- Dynamic SVG QR representation -->
+                <svg viewBox="0 0 120 120" width="156" height="156" aria-label="BTCPay Invoice QR">
+                    <rect width="120" height="120" fill="#FFFFFF"/>
+                    <rect x="8" y="8" width="32" height="32" fill="none" stroke="#000" stroke-width="6"/>
+                    <rect x="16" y="16" width="16" height="16" fill="#000"/>
+                    <rect x="80" y="8" width="32" height="32" fill="none" stroke="#000" stroke-width="6"/>
+                    <rect x="88" y="16" width="16" height="16" fill="#000"/>
+                    <rect x="8" y="80" width="32" height="32" fill="none" stroke="#000" stroke-width="6"/>
+                    <rect x="16" y="88" width="16" height="16" fill="#000"/>
+                    <rect x="48" y="12" width="8" height="8" fill="#000"/>
+                    <rect x="60" y="20" width="8" height="16" fill="#000"/>
+                    <rect x="48" y="44" width="24" height="24" fill="#F7931A"/>
+                    <rect x="12" y="48" width="16" height="8" fill="#000"/>
+                    <rect x="32" y="56" width="8" height="16" fill="#000"/>
+                    <rect x="80" y="48" width="16" height="12" fill="#000"/>
+                    <rect x="100" y="60" width="12" height="16" fill="#000"/>
+                    <rect x="48" y="80" width="16" height="12" fill="#000"/>
+                    <rect x="72" y="76" width="16" height="20" fill="#000"/>
+                    <rect x="92" y="96" width="20" height="16" fill="#000"/>
+                    <rect x="52" y="100" width="16" height="12" fill="#000"/>
+                </svg>
+            </div>
+            <div class="invoice-box">
+                <div class="invoice-label">BTCPAY INVOICE ID &amp; LIGHTNING PAYLOAD</div>
+                <div class="invoice-val" id="btcpay-invoice-val">lnbc499900n1pshieldap...</div>
+            </div>
+            <div class="invoice-box" style="border-color: rgba(143, 216, 242, 0.45);">
+                <div class="invoice-label" style="color: var(--ice);">PRE-ASSIGNED CREATOR AUTH TOKEN</div>
+                <div class="invoice-val" id="btcpay-auth-token">SHLD-PF-...</div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-modal-primary" id="btcpay-copy-btn">Copy Invoice &amp; Token</button>
+                <button type="button" class="btn-modal-close" id="btcpay-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Matrix Code Rain Script: 70% ice blue, 30% green
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+-<>/?\\|';
+        const alphabet = katakana + latin;
+
+        const fontSize = 14;
+        const colSpacing = 24;
+        const rowSpacing = 22;
+        let columns = 0;
+        let rainDrops = [];
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            columns = Math.ceil(width / colSpacing);
+            rainDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
+
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function drawMatrix() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.font = fontSize + "px 'Share Tech Mono', monospace";
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                const x = i * colSpacing;
+                const y = rainDrops[i] * rowSpacing;
+
+                ctx.fillStyle = Math.random() < 0.3 ? '#00bf63' : '#a7e7ff';
+                ctx.fillText(text, x, y);
+
+                if (y > height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 65);
+
+        // Wompi & BTCPay Configuration
+        window.SHIELD_PAYMENT_CONFIG = {
+            wompi: {
+                publicKey: 'pub_prod_rC4cpKxUjuygcFeZ0yfhd8jZn55UtKsZ',
+                privateKey: 'prv_prod_ug8hjTVKVsWHutAig51TdvrIIWy8OS9U',
+                currency: 'COP',
+                usdToCopRate: 4200
+            },
+            btcpay: {
+                storeId: 'SHIELD-AP-MAINNET',
+                currency: 'USD'
+            }
+        };
+
+        const planSelector = document.getElementById('plan-selector');
+        const planCards = document.querySelectorAll('[data-plan-card]');
+        const summaryTitle = document.getElementById('summary-plan-title');
+        const summaryAmount = document.getElementById('summary-plan-amount');
+
+        function selectPlan(planKey) {
+            const normalized = (planKey === 'delete_monthly' || planKey === 'protect_monthly') ? 'monthly'
+                : (planKey === 'delete_yearly' || planKey === 'protect_yearly') ? 'yearly'
+                : planKey;
+
+            if (planSelector.querySelector('option[value="' + normalized + '"]')) {
+                planSelector.value = normalized;
+            }
+
+            const selectedOpt = planSelector.options[planSelector.selectedIndex];
+            const title = selectedOpt.getAttribute('data-title');
+            const usd = parseFloat(selectedOpt.getAttribute('data-usd') || '49.99');
+
+            summaryTitle.textContent = title;
+            summaryAmount.textContent = '$' + (usd % 1 === 0 ? usd.toLocaleString() : usd.toFixed(2));
+
+            planCards.forEach((card) => {
+                card.classList.toggle('is-selected', card.getAttribute('data-plan-card') === planSelector.value);
+            });
+        }
+
+        planCards.forEach((card) => {
+            card.addEventListener('click', () => {
+                selectPlan(card.getAttribute('data-plan-card'));
+            });
+        });
+
+        planSelector.addEventListener('change', () => {
+            selectPlan(planSelector.value);
+        });
+
+        // Auto-select plan from URL query string (?plan=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('plan')) {
+            selectPlan(urlParams.get('plan'));
+        }
+
+        function generateAuthToken(source) {
+            const bytes = new Uint8Array(16);
+            if (window.crypto && window.crypto.getRandomValues) {
+                window.crypto.getRandomValues(bytes);
+            } else {
+                for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
+            }
+            const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+            const token = 'SHLD-PF-' + hex.slice(0, 8) + '-' + hex.slice(8, 16) + '-' + hex.slice(16, 24);
+            try {
+                localStorage.setItem('shield_auth_token', token);
+                localStorage.setItem('shield_auth_source', source || 'payments');
+                localStorage.setItem('shield_auth_ts', String(Date.now()));
+                document.cookie = 'shield_auth_token=' + token + '; path=/; max-age=31536000; SameSite=Lax';
+            } catch (_) {}
+            return token;
+        }
+
+        function getIntakeData() {
+            const selectedOpt = planSelector.options[planSelector.selectedIndex];
+            const usd = parseFloat(selectedOpt.getAttribute('data-usd') || '49.99');
+            const handle = document.getElementById('creator-handle').value.trim();
+            const email = document.getElementById('creator-email').value.trim();
+            const alias = document.getElementById('creator-alias').value.trim();
+            const ref = 'SHLD-' + planSelector.value.toUpperCase() + '-' + Date.now();
+            return {
+                plan: planSelector.value,
+                title: selectedOpt.getAttribute('data-title'),
+                usd,
+                handle,
+                email,
+                alias,
+                reference: ref
+            };
+        }
+
+        // Rail 1: BTCPay Server Checkout Handler
+        const btcpayModal = document.getElementById('btcpay-modal');
+        const btcpayInvoiceVal = document.getElementById('btcpay-invoice-val');
+        const btcpayAuthToken = document.getElementById('btcpay-auth-token');
+        const btcpayDesc = document.getElementById('btcpay-modal-desc');
+        const btcpayCopyBtn = document.getElementById('btcpay-copy-btn');
+        const btcpayCloseBtn = document.getElementById('btcpay-close-btn');
+
+        document.getElementById('btn-pay-btcpay').addEventListener('click', () => {
+            const data = getIntakeData();
+            const token = generateAuthToken('btcpay_' + data.plan);
+            const invoiceId = 'BTCPAY-' + data.reference + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+            btcpayDesc.textContent = data.title + ' ($' + data.usd.toFixed(2) + ' USD) — Scan or copy the BTCPay invoice below. Your Creator Auth Token activates on 1st confirmation.';
+            btcpayInvoiceVal.textContent = invoiceId + ' // bitcoin:?amount=' + (data.usd / 68000).toFixed(6) + '&label=SHIELD_AP';
+            btcpayAuthToken.textContent = token;
+            btcpayModal.classList.add('is-open');
+        });
+
+        btcpayCopyBtn.addEventListener('click', () => {
+            const payload = 'Invoice: ' + btcpayInvoiceVal.textContent + '\nAuth Token: ' + btcpayAuthToken.textContent;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(payload).catch(() => {});
+            }
+            btcpayCopyBtn.textContent = 'Invoice & Token Copied';
+            setTimeout(() => {
+                btcpayCopyBtn.textContent = 'Copy Invoice & Token';
+            }, 2000);
+        });
+
+        btcpayCloseBtn.addEventListener('click', () => {
+            btcpayModal.classList.remove('is-open');
+        });
+
+        btcpayModal.addEventListener('click', (e) => {
+            if (e.target === btcpayModal) {
+                btcpayModal.classList.remove('is-open');
+            }
+        });
+
+        // Rail 2: Wompi Official Checkout Handler
+        document.getElementById('btn-pay-wompi').addEventListener('click', () => {
+            const data = getIntakeData();
+            generateAuthToken('wompi_' + data.plan);
+
+            const cfg = window.SHIELD_PAYMENT_CONFIG.wompi;
+            // Wompi expects amount in cents in COP
+            const amountInCents = Math.round(data.usd * cfg.usdToCopRate * 100);
+
+            if (typeof window.WidgetCheckout === 'function') {
+                const checkout = new window.WidgetCheckout({
+                    currency: cfg.currency,
+                    amountInCents: amountInCents,
+                    reference: data.reference,
+                    publicKey: cfg.publicKey,
+                    redirectUrl: window.location.origin + '/index.html?status=purchased&ref=' + encodeURIComponent(data.reference),
+                    customerData: {
+                        email: data.email || 'vault@shield-agents.store',
+                        fullName: data.handle || data.alias || 'SHIELD Operative'
+                    }
+                });
+                checkout.open(function (result) {
+                    if (result && result.transaction && result.transaction.status === 'APPROVED') {
+                        window.location.href = 'index.html?status=purchased&tx=' + encodeURIComponent(result.transaction.id);
+                    }
+                });
+            } else {
+                // Fallback to Wompi Hosted Web Checkout URL
+                const params = new URLSearchParams({
+                    'public-key': cfg.publicKey,
+                    'currency': cfg.currency,
+                    'amount-in-cents': String(amountInCents),
+                    'reference': data.reference,
+                    'redirect-url': window.location.origin + '/index.html?status=purchased&ref=' + data.reference
+                });
+                window.location.href = 'https://checkout.wompi.co/p/?' + params.toString();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -36,6 +36,8 @@
             /* Kept intact for the shield icon inside the delete button & offers */
             --shield-green: #00bf63;
             --shield-green-rgb: 0, 191, 99;
+            --aura-pastel: #F4B8E4;
+            --aura-pastel-rgb: 244, 184, 228;
         }
 
         * {
@@ -531,10 +533,10 @@
         }
 
         /* =====================================================================
-           PRINTFLOW SEGMENT
+           PRINTFLOW SEGMENT (AURA PASTEL COLORWAY FOR FEMALE CREATORS)
            ===================================================================== */
 
-        /* PRINT section: ice and green glow at about 33% strength behind the content */
+        /* PRINT section: pastel rose-lilac and ice glow behind the content */
         .print {
             position: relative;
             isolation: isolate;
@@ -549,7 +551,7 @@
             content: '';
             position: absolute;
             inset: -60px -40px;
-            background: radial-gradient(ellipse at center, rgba(0, 191, 99, 0.33) 0%, rgba(167, 231, 255, 0.2) 35%, transparent 70%);
+            background: radial-gradient(ellipse at center, rgba(var(--aura-pastel-rgb), 0.30) 0%, rgba(167, 231, 255, 0.16) 40%, transparent 70%);
             z-index: -1;
             pointer-events: none;
         }
@@ -559,12 +561,12 @@
             font-weight: 900;
             line-height: 1.15;
             margin-bottom: 28px;
-            background: linear-gradient(90deg, #C0C0C0, #FFFFFF);
+            background: linear-gradient(90deg, #FFFFFF, var(--aura-pastel), #FFFFFF);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             color: transparent;
-            filter: drop-shadow(0 0 14px rgba(167, 231, 255, 0.7));
+            filter: drop-shadow(0 0 14px rgba(var(--aura-pastel-rgb), 0.65));
         }
 
         .offers {
@@ -579,18 +581,19 @@
         .offer {
             display: block;
             padding: 18px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(167, 231, 255, 0.35);
+            background: linear-gradient(145deg, rgba(var(--aura-pastel-rgb), 0.11), rgba(0, 0, 0, 0.88));
+            border: 1px solid rgba(var(--aura-pastel-rgb), 0.35);
             border-radius: 10px;
             text-align: left;
             color: #FFFFFF;
             text-decoration: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .offer:hover {
-            border-color: var(--shield-green);
-            box-shadow: 0 0 18px rgba(0, 191, 99, 0.35);
+            transform: translateY(-4px);
+            border-color: var(--aura-pastel);
+            box-shadow: 0 0 26px rgba(var(--aura-pastel-rgb), 0.45), inset 0 0 14px rgba(var(--aura-pastel-rgb), 0.14);
         }
 
         .offer-name {
@@ -602,7 +605,8 @@
         .offer-price {
             font-size: 22px;
             font-weight: 800;
-            color: var(--ice-blue);
+            color: var(--aura-pastel);
+            text-shadow: 0 0 10px rgba(var(--aura-pastel-rgb), 0.55);
             margin-bottom: 8px;
         }
 
@@ -939,7 +943,7 @@
             <!-- Card A: Delete Leaks -->
             <div class="card">
                 <h3>Delete My Leaked Content</h3>
-                <div class="card-price">$49.99/month <span style="font-size:0.85rem;font-weight:400;color:#9a9a9a;">or <a href="/payments">$399/year</a></span></div>
+                <div class="card-price">$49.99/month <span style="font-size:0.85rem;font-weight:400;color:#9a9a9a;">or <a href="payments.html?plan=delete_yearly">$399/year</a></span></div>
                 <ul class="card-list">
                     <li>30-minute scan + instant DMCA</li>
                     <li>Telegram, Reddit, EroMe & tubes</li>
@@ -947,7 +951,7 @@
                     <li>Unlimited private takedowns</li>
                 </ul>
                 <div class="card-foot">
-                    <button type="button" class="btn-delete" onclick="window.location.href='/payments'">
+                    <button type="button" class="btn-delete" onclick="window.location.href='payments.html?plan=delete_monthly'">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                             <rect x="9" y="11" width="6" height="5" rx="1" fill="currentColor"/>
@@ -973,19 +977,19 @@
             <h2 class="print-title">Leaks Deleted? Now Print.</h2>
 
             <div class="offers">
-                <a class="offer" href="/payments?plan=status_tag">
+                <a class="offer" href="payments.html?plan=status_tag">
                     <div class="offer-name">Status Tag</div>
                     <div class="offer-price">$169</div>
                     <div class="offer-desc">AI photo with you, sell PPV</div>
                 </a>
-                <a class="offer" href="/payments?plan=irl_status">
+                <a class="offer" href="payments.html?plan=irl_status">
                     <div class="offer-name">IRL Status</div>
                     <div class="offer-price">$1.7k+</div>
                     <div class="offer-desc">IRL perception shift</div>
                 </a>
-                <a class="offer" href="/payments?plan=aura_protocol">
+                <a class="offer" href="payments.html?plan=aura_protocol">
                     <div class="offer-name">Aura Protocol</div>
-                    <div class="offer-price">$3.6k+</div>
+                    <div class="offer-price">$3.7k+</div>
                     <div class="offer-desc">Full ghost team</div>
                 </a>
             </div>

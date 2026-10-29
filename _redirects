@@ -8,3 +8,8 @@
 /PrintFlow                    /pflow  302
 /printflow                    /pflow  302
 /protocols                    /pflow  302
+
+# Payments aliases -> /payments
+/Pay                          /payments  302
+/pay                          /payments  302
+/checkout                     /payments  302

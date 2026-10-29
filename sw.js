@@ -1,10 +1,11 @@
-const CACHE_NAME = 'shield-v2';
+const CACHE_NAME = 'shield-v3';
 const ASSETS = [
   '/',
   '/index.html',
   '/protect.html',
   '/leaks.html',
   '/pflow.html',
+  '/payments.html',
   '/manifest.json',
   '/camera.js'
 ];
