@@ -2,3 +2,9 @@
 /delete                       /leaks  302
 /delete-my-leaked-content     /leaks  302
 /delete-my-leakedContent      /leaks  302
+
+# PrintFlow aliases -> /pflow
+/Pflow                        /pflow  302
+/PrintFlow                    /pflow  302
+/printflow                    /pflow  302
+/protocols                    /pflow  302

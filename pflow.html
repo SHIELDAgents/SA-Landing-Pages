@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrintFlow // SHIELD &amp; AURA Protocols</title>
+    <meta name="description" content="Creator PrintFlow: How SHIELD Agents (male creators) and AURA Agents (female creators) print cash, monetize their audience, and deploy Peace, Status, and Aura protocols.">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SHIELD AP">
+    <!-- Cyber & Monospace Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Cyber blues & ice */
+            --blue: #008ad6;
+            --blue-deep: #0066bb;
+            --blue-bright: #2f86d6;
+            --blue-rgb: 0, 138, 214;
+            --ice: #8fd8f2;
+            --ice-rgb: 143, 216, 242;
+            --ice-blue: #a7e7ff;
+            --silver: #C0C0C0;
+            --text: #F0F0F0;
+
+            /* SHIELD green & AURA ice/platinum accents */
+            --shield-green: #00bf63;
+            --shield-green-rgb: 0, 191, 99;
+            --warn-yellow: #FFC400;
+            --warn-yellow-rgb: 255, 196, 0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+            background-color: #000000 !important;
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Matrix digital rain background canvas */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        /* Cyber scanlines overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
+            background-size: 100% 3px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .topbar {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 22px 24px 0;
+            text-align: left;
+        }
+
+        .back-link {
+            color: var(--ice-blue);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(167, 231, 255, 0.5);
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #FFFFFF;
+        }
+
+        .page {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 16px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* ---------- HEADER: CENTERED AP WITH METALLIC LUXURY SHINE ---------- */
+        header {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .title-ap {
+            font-size: clamp(3.8rem, 10vw, 6.2rem);
+            font-weight: 900;
+            letter-spacing: 6px;
+            line-height: 1;
+            display: inline-block;
+            background: linear-gradient(135deg, 
+                #8E9BA8 0%, 
+                #FFFFFF 18%, 
+                #5D6C7C 36%, 
+                #E8EFF5 52%, 
+                #505F6E 68%, 
+                #FFFFFF 84%, 
+                #8E9BA8 100%
+            );
+            background-size: 240% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            filter: drop-shadow(0 0 18px rgba(var(--ice-rgb), 0.85)) drop-shadow(0 0 42px rgba(var(--ice-rgb), 0.45));
+            animation: luxuryMetallicShine 3.4s linear infinite;
+        }
+
+        @keyframes luxuryMetallicShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 240% center; }
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--blue);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 22px;
+            text-shadow: 0 0 10px rgba(var(--blue-rgb), 0.6);
+            opacity: 0.45;
+            filter: url(#rough-text);
+        }
+
+        .tagline-block {
+            font-size: 17px;
+            line-height: 1.55;
+            color: var(--text);
+            max-width: 720px;
+            margin: 0 auto;
+            font-weight: 500;
+            text-shadow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(var(--ice-rgb), 0.2);
+        }
+
+        .tagline-polarity {
+            margin-top: 12px;
+            font-size: 15px;
+            color: var(--ice-blue);
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(167, 231, 255, 0.4);
+        }
+
+        /* ---------- HERO HEADLINE ---------- */
+        .hero-headline {
+            margin-top: 42px;
+            font-size: clamp(1.9rem, 4.6vw, 3rem);
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: 3px;
+            color: #FFFFFF;
+            text-shadow: 0 0 14px rgba(var(--ice-rgb), 0.45);
+        }
+
+        .hero-headline .line2 {
+            display: block;
+            margin-top: 4px;
+            background: linear-gradient(90deg, #C0C0C0, #FFFFFF, #8fd8f2, #C0C0C0);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(var(--ice-rgb), 0.45));
+            animation: luxuryMetallicShine 4s linear infinite;
+        }
+
+        /* Slightly bigger $ standing in for S */
+        .big-dollar {
+            display: inline-block;
+            font-size: 1.28em;
+            font-weight: 900;
+            line-height: 1;
+            vertical-align: -0.05em;
+            margin-right: 1px;
+        }
+
+        .hero-headline .big-dollar {
+            font-size: 1.38em;
+            vertical-align: -0.08em;
+            background: linear-gradient(110deg, #8c8c8c 0%, #e8e8e8 25%, #ffffff 35%, #a9a9a9 50%, #f2f2f2 65%, #ffffff 72%, #9a9a9a 100%);
+            background-size: 250% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 10px rgba(var(--ice-rgb), 0.6));
+        }
+
+        /* ---------- DIVISION SECTIONS: SHIELD AGENTS & AURA AGENTS ---------- */
+        .division {
+            width: 100%;
+            margin-top: 56px;
+            padding: 32px 24px;
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            position: relative;
+        }
+
+        .division-shield {
+            border: 1px solid rgba(var(--shield-green-rgb), 0.4);
+            box-shadow: 0 0 28px rgba(var(--shield-green-rgb), 0.14), inset 0 0 18px rgba(var(--shield-green-rgb), 0.05);
+        }
+
+        .division-aura {
+            border: 1px solid rgba(var(--ice-rgb), 0.45);
+            box-shadow: 0 0 28px rgba(var(--ice-rgb), 0.18), inset 0 0 18px rgba(var(--ice-rgb), 0.06);
+        }
+
+        .division-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .division-shield .division-badge {
+            color: var(--shield-green);
+            background: rgba(var(--shield-green-rgb), 0.12);
+            border: 1px solid rgba(var(--shield-green-rgb), 0.4);
+            text-shadow: 0 0 8px rgba(var(--shield-green-rgb), 0.5);
+        }
+
+        .division-aura .division-badge {
+            color: var(--ice-blue);
+            background: rgba(var(--ice-rgb), 0.12);
+            border: 1px solid rgba(var(--ice-rgb), 0.4);
+            text-shadow: 0 0 8px rgba(var(--ice-rgb), 0.5);
+        }
+
+        .division-title {
+            font-size: clamp(1.5rem, 3.6vw, 2.2rem);
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+        }
+
+        .division-sub {
+            font-size: 0.95rem;
+            color: #C4CDD5;
+            max-width: 660px;
+            margin: 0 auto 28px;
+            line-height: 1.5;
+        }
+
+        /* 3 Protocol Cards Grid */
+        .protocol-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            width: 100%;
+        }
+
+        .protocol-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 22px 18px;
+            background: linear-gradient(145deg, rgba(16, 24, 36, 0.78), rgba(0, 0, 0, 0.9));
+            border-radius: 10px;
+            text-align: left;
+            color: #FFFFFF;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .division-shield .protocol-card {
+            border: 1px solid rgba(var(--shield-green-rgb), 0.32);
+        }
+
+        .division-shield .protocol-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--shield-green);
+            box-shadow: 0 0 24px rgba(var(--shield-green-rgb), 0.35);
+        }
+
+        .division-aura .protocol-card {
+            border: 1px solid rgba(var(--ice-rgb), 0.35);
+        }
+
+        .division-aura .protocol-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--ice-blue);
+            box-shadow: 0 0 24px rgba(var(--ice-rgb), 0.45);
+        }
+
+        .protocol-name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .protocol-price {
+            font-size: 1.65rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .division-shield .protocol-price {
+            color: var(--shield-green);
+            text-shadow: 0 0 10px rgba(var(--shield-green-rgb), 0.45);
+        }
+
+        .division-aura .protocol-price {
+            color: var(--ice-blue);
+            text-shadow: 0 0 10px rgba(var(--ice-rgb), 0.5);
+        }
+
+        .protocol-desc {
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: #B0B8C0;
+            margin-bottom: 16px;
+        }
+
+        .protocol-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #FFFFFF;
+        }
+
+        /* ---------- CREATOR PRINTFLOW Mechanics (HOW AGENTS PRINT) ---------- */
+        .mechanics {
+            width: 100%;
+            max-width: 760px;
+            margin-top: 56px;
+            padding: 28px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(var(--blue-rgb), 0.14), rgba(0, 0, 0, 0.75));
+            border: 1px solid rgba(var(--blue-rgb), 0.38);
+            box-shadow: 0 0 22px rgba(var(--blue-rgb), 0.22);
+            text-align: left;
+        }
+
+        .mechanics-title {
+            font-size: 1.15rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+
+        .mechanics-list {
+            list-style: none;
+            color: #C8D0D8;
+            font-size: 0.92rem;
+            line-height: 1.75;
+        }
+
+        .mechanics-list li::before {
+            content: '> ';
+            color: var(--ice-blue);
+            font-weight: 900;
+        }
+
+        /* ---------- FINAL CTA SECTION ---------- */
+        .print-actions {
+            margin-top: 52px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .btn-print {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            width: 480px;
+            max-width: 100%;
+            height: 88px;
+            background: linear-gradient(90deg, #C0C0C0, #a7e7ff);
+            border: 3px solid var(--ice-blue);
+            border-radius: 12px;
+            color: #000000;
+            font: inherit;
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 0 28px rgba(167, 231, 255, 0.7);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(167, 231, 255, 0.95);
+        }
+
+        .btn-print svg {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+
+        .btn-license-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 340px;
+            max-width: 100%;
+            height: 58px;
+            border: 2px solid var(--shield-green);
+            border-radius: 10px;
+            background: rgba(var(--shield-green-rgb), 0.1);
+            color: #FFFFFF;
+            font: inherit;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 0 18px rgba(var(--shield-green-rgb), 0.35);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .btn-license-secondary:hover {
+            background: rgba(var(--shield-green-rgb), 0.22);
+            transform: translateY(-2px);
+            box-shadow: 0 0 28px rgba(var(--shield-green-rgb), 0.7);
+        }
+
+        /* ---------- PWA HOME SCREEN + AUTH TOKEN MODAL ---------- */
+        .pwa-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .pwa-modal-backdrop.is-open {
+            display: flex;
+        }
+
+        .pwa-modal {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(6, 12, 20, 0.98);
+            border: 2px solid var(--ice);
+            border-radius: 14px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(var(--ice-rgb), 0.45), 0 16px 48px rgba(0, 0, 0, 0.95);
+        }
+
+        .pwa-modal-badge {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--shield-green);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .pwa-modal-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .pwa-modal-desc {
+            font-size: 0.9rem;
+            color: #C0C8D0;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .pwa-token-box {
+            background: #000000;
+            border: 1px solid rgba(var(--ice-rgb), 0.45);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .pwa-token-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ice);
+            margin-bottom: 4px;
+        }
+
+        .pwa-token-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #FFFFFF;
+            word-break: break-all;
+            font-weight: 700;
+        }
+
+        .pwa-steps {
+            font-size: 0.85rem;
+            color: #B0B8C0;
+            text-align: left;
+            background: rgba(var(--blue-rgb), 0.1);
+            border-left: 2px solid var(--ice);
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            line-height: 1.55;
+        }
+
+        .pwa-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-pwa-action {
+            flex: 1;
+            height: 48px;
+            border-radius: 8px;
+            border: 1px solid var(--ice);
+            background: linear-gradient(90deg, var(--silver), var(--ice));
+            color: #000000;
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .btn-pwa-close {
+            height: 48px;
+            padding: 0 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: transparent;
+            color: #B8B8B8;
+            font: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 760px) {
+            .protocol-grid {
+                grid-template-columns: 1fr;
+            }
+            .division {
+                padding: 24px 16px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .btn-print {
+                height: 72px;
+                font-size: 17px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hidden SVG filter: rough edges for the subtitle -->
+    <svg width="0" height="0" style="position: absolute;" aria-hidden="true">
+        <filter id="rough-text" x="-5%" y="-30%" width="110%" height="160%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="7" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+            <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="3" result="grain"/>
+            <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3 2.2" result="specks"/>
+            <feComposite in="rough" in2="specks" operator="in"/>
+        </filter>
+    </svg>
+
+    <div class="scanlines"></div>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="topbar">
+        <a class="back-link" href="/">&larr; Back to SHIELD AP</a>
+    </div>
+
+    <main class="page">
+
+        <!-- HEADER: CENTERED AP WITH METALLIC LUXURY SHINE -->
+        <header>
+            <h1 class="title-ap">AP</h1>
+            <div class="subtitle">Creator PrintFlow // Protocol Network</div>
+            <div class="tagline-block">
+                <p>Monetize your audience, command high-status rooms, and turn digital &amp; IRL presence into instant escrow payouts.</p>
+                <p class="tagline-polarity">SHIELD Agents deliver Peace &amp; Sovereign Presence. AURA Agents deliver Status &amp; High-Frequency Aura &mdash; or flip the polarity on demand.</p>
+            </div>
+        </header>
+
+        <!-- HERO HEADLINE -->
+        <section>
+            <h1 class="hero-headline">
+                Print ca<span class="big-dollar">$</span>h
+                <span class="line2">w/ PROTOCOLS</span>
+            </h1>
+        </section>
+
+        <!-- DIVISION 1: SHIELD AGENTS (MALE CREATORS) -->
+        <section class="division division-shield" aria-labelledby="shield-division-heading">
+            <div class="division-badge">SHIELD DIVISION // MALE CREATORS</div>
+            <h2 class="division-title" id="shield-division-heading">SHIELD Agent Protocols</h2>
+            <p class="division-sub">Engineered for male creators and operators. Monetize your following by deploying Peace, ironclad co-signs, and unshakeable IRL presence at events, venues, and private table ops.</p>
+
+            <div class="protocol-grid">
+                <a class="protocol-card" href="/payments?plan=status_shield">
+                    <div>
+                        <div class="protocol-name">Status Shield</div>
+                        <div class="protocol-price">$139</div>
+                        <div class="protocol-desc">AI-synthesized co-sign asset + verified SHIELD Agent comment drop. Instant authority, digital peace, and high-margin feed monetization.</div>
+                    </div>
+                    <div class="protocol-cta">
+                        <span>Deploy Protocol</span>
+                        <span>&gt;</span>
+                    </div>
+                </a>
+
+                <a class="protocol-card" href="/payments?plan=irl_ghost">
+                    <div>
+                        <div class="protocol-name">IRL Ghost</div>
+                        <div class="protocol-price">$1.4k+</div>
+                        <div class="protocol-desc">1-hour live SHIELD Agent deployment at venues, events, or celebrations. Unspoken perimeter peace and immediate IRL perception shift.</div>
+                    </div>
+                    <div class="protocol-cta">
+                        <span>Deploy Protocol</span>
+                        <span>&gt;</span>
+                    </div>
+                </a>
+
+                <a class="protocol-card" href="/payments?plan=ghost_protocol">
+                    <div>
+                        <div class="protocol-name">Ghost Protocol</div>
+                        <div class="protocol-price">$3.5k+</div>
+                        <div class="protocol-desc">Full ghost team deployment. Multi-agent tactical entourage, coordinated arrival, and total room command for flagship nights.</div>
+                    </div>
+                    <div class="protocol-cta">
+                        <span>Deploy Protocol</span>
+                        <span>&gt;</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- DIVISION 2: AURA AGENTS (FEMALE CREATORS) -->
+        <section class="division division-aura" aria-labelledby="aura-division-heading">
+            <div class="division-badge">AURA DIVISION // FEMALE CREATORS</div>
+            <h2 class="division-title" id="aura-division-heading">AURA Agent Protocols</h2>
+            <p class="division-sub">Built for female creators to print cash from their audience and deliver high-voltage Status &amp; Aura across social feeds, VIP venues, red carpets, and celebrations.</p>
+
+            <div class="protocol-grid">
+                <a class="protocol-card" href="/payments?plan=status_tag">
+                    <div>
+                        <div class="protocol-name">Status Tag</div>
+                        <div class="protocol-price">$169</div>
+                        <div class="protocol-desc">AI photo synthesis with you + verified AURA Agent comment/tag. High-converting PPV asset and instant social proof elevation.</div>
+                    </div>
+                    <div class="protocol-cta">
+                        <span>Deploy Protocol</span>
+                        <span>&gt;</span>
+                    </div>
+                </a>
+
+                <a class="protocol-card" href="/payments?plan=irl_status">
+                    <div>
+                        <div class="protocol-name">IRL Status</div>
+                        <div class="protocol-price">$1.7k+</div>
+                        <div class="protocol-desc">1-hour live AURA Agent appearance at events, VIP tables, or celebrations. Undeniable social gravity and room-shifting status.</div>
+                    </div>
+                    <div class="protocol-cta">
+                        <span>Deploy Protocol</span>
+                        <span>&gt;</span>
+                    </div>
+                </a>
+
+                <a class="protocol-card" href="/payments?plan=aura_protocol">
+                    <div>
+                        <div class="protocol-name">Aura Protocol</div>
+                        <div class="protocol-price">$3.7k+</div>
+                        <div class="protocol-desc">Full AURA ghost team deployment for premieres, venues, and private celebrations. Maximum status velocity, content capture, and aura dominance.</div>
+                    </div>
+                    <div class="protocol-cta">
+                        <span>Deploy Protocol</span>
+                        <span>&gt;</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- HOW PRINTFLOW WORKS -->
+        <section class="mechanics">
+            <h3 class="mechanics-title">How Creator PrintFlow Releases Payouts</h3>
+            <ul class="mechanics-list">
+                <li><strong>Dual-Polarity Execution:</strong> SHIELD Agents anchor Peace &amp; Sovereign Authority; AURA Agents project Status &amp; Social Gravity &mdash; or invert roles to match any client brief.</li>
+                <li><strong>Zero-Leak Ephemeral Pipeline:</strong> Reference packs and AI-synthesized assets process in encrypted storage and auto-purge upon delivery.</li>
+                <li><strong>Instant Escrow Release:</strong> Once the post and verified Agent comment ID are confirmed on-chain/platform, PrintFlow releases your payout automatically.</li>
+            </ul>
+        </section>
+
+        <!-- FINAL CTA BUTTONS (PWA + AUTH TOKEN TRIGGERS) -->
+        <section class="print-actions">
+            <button type="button" class="btn-print" data-pwa-trigger="printflow">
+                <!-- Banknote with flying bills -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="8" width="18" height="10" rx="1.5"/>
+                    <circle cx="12" cy="13" r="2.2"/>
+                    <path d="M6 4.5l4-1.5M14 3l4 1.5"/>
+                    <path d="M18.5 19.5l2 1.5M5.5 19.5L3.5 21"/>
+                </svg>
+                <span><span class="big-dollar">$</span>tart Printing NOW &gt;</span>
+            </button>
+
+            <button type="button" class="btn-license-secondary" data-pwa-trigger="license">
+                Get Creator License (FREE) &gt;
+            </button>
+        </section>
+
+    </main>
+
+    <!-- PWA Home Screen Save & Auth Token Modal -->
+    <div class="pwa-modal-backdrop" id="pwa-modal" role="dialog" aria-modal="true" aria-labelledby="pwa-modal-title">
+        <div class="pwa-modal">
+            <div class="pwa-modal-badge">AUTH TOKEN GENERATED</div>
+            <h3 class="pwa-modal-title" id="pwa-modal-title">Save Creator PrintFlow</h3>
+            <p class="pwa-modal-desc">Your encrypted Creator Auth Token is now active and bound to this device. Save SHIELD AP to your Home Screen to access your PrintFlow &amp; Vault.</p>
+            <div class="pwa-token-box">
+                <div class="pwa-token-label">ACTIVE CREATOR AUTH TOKEN</div>
+                <div class="pwa-token-value" id="pwa-token-display">GENERATING...</div>
+            </div>
+            <div class="pwa-steps" id="pwa-install-instructions">
+                Tap <strong>Add to Home Screen</strong> (in your browser Share / menu bar) to install your standalone PrintFlow app.
+            </div>
+            <div class="pwa-modal-actions">
+                <button type="button" class="btn-pwa-action" id="pwa-copy-btn">Copy Auth Token &amp; Save</button>
+                <button type="button" class="btn-pwa-close" id="pwa-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matrix Code Rain Script: 70% ice blue, 30% green -->
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+-<>/?\\|';
+        const alphabet = katakana + latin;
+
+        const fontSize = 14;
+        const colSpacing = 24;
+        const rowSpacing = 22;
+        let columns = 0;
+        let rainDrops = [];
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            columns = Math.ceil(width / colSpacing);
+            rainDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
+
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function drawMatrix() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.font = fontSize + "px 'Share Tech Mono', monospace";
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                const x = i * colSpacing;
+                const y = rainDrops[i] * rowSpacing;
+
+                ctx.fillStyle = Math.random() < 0.3 ? '#00bf63' : '#a7e7ff';
+                ctx.fillText(text, x, y);
+
+                if (y > height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 65);
+
+        // PWA Service Worker & Home Screen Save + Auth Token Generator
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function generateAuthToken(source) {
+            const bytes = new Uint8Array(16);
+            if (window.crypto && window.crypto.getRandomValues) {
+                window.crypto.getRandomValues(bytes);
+            } else {
+                for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
+            }
+            const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+            const token = 'SHLD-PF-' + hex.slice(0, 8) + '-' + hex.slice(8, 16) + '-' + hex.slice(16, 24);
+            try {
+                localStorage.setItem('shield_auth_token', token);
+                localStorage.setItem('shield_auth_source', source || 'pwa');
+                localStorage.setItem('shield_auth_ts', String(Date.now()));
+                document.cookie = 'shield_auth_token=' + token + '; path=/; max-age=31536000; SameSite=Lax';
+            } catch (_) {}
+            return token;
+        }
+
+        const pwaModal = document.getElementById('pwa-modal');
+        const pwaTokenDisplay = document.getElementById('pwa-token-display');
+        const pwaCopyBtn = document.getElementById('pwa-copy-btn');
+        const pwaCloseBtn = document.getElementById('pwa-close-btn');
+
+        async function triggerPwaInstall(source) {
+            const token = generateAuthToken(source);
+            pwaTokenDisplay.textContent = token;
+
+            if (deferredPrompt) {
+                try {
+                    deferredPrompt.prompt();
+                    await deferredPrompt.userChoice;
+                } catch (_) {}
+                deferredPrompt = null;
+            }
+
+            pwaModal.classList.add('is-open');
+        }
+
+        document.querySelectorAll('[data-pwa-trigger]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                triggerPwaInstall(btn.getAttribute('data-pwa-trigger'));
+            });
+        });
+
+        pwaCopyBtn.addEventListener('click', () => {
+            const token = pwaTokenDisplay.textContent;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(token).catch(() => {});
+            }
+            pwaCopyBtn.textContent = 'Token Copied & Saved';
+            setTimeout(() => {
+                pwaCopyBtn.textContent = 'Copy Auth Token & Save';
+            }, 2000);
+        });
+
+        pwaCloseBtn.addEventListener('click', () => {
+            pwaModal.classList.remove('is-open');
+        });
+
+        pwaModal.addEventListener('click', (e) => {
+            if (e.target === pwaModal) {
+                pwaModal.classList.remove('is-open');
+            }
+        });
+    </script>
+</body>
+</html>
