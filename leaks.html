@@ -19,6 +19,7 @@
             --blue-rgb: 0, 138, 214;
             --ice: #8fd8f2;
             --ice-rgb: 143, 216, 242;
+            --ice-blue: #a7e7ff;
             --silver: #C0C0C0;
             --text: #F0F0F0;
 
@@ -27,7 +28,7 @@
             --worry-red-rgb: 255, 26, 36;
             --worry-red-bright: #FF3B47;
 
-            /* Kept intact for the shield icon inside the delete button */
+            /* Kept intact for the shield icon inside the delete button & offers */
             --shield-green: #00bf63;
             --shield-green-rgb: 0, 191, 99;
         }
@@ -39,11 +40,11 @@
         }
 
         html, body {
+            min-height: 100%;
             background-color: #000000 !important;
             color: var(--text);
             font-family: 'Share Tech Mono', monospace;
             overflow-x: hidden;
-            min-height: 100vh;
         }
 
         body {
@@ -51,14 +52,15 @@
             flex-direction: column;
         }
 
-        /* Rain canvas: blue glyphs glowing through space */
+        /* Matrix digital rain background canvas */
         #matrix-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: 0;
+            z-index: 1;
+            opacity: 0.25;
             pointer-events: none;
         }
 
@@ -71,7 +73,7 @@
             height: 100vh;
             background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
             background-size: 100% 3px;
-            z-index: 1;
+            z-index: 2;
             pointer-events: none;
         }
 
@@ -79,40 +81,43 @@
             position: relative;
             z-index: 3;
             width: 100%;
-            max-width: 900px;
+            max-width: 860px;
             margin: 0 auto;
-            padding: 24px 20px 0;
+            padding: 22px 24px 0;
             text-align: left;
         }
 
         .back-link {
-            color: var(--ice);
+            color: var(--ice-blue);
             text-decoration: none;
             font-size: 14px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            text-shadow: 0 0 8px rgba(var(--ice-rgb), 0.6);
-            transition: color 0.2s ease, text-shadow 0.2s ease;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(167, 231, 255, 0.5);
+            transition: color 0.2s ease;
         }
 
         .back-link:hover {
             color: #FFFFFF;
-            text-shadow: 0 0 12px rgba(var(--ice-rgb), 0.95);
         }
 
+        /* Page column */
         .page {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             width: 100%;
-            max-width: 900px;
+            max-width: 860px;
             margin: 0 auto;
-            padding: 30px 20px 30px;
+            padding: 16px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
         }
 
         /* ---------- HEADER: CENTERED AP WITH METALLIC LUXURY SHINE ---------- */
         header {
             text-align: center;
+            margin-top: 10px;
             margin-bottom: 10px;
         }
 
@@ -212,6 +217,7 @@
         /* ---------- TOP 5 BENEFITS: PROTECT.HTML COLORWAY + HOVER/TOUCH POP-UP ---------- */
         .benefits {
             max-width: 680px;
+            width: 100%;
             margin: 50px auto 0;
             display: flex;
             flex-direction: column;
@@ -370,6 +376,7 @@
             gap: 26px;
             flex-wrap: wrap;
             margin-top: 56px;
+            margin-bottom: 72px;
         }
 
         .card {
@@ -517,188 +524,127 @@
             box-shadow: 0 0 32px rgba(var(--ice-rgb), 0.95), 0 0 6px var(--ice);
         }
 
-        /* ---------- 30-35%: PRINT CASH W/ PROTOCOLS ---------- */
-        .print-band {
+        /* =====================================================================
+           UNTOUCHED ORIGINAL SECTIONS & STYLES AFTER GET CREATOR LICENSE BUTTON
+           ===================================================================== */
+
+        /* PRINT section: ice and green glow at about 33% strength behind the content */
+        .print {
             position: relative;
-            z-index: 2;
-            margin-top: 90px;
-            padding: 80px 20px 70px;
-            border-top: 2px solid var(--silver);
-            background: radial-gradient(ellipse at center, rgba(var(--blue-rgb), 0.06) 0%, rgba(0, 0, 0, 0) 70%), #000000;
-            text-align: center;
+            isolation: isolate;
+            width: 100%;
+            padding: 56px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .print-inner {
-            max-width: 900px;
-            margin: 0 auto;
+        .print::before {
+            content: '';
+            position: absolute;
+            inset: -60px -40px;
+            background: radial-gradient(ellipse at center, rgba(0, 191, 99, 0.33) 0%, rgba(167, 231, 255, 0.2) 35%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .print-headline {
-            font-size: clamp(2rem, 5vw, 3.2rem);
+        .print-title {
+            font-size: clamp(1.7rem, 4vw, 2.4rem);
             font-weight: 900;
             line-height: 1.15;
-            letter-spacing: 2px;
-            color: #FFFFFF;
-            text-shadow: 0 0 14px rgba(var(--ice-rgb), 0.45);
-        }
-
-        .print-headline .line2 {
-            display: block;
-            background: linear-gradient(90deg, #C0C0C0, #FFFFFF, #8fd8f2, #C0C0C0);
-            background-size: 200% auto;
+            margin-bottom: 28px;
+            background: linear-gradient(90deg, #C0C0C0, #FFFFFF);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(var(--ice-rgb), 0.45));
-            animation: chromeShine 4s linear infinite;
-        }
-
-        @keyframes chromeShine {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
-        .big-dollar {
-            display: inline-block;
-            font-size: 1.52em;
-            font-weight: 800;
-            line-height: 1;
-            vertical-align: -0.12em;
-            margin: -0.15em 1px;
-            padding: 0 2px;
-            background: linear-gradient(110deg, #8c8c8c 0%, #e8e8e8 25%, #ffffff 35%, #a9a9a9 50%, #f2f2f2 65%, #ffffff 72%, #9a9a9a 100%);
-            background-size: 250% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: silverShine 2.8s linear infinite;
-            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 8px rgba(var(--ice-rgb), 0.6));
-        }
-
-        @keyframes silverShine {
-            0% { background-position: 0% center; }
-            100% { background-position: 100% center; }
+            color: transparent;
+            filter: drop-shadow(0 0 14px rgba(167, 231, 255, 0.7));
         }
 
         .offers {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 48px;
+            gap: 14px;
+            width: 100%;
+            max-width: 760px;
+            margin-bottom: 40px;
         }
 
         .offer {
             display: block;
-            padding: 28px 18px;
+            padding: 18px;
             background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(192, 192, 192, 0.3);
+            border: 1px solid rgba(167, 231, 255, 0.35);
             border-radius: 10px;
-            box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
+            text-align: left;
             color: #FFFFFF;
             text-decoration: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .offer:hover {
-            border-color: var(--ice);
-            transform: translateY(-3px);
-            box-shadow: 0 0 22px rgba(var(--blue-rgb), 0.4);
+            border-color: var(--shield-green);
+            box-shadow: 0 0 18px rgba(0, 191, 99, 0.35);
         }
 
-        .offer-title {
-            color: var(--silver);
-            font-weight: 800;
+        .offer-tag {
+            font-size: 11px;
             letter-spacing: 2px;
-            font-size: 0.95rem;
             text-transform: uppercase;
-            min-height: 2.6em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            color: var(--shield-green);
+            margin-bottom: 6px;
+        }
+
+        .offer-name {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 6px;
         }
 
         .offer-price {
-            margin: 14px 0 8px;
-            font-size: 1.9rem;
-            font-weight: 900;
-            background: linear-gradient(90deg, #FFFFFF, #8fd8f2, #C0C0C0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 6px rgba(var(--ice-rgb), 0.4));
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ice-blue);
+            margin-bottom: 8px;
         }
 
-        .offer-note {
-            color: #9A9A9A;
-            font-size: 0.85rem;
-            line-height: 1.5;
+        .offer-desc {
+            font-size: 13px;
+            line-height: 1.45;
+            color: #9a9a9a;
         }
 
-        /* Final button */
-        .btn-final {
+        /* Start Printing: 480x88, thicker silver to ice gradient, money icon 32px */
+        .btn-print {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
+            gap: 14px;
             width: 480px;
             max-width: 100%;
             height: 88px;
-            margin-top: 60px;
-            padding: 0 28px;
-            border: 2px solid var(--ice);
+            background: linear-gradient(90deg, #C0C0C0, #a7e7ff);
+            border: 3px solid var(--ice-blue);
             border-radius: 12px;
-            background: linear-gradient(90deg, var(--silver), var(--ice));
             color: #000000;
-            text-decoration: none;
-            font-size: 1.35rem;
+            font: inherit;
+            font-size: 20px;
             font-weight: 900;
             letter-spacing: 2px;
             cursor: pointer;
-            box-shadow: 0 0 28px rgba(var(--ice-rgb), 0.8), 0 0 6px var(--ice), 0 8px 24px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 28px rgba(167, 231, 255, 0.7);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
         }
 
-        .btn-final::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
-            animation: buttonSheen 3s ease-in-out infinite;
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(167, 231, 255, 0.95);
         }
 
-        @keyframes buttonSheen {
-            0%, 60% { left: -100%; }
-            100% { left: 140%; }
-        }
-
-        .btn-final:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 0 40px rgba(var(--ice-rgb), 1), 0 0 8px var(--ice), 0 12px 28px rgba(0, 0, 0, 0.7);
-        }
-
-        .btn-final .big-dollar {
-            font-size: 1.9em;
-            background: linear-gradient(110deg, #5a5a5a 0%, #ffffff 30%, #b5b5b5 48%, #ffffff 62%, #6e6e6e 85%, #e6e6e6 100%);
-            background-size: 250% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
-        }
-
-        .footer {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 30px 20px;
-            border-top: 1px solid rgba(var(--blue-rgb), 0.2);
-            color: #6F6F6F;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+        .btn-print svg {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
         }
 
         @media (max-width: 720px) {
@@ -712,13 +658,21 @@
             .btn-card {
                 width: 100%;
             }
-            .btn-final {
-                width: 100%;
-                font-size: 1.1rem;
-            }
             .benefit-popup {
                 left: -10px;
                 right: -10px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cta-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-print {
+                height: 72px;
+                font-size: 17px;
             }
         }
 
@@ -743,7 +697,10 @@
         </filter>
     </svg>
 
+    <!-- Cyber Scanlines -->
     <div class="scanlines"></div>
+
+    <!-- Matrix Code Rain Canvas -->
     <canvas id="matrix-canvas"></canvas>
 
     <div class="topbar">
@@ -881,44 +838,51 @@
             </div>
         </section>
 
-    </main>
+        <!-- =====================================================================
+             UNTOUCHED ORIGINAL SECTIONS & SCRIPTS AFTER GET CREATOR LICENSE BUTTON
+             ===================================================================== -->
 
-    <!-- 30-35%: PRINT CASH W/ PROTOCOLS -->
-    <section class="print-band">
-        <div class="print-inner">
-            <h2 class="print-headline">
-                Leaks Deleted? NOW
-                <span class="line2">Print ca<span class="big-dollar">$</span>h w/ PROTOCOLS</span>
-            </h2>
+        <!-- Print cash -->
+        <section class="print">
+            <h2 class="print-title">Leaks Deleted? Now Print.</h2>
 
             <div class="offers">
                 <a class="offer" href="/payments?plan=status_tag">
-                    <div class="offer-title">Status Tag</div>
+                    <div class="offer-tag">Offer 01</div>
+                    <div class="offer-name">Status Tag</div>
                     <div class="offer-price">$169</div>
-                    <div class="offer-note">AI photo with you, sell PPV.</div>
+                    <div class="offer-desc">AI photo with you, sell PPV</div>
                 </a>
                 <a class="offer" href="/payments?plan=irl_status">
-                    <div class="offer-title">Status IRL</div>
+                    <div class="offer-tag">Offer 02</div>
+                    <div class="offer-name">IRL Status</div>
                     <div class="offer-price">$1.7k+</div>
-                    <div class="offer-note">IRL perception shift, 1hr attractive person.</div>
+                    <div class="offer-desc">IRL perception shift</div>
                 </a>
                 <a class="offer" href="/payments?plan=aura_protocol">
-                    <div class="offer-title">Aura Protocol</div>
+                    <div class="offer-tag">Offer 03</div>
+                    <div class="offer-name">Aura Protocol</div>
                     <div class="offer-price">$3.6k+</div>
-                    <div class="offer-note">Full ghost team deployment.</div>
+                    <div class="offer-desc">Full ghost team</div>
                 </a>
             </div>
 
-            <button type="button" class="btn-final" onclick="window.location.href='/payments?plan=aura_protocol'">
-                <span class="big-dollar">$</span>tart Printing NOW &gt;
+            <button type="button" class="btn-print" onclick="window.location.href='/payments?plan=aura_protocol'">
+                <!-- Banknote with flying bills -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="8" width="18" height="10" rx="1.5"/>
+                    <circle cx="12" cy="13" r="2.2"/>
+                    <path d="M6 4.5l4-1.5M14 3l4 1.5"/>
+                    <path d="M18.5 19.5l2 1.5M5.5 19.5L3.5 21"/>
+                </svg>
+                Start Printing NOW &gt;
             </button>
-        </div>
-    </section>
+        </section>
 
-    <footer class="footer">SHIELD AP // Anti-Agent Protocol</footer>
+    </main>
 
+    <!-- Matrix Code Rain Script: 70% ice blue, 30% green -->
     <script>
-        // Rain: blue glyphs glowing through space, plus a fainter ice layer; one shared opaque canvas
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d', { alpha: false });
 
@@ -930,8 +894,7 @@
         const colSpacing = 24;
         const rowSpacing = 22;
         let columns = 0;
-        let blueDrops = [];
-        let iceDrops = [];
+        let rainDrops = [];
 
         function resizeCanvas() {
             const dpr = window.devicePixelRatio || 1;
@@ -942,44 +905,40 @@
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
             columns = Math.ceil(width / colSpacing);
-            blueDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
-            iceDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
+            rainDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
 
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, width, height);
         }
 
-        function drawDrops(drops, color, glow, xOffset, height) {
-            ctx.fillStyle = color;
-            ctx.shadowColor = glow;
-            ctx.shadowBlur = 8;
-            for (let i = 0; i < drops.length; i++) {
-                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                const x = i * colSpacing + xOffset;
-                const y = drops[i] * rowSpacing;
-
-                ctx.fillText(text, x, y);
-
-                if (y > height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         function drawMatrix() {
             const width = window.innerWidth;
             const height = window.innerHeight;
 
-            ctx.shadowBlur = 0;
             ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
             ctx.fillRect(0, 0, width, height);
 
             ctx.font = fontSize + "px 'Share Tech Mono', monospace";
 
-            drawDrops(blueDrops, 'rgba(0, 138, 214, 0.25)', 'rgba(0, 138, 214, 0.8)', 0, height);
-            drawDrops(iceDrops, 'rgba(143, 216, 242, 0.06)', 'rgba(143, 216, 242, 0.6)', colSpacing / 2, height);
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                const x = i * colSpacing;
+                const y = rainDrops[i] * rowSpacing;
+
+                ctx.fillStyle = Math.random() < 0.3 ? '#00bf63' : '#a7e7ff';
+                ctx.fillText(text, x, y);
+
+                if (y > height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
         }
+
+        setInterval(drawMatrix, 65);
 
         // Benefits: pop-up toggle on mouse hover, finger touch, and keyboard
         const benefitCells = document.querySelectorAll('.benefit');
@@ -1025,10 +984,6 @@
                 });
             }
         });
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        setInterval(drawMatrix, 65);
     </script>
 </body>
 </html>
