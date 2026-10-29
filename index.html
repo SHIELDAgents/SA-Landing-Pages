@@ -179,17 +179,17 @@
 
         /* AP Title - Chrome plated, brighter specular sweep and stronger ice-blue glow */
         .title-ap {
-            font-size: clamp(3.2rem, 8vw, 5.2rem);
+            font-size: clamp(3.8rem, 10vw, 6.2rem);
             font-weight: 900;
             letter-spacing: 4px;
             line-height: 1;
-            background: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 30%, #8A96A0 50%, #FFFFFF 70%, #E0E0E0 100%);
-            background-size: 200% auto;
+            background: linear-gradient(110deg, #6b7780 0%, #E0E0E0 18%, #FFFFFF 30%, #8A96A0 42%, #FFFFFF 52%, #5c6670 66%, #D8D8D8 80%, #FFFFFF 90%, #6b7780 100%);
+            background-size: 300% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: inline-block;
             filter: drop-shadow(0 0 18px rgba(167, 231, 255, 0.85)) drop-shadow(0 0 40px rgba(167, 231, 255, 0.5));
-            animation: chromeShine 3s linear infinite;
+            animation: chromeShine 2.4s linear infinite;
             /* AP stays solid, NO glitch or flicker */
             transform: none !important;
             opacity: 1 !important;
@@ -460,13 +460,13 @@
                 gap: 10px;
             }
         }
-        /* ---------- FIELD INTEL: live briefing ---------- */
+        /* ---------- FIELD INTEL: channel briefing ---------- */
         .intel {
             width: 100%;
             max-width: 640px;
             margin-top: 46px;
             padding: 22px 24px;
-            background: rgba(0, 191, 99, 0.04);
+            background: rgba(167, 231, 255, 0.03);
             border-top: 1px solid rgba(167, 231, 255, 0.15);
             display: flex;
             align-items: center;
@@ -479,38 +479,38 @@
             flex: 0 0 240px;
             aspect-ratio: 16 / 9;
             border-radius: 12px;
-            border: 1px solid #00bf63;
-            background: radial-gradient(circle at center, rgba(0, 191, 99, 0.14), #000 75%);
+            border: 1px solid rgba(167, 231, 255, 0.2);
+            background: linear-gradient(135deg, #111111 0%, #050505 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             text-decoration: none;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
         }
 
-        .play-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            border: 2px solid #00bf63;
-            color: #00bf63;
+        .intel-thumb:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 24px rgba(167, 231, 255, 0.55);
+        }
+
+        /* YouTube-style red play button with white triangle */
+        .yt-play {
+            width: 64px;
+            height: 44px;
+            border-radius: 12px;
+            background: #FF0000;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 14px rgba(0, 191, 99, 0.7), inset 0 0 10px rgba(0, 191, 99, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
         }
 
-        .play-icon svg {
+        .yt-play svg {
             width: 22px;
             height: 22px;
-            fill: currentColor;
+            fill: #FFFFFF;
             margin-left: 3px;
-        }
-
-        .intel-thumb:hover .play-icon {
-            transform: scale(1.08);
-            box-shadow: 0 0 24px rgba(0, 191, 99, 0.9), inset 0 0 12px rgba(0, 191, 99, 0.4);
         }
 
         .intel-text {
@@ -519,7 +519,7 @@
         }
 
         .intel-label {
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 3px;
             text-transform: uppercase;
             color: #a7e7ff;
@@ -527,46 +527,46 @@
         }
 
         .intel-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
             color: #FFFFFF;
             line-height: 1.25;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .intel-desc {
-            font-size: 14px;
+            font-size: 13px;
             color: #9a9a9a;
             line-height: 1.5;
             margin-bottom: 14px;
         }
 
-        .btn-intel {
+        /* White button, black text, YouTube play icon: 260x44 */
+        .btn-youtube {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            width: 280px;
+            gap: 10px;
+            width: 260px;
             max-width: 100%;
             height: 44px;
-            border: 1px solid #00bf63;
             border-radius: 8px;
-            background: rgba(0, 191, 99, 0.08);
-            color: #FFFFFF;
+            background: #FFFFFF;
+            color: #000000;
             text-decoration: none;
             font-size: 14px;
+            font-weight: 800;
             letter-spacing: 1px;
-            box-shadow: 0 0 10px rgba(0, 191, 99, 0.35);
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .btn-intel:hover {
-            background: rgba(0, 191, 99, 0.2);
-            box-shadow: 0 0 20px rgba(0, 191, 99, 0.7);
+        .btn-youtube:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 18px rgba(167, 231, 255, 0.5);
         }
 
-        .btn-intel svg {
-            width: 16px;
+        .btn-youtube svg {
+            width: 24px;
             height: 16px;
             flex-shrink: 0;
         }
@@ -579,7 +579,7 @@
             margin-top: 26px;
             padding: 26px 24px;
             background: rgba(0, 0, 0, 0.6);
-            border-top: 1px solid rgba(0, 191, 99, 0.25);
+            border-top: 1px solid rgba(167, 231, 255, 0.15);
             text-align: left;
         }
 
@@ -587,7 +587,7 @@
             font-size: 12px;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: #00bf63;
+            color: #a7e7ff;
             margin-bottom: 6px;
         }
 
@@ -669,7 +669,7 @@
             position: relative;
             height: 200px;
             margin-top: 18px;
-            border: 1px solid rgba(0, 191, 99, 0.35);
+            border: 1px solid rgba(167, 231, 255, 0.3);
             border-radius: 10px;
             background: #000000;
             overflow: hidden;
@@ -717,8 +717,21 @@
         }
 
         .scan-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
-            max-width: 320px;
+            max-width: 380px;
+            height: 44px;
+            padding: 0 14px;
+            border: 1px solid rgba(167, 231, 255, 0.5);
+            border-radius: 8px;
+            background: rgba(167, 231, 255, 0.08);
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 12px rgba(167, 231, 255, 0.3);
         }
 
         @media (max-width: 600px) {
@@ -832,21 +845,21 @@
 
         </div>
 
-        <!-- FIELD INTEL: latest briefing from @iTOpsSHIELD -->
+        <!-- FIELD INTEL: channel briefing from @iTOpsSHIELD -->
         <section class="intel">
-            <!-- Placeholder thumbnail: swap in the latest video ID as an <img> from https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg -->
-            <a class="intel-thumb" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener" aria-label="Watch the latest iTOpsSHIELD briefing">
-                <span class="play-icon">
+            <!-- Replace this placeholder with a screenshot of the iTOpsSHIELD channel page (banner, avatar, Titan video) -->
+            <a class="intel-thumb" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener" aria-label="Open the iTOpsSHIELD channel on YouTube">
+                <span class="yt-play">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
                 </span>
             </a>
             <div class="intel-text">
-                <div class="intel-label">FIELD INTEL / LIVE BRIEFING</div>
-                <h3 class="intel-title">Agents try to break in. They can't.</h3>
-                <p class="intel-desc">That Tetris border around SHIELD? That's live bot defense trapping AI scrapers. iTOps SHIELD: Defense tech to digital privacy. 3.6M+ briefings.</p>
-                <a class="btn-intel" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener">
-                    Watch defense feed &gt;
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M21 14v7H3V3h7"/></svg>
+                <div class="intel-label">FIELD INTEL</div>
+                <h3 class="intel-title">Defense tech to digital privacy</h3>
+                <p class="intel-desc">3.6M+ briefings. Live threat analysis.</p>
+                <a class="btn-youtube" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" rx="4" fill="#FF0000"/><path d="M9.5 4.5v7l6-3.5z" fill="#FFFFFF"/></svg>
+                    Watch on YouTube &gt;
                 </a>
             </div>
         </section>
@@ -871,7 +884,7 @@
                 <div class="scan-result" id="scan-result">
                     <div class="scan-result-main">2 AI scrapers detected + 1 clone risk</div>
                     <div class="scan-disclaimer">Sample result. Live scanning is not connected yet.</div>
-                    <a class="btn-intel scan-cta" href="protect.html">Protect my IP · $49.99/mo &gt;</a>
+                    <a class="scan-cta" href="protect.html">Protect my INTELLECTUAL PROPERTY · $49.99/mo &gt;</a>
                 </div>
             </div>
         </section>
@@ -933,6 +946,7 @@
                 const x = i * colSpacing;
                 const y = rainDrops[i] * rowSpacing;
 
+                ctx.fillStyle = Math.random() < 0.3 ? '#00bf63' : '#a7e7ff';
                 ctx.fillText(text, x, y);
 
                 if (y > height && Math.random() > 0.975) {
@@ -977,7 +991,7 @@
                 scanCtx.font = size + "px 'Share Tech Mono', monospace";
 
                 for (let i = 0; i < drops.length; i++) {
-                    scanCtx.fillStyle = i % 2 === 0 ? '#00bf63' : '#a7e7ff';
+                    scanCtx.fillStyle = Math.random() < 0.3 ? '#00bf63' : '#a7e7ff';
                     const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
                     scanCtx.fillText(text, i * size, drops[i] * size);
                     if (drops[i] * size > height && Math.random() > 0.95) {
