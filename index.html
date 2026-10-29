@@ -460,6 +460,277 @@
                 gap: 10px;
             }
         }
+        /* ---------- FIELD INTEL: live briefing ---------- */
+        .intel {
+            width: 100%;
+            max-width: 640px;
+            margin-top: 46px;
+            padding: 22px 24px;
+            background: rgba(0, 191, 99, 0.04);
+            border-top: 1px solid rgba(167, 231, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            text-align: left;
+        }
+
+        .intel-thumb {
+            position: relative;
+            flex: 0 0 240px;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            border: 1px solid #00bf63;
+            background: radial-gradient(circle at center, rgba(0, 191, 99, 0.14), #000 75%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .play-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 2px solid #00bf63;
+            color: #00bf63;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 14px rgba(0, 191, 99, 0.7), inset 0 0 10px rgba(0, 191, 99, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .play-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            margin-left: 3px;
+        }
+
+        .intel-thumb:hover .play-icon {
+            transform: scale(1.08);
+            box-shadow: 0 0 24px rgba(0, 191, 99, 0.9), inset 0 0 12px rgba(0, 191, 99, 0.4);
+        }
+
+        .intel-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .intel-label {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #a7e7ff;
+            margin-bottom: 6px;
+        }
+
+        .intel-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 1.25;
+            margin-bottom: 8px;
+        }
+
+        .intel-desc {
+            font-size: 14px;
+            color: #9a9a9a;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+        .btn-intel {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 280px;
+            max-width: 100%;
+            height: 44px;
+            border: 1px solid #00bf63;
+            border-radius: 8px;
+            background: rgba(0, 191, 99, 0.08);
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(0, 191, 99, 0.35);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-intel:hover {
+            background: rgba(0, 191, 99, 0.2);
+            box-shadow: 0 0 20px rgba(0, 191, 99, 0.7);
+        }
+
+        .btn-intel svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        /* ---------- ANTI-AGENT SCAN ---------- */
+        .scanner {
+            position: relative;
+            width: 100%;
+            max-width: 640px;
+            margin-top: 26px;
+            padding: 26px 24px;
+            background: rgba(0, 0, 0, 0.6);
+            border-top: 1px solid rgba(0, 191, 99, 0.25);
+            text-align: left;
+        }
+
+        .scan-label {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #00bf63;
+            margin-bottom: 6px;
+        }
+
+        .scan-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 14px;
+        }
+
+        .scan-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .scan-input {
+            flex: 1 1 220px;
+            height: 56px;
+            padding: 0 16px;
+            background: #000000;
+            border: 1px solid rgba(167, 231, 255, 0.35);
+            border-radius: 8px;
+            color: #FFFFFF;
+            font: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .scan-input:focus {
+            border-color: #a7e7ff;
+            box-shadow: 0 0 12px rgba(167, 231, 255, 0.4);
+        }
+
+        .scan-input::placeholder {
+            color: #6f6f6f;
+        }
+
+        /* Scan button: 320x56, silver to ice gradient, shield-scan icon */
+        .btn-scan {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 320px;
+            max-width: 100%;
+            height: 56px;
+            border: 2px solid #a7e7ff;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #C0C0C0, #a7e7ff);
+            color: #000000;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 0 22px rgba(167, 231, 255, 0.6);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+
+        .btn-scan:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 32px rgba(167, 231, 255, 0.95);
+        }
+
+        .btn-scan:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .btn-scan svg {
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .scan-stage {
+            display: none;
+            position: relative;
+            height: 200px;
+            margin-top: 18px;
+            border: 1px solid rgba(0, 191, 99, 0.35);
+            border-radius: 10px;
+            background: #000000;
+            overflow: hidden;
+        }
+
+        .scan-stage.is-visible {
+            display: block;
+        }
+
+        .scan-stage canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .scan-result {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .scan-result.is-visible {
+            display: flex;
+        }
+
+        .scan-result-main {
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+            text-shadow: 0 0 10px rgba(167, 231, 255, 0.5);
+        }
+
+        .scan-disclaimer {
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: #7a7a7a;
+        }
+
+        .scan-cta {
+            width: 100%;
+            max-width: 320px;
+        }
+
+        @media (max-width: 600px) {
+            .intel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .intel-thumb {
+                flex: none;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -561,6 +832,50 @@
 
         </div>
 
+        <!-- FIELD INTEL: latest briefing from @iTOpsSHIELD -->
+        <section class="intel">
+            <!-- Placeholder thumbnail: swap in the latest video ID as an <img> from https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg -->
+            <a class="intel-thumb" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener" aria-label="Watch the latest iTOpsSHIELD briefing">
+                <span class="play-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+            </a>
+            <div class="intel-text">
+                <div class="intel-label">FIELD INTEL / LIVE BRIEFING</div>
+                <h3 class="intel-title">Agents try to break in. They can't.</h3>
+                <p class="intel-desc">That Tetris border around SHIELD? That's live bot defense trapping AI scrapers. iTOps SHIELD: Defense tech to digital privacy. 3.6M+ briefings.</p>
+                <a class="btn-intel" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener">
+                    Watch defense feed &gt;
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M21 14v7H3V3h7"/></svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- ANTI-AGENT SCAN -->
+        <section class="scanner">
+            <div class="scan-label">ANTI-AGENT SCAN</div>
+            <h3 class="scan-title">Is your IP being scraped?</h3>
+            <form class="scan-form" id="scan-form">
+                <input class="scan-input" type="text" placeholder="@instagram or onlyfans link" aria-label="Your @instagram or onlyfans link" required>
+                <button class="btn-scan" id="scan-btn" type="submit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <line x1="6" y1="12" x2="18" y2="12"/>
+                    </svg>
+                    <span id="scan-btn-label">Scan Now (FREE)</span>
+                </button>
+            </form>
+
+            <div class="scan-stage" id="scan-stage">
+                <canvas id="scan-canvas"></canvas>
+                <div class="scan-result" id="scan-result">
+                    <div class="scan-result-main">2 AI scrapers detected + 1 clone risk</div>
+                    <div class="scan-disclaimer">Sample result. Live scanning is not connected yet.</div>
+                    <a class="btn-intel scan-cta" href="protect.html">Protect my IP · $49.99/mo &gt;</a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Matrix Code Rain Script -->
@@ -629,6 +944,67 @@
 
         // Same 65ms row cadence as the reference matrix
         setInterval(drawMatrix, 65);
+    </script>
+
+    <!-- Anti-agent scan: 2-second rain, then the sample result -->
+    <script>
+        const scanForm = document.getElementById('scan-form');
+        const scanBtn = document.getElementById('scan-btn');
+        const scanBtnLabel = document.getElementById('scan-btn-label');
+        const scanStage = document.getElementById('scan-stage');
+        const scanCanvas = document.getElementById('scan-canvas');
+        const scanCtx = scanCanvas.getContext('2d', { alpha: false });
+        const scanResult = document.getElementById('scan-result');
+
+        // Reuses the glyph set from the main rain script; same green / ice-blue pairing
+        function startScanRain() {
+            const dpr = window.devicePixelRatio || 1;
+            const width = scanStage.clientWidth;
+            const height = scanStage.clientHeight;
+            scanCanvas.width = Math.floor(width * dpr);
+            scanCanvas.height = Math.floor(height * dpr);
+            scanCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const size = 14;
+            const columns = Math.ceil(width / size);
+            const drops = Array.from({ length: columns }, () => Math.floor(Math.random() * -10));
+            scanCtx.fillStyle = '#000000';
+            scanCtx.fillRect(0, 0, width, height);
+
+            return setInterval(() => {
+                scanCtx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+                scanCtx.fillRect(0, 0, width, height);
+                scanCtx.font = size + "px 'Share Tech Mono', monospace";
+
+                for (let i = 0; i < drops.length; i++) {
+                    scanCtx.fillStyle = i % 2 === 0 ? '#00bf63' : '#a7e7ff';
+                    const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                    scanCtx.fillText(text, i * size, drops[i] * size);
+                    if (drops[i] * size > height && Math.random() > 0.95) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }, 60);
+        }
+
+        scanForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (scanBtn.disabled) return;
+
+            scanBtn.disabled = true;
+            scanBtnLabel.textContent = 'Scanning...';
+            scanResult.classList.remove('is-visible');
+            scanStage.classList.add('is-visible');
+
+            const timer = startScanRain();
+            setTimeout(() => {
+                clearInterval(timer);
+                scanResult.classList.add('is-visible');
+                scanBtnLabel.textContent = 'Scan Now (FREE)';
+                scanBtn.disabled = false;
+            }, 2000);
+        });
     </script>
 </body>
 </html>
