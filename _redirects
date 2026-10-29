@@ -1,0 +1,4 @@
+# Leak-removal aliases -> primary page (302 = temporary, keeps the primary URL canonical)
+/delete                       /leaks  302
+/delete-my-leaked-content     /leaks  302
+/delete-my-leakedContent      /leaks  302

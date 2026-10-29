@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete My LEAKED Content // SHIELD AP</title>
+    <meta name="description" content="We delete leaked creator content from Telegram, Reddit, Discord, EroMe and file hosts. DMCA filed instantly, unlimited takedowns.">
+    <!-- Cyber & Monospace Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --shield-green: #00bf63;
+            --ice-blue: #a7e7ff;
+            --silver: linear-gradient(90deg, #C0C0C0, #FFFFFF);
+            --text-high-contrast: #F0F0F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+            background-color: #000000;
+            color: var(--text-high-contrast);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        /* Matrix digital rain background canvas */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        /* Cyber scanlines overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
+            background-size: 100% 3px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .topbar {
+            position: relative;
+            z-index: 3;
+            padding: 22px 24px 0;
+        }
+
+        .back-link {
+            color: var(--ice-blue);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(167, 231, 255, 0.5);
+        }
+
+        .back-link:hover {
+            color: #FFFFFF;
+        }
+
+        /* Hero / page column */
+        .page {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 16px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Brand row */
+        .brand-title-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin: 24px 0 8px;
+        }
+
+        /* SHIELD: green electric flicker inside a marching Tetris-block frame */
+        .title-shield {
+            position: relative;
+            display: inline-block;
+            font-size: clamp(2.4rem, 4.6vw, 3.4rem);
+            font-weight: 800;
+            letter-spacing: 6px;
+            line-height: 1;
+            color: var(--shield-green);
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 191, 99, 0.6), 0 0 20px rgba(0, 191, 99, 0.6), 0 0 40px rgba(0, 191, 99, 0.35);
+            animation: electricFlicker 3.4s infinite;
+        }
+
+        /* Block frame: green and ice blocks crawl around SHIELD, the bots pushing on the walls */
+        .title-shield::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            bottom: -10px;
+            left: -10px;
+            right: -2px; /* letter-spacing adds 6px of trailing space; keeps the frame centered on the glyphs */
+            padding: 6px; /* frame thickness: one block cell */
+            background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='24'><rect x='0.5' y='0.5' width='5' height='5' fill='%2300bf63'/><rect x='6.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='12.5' y='0.5' width='5' height='5' fill='%2300bf63'/><rect x='18.5' y='0.5' width='5' height='5' fill='%2300bf63'/><rect x='24.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='30.5' y='0.5' width='5' height='5' fill='%2300bf63'/><rect x='36.5' y='0.5' width='5' height='5' fill='%2300bf63'/><rect x='42.5' y='0.5' width='5' height='5' fill='%2300bf63'/><rect x='0.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='6.5' y='6.5' width='5' height='5' fill='%2300bf63'/><rect x='12.5' y='6.5' width='5' height='5' fill='%2300bf63'/><rect x='18.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='24.5' y='6.5' width='5' height='5' fill='%2300bf63'/><rect x='30.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='36.5' y='6.5' width='5' height='5' fill='%2300bf63'/><rect x='42.5' y='6.5' width='5' height='5' fill='%2300bf63'/><rect x='0.5' y='12.5' width='5' height='5' fill='%2300bf63'/><rect x='6.5' y='12.5' width='5' height='5' fill='%2300bf63'/><rect x='12.5' y='12.5' width='5' height='5' fill='%23a7e7ff'/><rect x='18.5' y='12.5' width='5' height='5' fill='%2300bf63'/><rect x='24.5' y='12.5' width='5' height='5' fill='%2300bf63'/><rect x='30.5' y='12.5' width='5' height='5' fill='%2300bf63'/><rect x='36.5' y='12.5' width='5' height='5' fill='%23a7e7ff'/><rect x='42.5' y='12.5' width='5' height='5' fill='%2300bf63'/><rect x='0.5' y='18.5' width='5' height='5' fill='%2300bf63'/><rect x='6.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='12.5' y='18.5' width='5' height='5' fill='%2300bf63'/><rect x='18.5' y='18.5' width='5' height='5' fill='%2300bf63'/><rect x='24.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='30.5' y='18.5' width='5' height='5' fill='%2300bf63'/><rect x='36.5' y='18.5' width='5' height='5' fill='%2300bf63'/><rect x='42.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/></svg>") 0 0 / 48px 24px repeat;
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            filter: drop-shadow(0 0 4px rgba(0, 191, 99, 0.6));
+            pointer-events: none;
+            animation: framesMarch 1.6s steps(8, end) infinite;
+        }
+
+        /* One full tile per cycle, so the loop is seamless */
+        @keyframes framesMarch {
+            0%   { background-position: 0 0; }
+            100% { background-position: 48px 0; }
+        }
+
+        /* Electricity cutting out and surging back on */
+        @keyframes electricFlicker {
+            0%, 100% { opacity: 1; }
+            3%  { opacity: 0.15; }
+            4%  { opacity: 1; }
+            6%  { opacity: 0.05; }
+            7%  { opacity: 0.9; }
+            8%  { opacity: 0.1; }
+            9%  { opacity: 1; }
+            25% { opacity: 1; }
+            26% { opacity: 0.2; }
+            27% { opacity: 0.8; }
+            28% { opacity: 1; }
+            68% { opacity: 1; }
+            69% { opacity: 0.12; }
+            70% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.1; }
+            94% { opacity: 1; }
+        }
+
+        /* AP: solid silver #C0C0C0 to #FFFFFF with an ice-blue glow */
+        .title-ap {
+            font-size: clamp(3.8rem, 10vw, 6.2rem);
+            font-weight: 900;
+            letter-spacing: 4px;
+            line-height: 1;
+            background: var(--silver);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            filter: drop-shadow(0 0 18px rgba(167, 231, 255, 0.85)) drop-shadow(0 0 40px rgba(167, 231, 255, 0.5));
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #00a3ff;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 36px;
+            text-shadow: 0 0 10px rgba(0, 163, 255, 0.6);
+        }
+
+        /* Headline */
+        .headline {
+            font-size: clamp(1.8rem, 4.2vw, 2.8rem);
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 1.15;
+            margin-bottom: 18px;
+            text-shadow: 0 0 12px rgba(167, 231, 255, 0.35);
+        }
+
+        .headline .leaked {
+            color: var(--shield-green);
+            text-shadow: 0 0 10px rgba(0, 191, 99, 0.6);
+        }
+
+        .sub {
+            max-width: 640px;
+            font-size: 17px;
+            line-height: 1.55;
+            color: #d8d8d8;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Top 5 benefits */
+        .benefits {
+            list-style: none;
+            width: 100%;
+            max-width: 720px;
+            display: grid;
+            gap: 12px;
+            text-align: left;
+            margin-bottom: 56px;
+        }
+
+        .benefits li {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            padding: 14px 18px;
+            background: rgba(167, 231, 255, 0.04);
+            border-left: 2px solid rgba(167, 231, 255, 0.35);
+        }
+
+        .benefit-num {
+            flex-shrink: 0;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--shield-green);
+            text-shadow: 0 0 8px rgba(0, 191, 99, 0.5);
+            padding-top: 2px;
+        }
+
+        .benefit-title {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+
+        .benefit-desc {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #a8a8a8;
+        }
+
+        /* CTA cards */
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 760px;
+            margin-bottom: 72px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            padding: 28px 22px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid rgba(167, 231, 255, 0.25);
+            border-radius: 12px;
+            box-shadow: 0 0 18px rgba(167, 231, 255, 0.12);
+        }
+
+        .price {
+            font-size: 26px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .price-alt {
+            font-size: 13px;
+            color: #9a9a9a;
+        }
+
+        .price-alt a {
+            color: var(--ice-blue);
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(167, 231, 255, 0.5);
+        }
+
+        .card-note {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #9a9a9a;
+            min-height: 40px;
+        }
+
+        /* Delete button: 320x64, green border, shield lock icon */
+        .btn-delete {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 320px;
+            max-width: 100%;
+            height: 64px;
+            background: #000000;
+            border: 2px solid var(--shield-green);
+            border-radius: 10px;
+            color: #FFFFFF;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 0 18px rgba(0, 191, 99, 0.45), inset 0 0 12px rgba(0, 191, 99, 0.15);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 191, 99, 0.85), inset 0 0 16px rgba(0, 191, 99, 0.3);
+        }
+
+        .btn-delete svg {
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
+            color: var(--shield-green);
+            filter: drop-shadow(0 0 4px rgba(0, 191, 99, 0.8));
+        }
+
+        /* Creator license button: 320x64, silver to ice gradient, glow, scale 1.05 */
+        .btn-license {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 320px;
+            max-width: 100%;
+            height: 64px;
+            background: linear-gradient(90deg, #C0C0C0, #a7e7ff);
+            border: 2px solid var(--ice-blue);
+            border-radius: 10px;
+            color: #000000;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 0 22px rgba(167, 231, 255, 0.6);
+            transform: scale(1.05);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+
+        .btn-license:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 32px rgba(167, 231, 255, 0.95);
+        }
+
+        /* PRINT section: ice and green glow at about 33% strength behind the content */
+        .print {
+            position: relative;
+            isolation: isolate;
+            width: 100%;
+            padding: 56px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .print::before {
+            content: '';
+            position: absolute;
+            inset: -60px -40px;
+            background: radial-gradient(ellipse at center, rgba(0, 191, 99, 0.33) 0%, rgba(167, 231, 255, 0.2) 35%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .print-title {
+            font-size: clamp(1.7rem, 4vw, 2.4rem);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 28px;
+            background: var(--silver);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            filter: drop-shadow(0 0 14px rgba(167, 231, 255, 0.7));
+        }
+
+        .offers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            width: 100%;
+            max-width: 760px;
+            margin-bottom: 40px;
+        }
+
+        .offer {
+            display: block;
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(167, 231, 255, 0.35);
+            border-radius: 10px;
+            text-align: left;
+            color: #FFFFFF;
+            text-decoration: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .offer:hover {
+            border-color: var(--shield-green);
+            box-shadow: 0 0 18px rgba(0, 191, 99, 0.35);
+        }
+
+        .offer-tag {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--shield-green);
+            margin-bottom: 6px;
+        }
+
+        .offer-name {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .offer-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ice-blue);
+            margin-bottom: 8px;
+        }
+
+        .offer-desc {
+            font-size: 13px;
+            line-height: 1.45;
+            color: #9a9a9a;
+        }
+
+        /* Start Printing: 480x88, thicker silver to ice gradient, money icon 32px */
+        .btn-print {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            width: 480px;
+            max-width: 100%;
+            height: 88px;
+            background: linear-gradient(90deg, #C0C0C0, #a7e7ff);
+            border: 3px solid var(--ice-blue);
+            border-radius: 12px;
+            color: #000000;
+            font: inherit;
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 0 28px rgba(167, 231, 255, 0.7);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(167, 231, 255, 0.95);
+        }
+
+        .btn-print svg {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 720px) {
+            .offers {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .brand-title-wrap {
+                gap: 10px;
+            }
+
+            .btn-print {
+                height: 72px;
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cyber Scanlines -->
+    <div class="scanlines"></div>
+
+    <!-- Matrix Code Rain Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="topbar">
+        <a class="back-link" href="/">&larr; Back to SHIELD AP</a>
+    </div>
+
+    <main class="page">
+
+        <!-- Brand -->
+        <div class="brand-title-wrap">
+            <h2 class="title-shield">SHIELD</h2>
+            <h2 class="title-ap">AP</h2>
+        </div>
+        <div class="subtitle">Anti-Agent Protocol</div>
+
+        <!-- Hero -->
+        <h1 class="headline">Delete my <span class="leaked">LEAKED</span> Content</h1>
+        <p class="sub">Subscriber screen-recorded it. Bots reposted to EroMe, Telegram, Reddit in minutes. Every hour it stays up, you lose subscribers. We delete it.</p>
+
+        <!-- Top 5 benefits -->
+        <ol class="benefits">
+            <li>
+                <span class="benefit-num">01</span>
+                <div>
+                    <div class="benefit-title">TELEGRAM + REDDIT + DISCORD + EROME DELETION</div>
+                    <div class="benefit-desc">Leaks live in Telegram, Reddit, Discord, EroMe (#1 tube where famous OF girls leaked) and file hosts. We file DMCA there.</div>
+                </div>
+            </li>
+            <li>
+                <span class="benefit-num">02</span>
+                <div>
+                    <div class="benefit-title">30-MINUTE SCAN + INSTANT DMCA</div>
+                    <div class="benefit-desc">Bots scan every 30 minutes and DMCA goes out instantly. Google takes 4-24h, EroMe and tubes 2-4 days. Re-uploads are auto-caught.</div>
+                </div>
+            </li>
+            <li>
+                <span class="benefit-num">03</span>
+                <div>
+                    <div class="benefit-title">FACE RECOGNITION THROUGH CROP</div>
+                    <div class="benefit-desc">AI finds you even when the watermark is cropped and the username is removed.</div>
+                </div>
+            </li>
+            <li>
+                <span class="benefit-num">04</span>
+                <div>
+                    <div class="benefit-title">PRIVATE FILING, STAGE NAME PROTECTED</div>
+                    <div class="benefit-desc">Filed under a Shield company, not your legal name. Your real name stays hidden. The whitelist keeps your official OF and Insta safe.</div>
+                </div>
+            </li>
+            <li>
+                <span class="benefit-num">05</span>
+                <div>
+                    <div class="benefit-title">UNLIMITED TAKEDOWNS, 200M+ SITES</div>
+                    <div class="benefit-desc">The average creator has 2,074 leak links. Takedowns are unlimited.</div>
+                </div>
+            </li>
+        </ol>
+
+        <!-- CTA cards -->
+        <section class="cards">
+            <!-- Card A: paid delete -->
+            <div class="card">
+                <div class="price">$49.99/month</div>
+                <div class="price-alt">or <a href="/payments?plan=delete_yearly">$399/year</a></div>
+                <button type="button" class="btn-delete" onclick="window.location.href='/payments?plan=delete_monthly'">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <rect x="9" y="11" width="6" height="5" rx="1" fill="currentColor"/>
+                        <path d="M10 11V9.5a2 2 0 0 1 4 0V11"/>
+                    </svg>
+                    Delete My LEAKED Content &gt;
+                </button>
+            </div>
+
+            <!-- Card B: free creator license -->
+            <div class="card">
+                <div class="price">Creator License</div>
+                <div class="card-note">Opens the creator dashboard. Your contact details, handle and reference pack are collected there.</div>
+                <button type="button" class="btn-license" onclick="window.location.href='/creator?free=true'">
+                    Get Creator License (FREE) &gt;
+                </button>
+            </div>
+        </section>
+
+        <!-- Print cash -->
+        <section class="print">
+            <h2 class="print-title">Leaks Deleted? Now Print.</h2>
+
+            <div class="offers">
+                <a class="offer" href="/payments?plan=status_tag">
+                    <div class="offer-tag">Offer 01</div>
+                    <div class="offer-name">Status Tag</div>
+                    <div class="offer-price">$169</div>
+                    <div class="offer-desc">AI photo with you, sell PPV</div>
+                </a>
+                <a class="offer" href="/payments?plan=irl_status">
+                    <div class="offer-tag">Offer 02</div>
+                    <div class="offer-name">IRL Status</div>
+                    <div class="offer-price">$1.7k+</div>
+                    <div class="offer-desc">IRL perception shift</div>
+                </a>
+                <a class="offer" href="/payments?plan=aura_protocol">
+                    <div class="offer-tag">Offer 03</div>
+                    <div class="offer-name">Aura Protocol</div>
+                    <div class="offer-price">$3.6k+</div>
+                    <div class="offer-desc">Full ghost team</div>
+                </a>
+            </div>
+
+            <button type="button" class="btn-print" onclick="window.location.href='/payments?plan=aura_protocol'">
+                <!-- Banknote with flying bills -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="8" width="18" height="10" rx="1.5"/>
+                    <circle cx="12" cy="13" r="2.2"/>
+                    <path d="M6 4.5l4-1.5M14 3l4 1.5"/>
+                    <path d="M18.5 19.5l2 1.5M5.5 19.5L3.5 21"/>
+                </svg>
+                Start Printing NOW &gt;
+            </button>
+        </section>
+
+    </main>
+
+    <!-- Matrix Code Rain Script: 70% ice blue, 30% green -->
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+-<>/?\\|';
+        const alphabet = katakana + latin;
+
+        const fontSize = 14;
+        const colSpacing = 24;
+        const rowSpacing = 22;
+        let columns = 0;
+        let rainDrops = [];
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            columns = Math.ceil(width / colSpacing);
+            rainDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
+
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function drawMatrix() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.font = fontSize + "px 'Share Tech Mono', monospace";
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                const x = i * colSpacing;
+                const y = rainDrops[i] * rowSpacing;
+
+                ctx.fillStyle = Math.random() < 0.3 ? '#00bf63' : '#a7e7ff';
+                ctx.fillText(text, x, y);
+
+                if (y > height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 65);
+    </script>
+</body>
+</html>
