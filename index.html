@@ -3,40 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHIELD // Protocols</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>SHIELD AP // Anti-Agent Protocol</title>
+    <!-- Cyber & Monospace Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --neon-green: #00ff88;
+            --ice-blue: #a7e7ff;
+            --black: #000000;
+            --cyber-blue: #0073e6;          /* On-brand cybersecurity blue */
+            --cyber-blue-bright: #3d9bff;   /* Lighter tint for icons, arrows, hover */
+            --matrix-blue: #a7e7ff;         /* Matrix rain blue, used for buttons */
+            --text-high-contrast: #F0F0F0;
+            --silver-gradient: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 50%, #B0B0B0 100%);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        body {
-            background-color: #0a0a0a;
-            color: #00ff66;
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #000000 !important; /* Always pitch black */
+            color: var(--text-high-contrast);
             font-family: 'Share Tech Mono', monospace;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
+            overflow-x: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Matrix digital rain canvas background */
+        /* Matrix digital rain background canvas */
         #matrix-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: 1;
-            opacity: 0.3;
+            opacity: 0.25;
             pointer-events: none;
         }
 
-        /* Scanlines */
+        /* Cyber scanlines overlay */
         .scanlines {
             position: fixed;
             top: 0;
@@ -44,142 +59,236 @@
             width: 100vw;
             height: 100vh;
             background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.3) 50%
-            ), linear-gradient(
-                90deg,
-                rgba(255, 0, 0, 0.02),
-                rgba(0, 255, 0, 0.01),
-                rgba(0, 0, 255, 0.02)
+                rgba(0, 0, 0, 0) 50%,
+                rgba(0, 0, 0, 0.4) 50%
             );
-            background-size: 100% 3px, 6px 100%;
+            background-size: 100% 3px;
             z-index: 2;
             pointer-events: none;
         }
 
-        /* Main Minimalist Container */
-        .container {
+        /* Hero Main Container */
+        .hero-container {
             position: relative;
             z-index: 3;
             width: 100%;
-            max-width: 600px;
-            padding: 40px 20px;
+            max-width: 800px;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             text-align: center;
+            margin: auto;
         }
 
-        /* Header / Brand */
-        .brand-header {
-            margin-bottom: 50px;
-        }
-
-        h1 {
-            font-size: clamp(3rem, 6vw, 4.5rem);
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            color: #ffffff;
-            text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6);
-            margin-bottom: 10px;
-            animation: flicker 4s infinite;
-        }
-
-        @keyframes flicker {
-            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
-                text-shadow: 0 0 10px #00ff66, 0 0 20px #00ff66, 0 0 40px rgba(0, 255, 102, 0.6);
-                opacity: 1;
-            }
-            20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
-                text-shadow: none;
-                opacity: 0.85;
-            }
-        }
-
-        .slogan {
-            font-size: 1.1rem;
-            color: #00cc55;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            opacity: 0.9;
-        }
-
-        .subheadline {
-            font-size: 0.85rem;
-            color: #888888;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-top: 14px;
-            opacity: 0.85;
-        }
-
-        /* Floating & Swiping Options Carousel / List */
-        .options-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            perspective: 1000px;
-        }
-
-        .option-item {
-            background: rgba(10, 20, 15, 0.6);
-            border: 1px solid rgba(0, 255, 102, 0.3);
-            border-radius: 6px;
-            padding: 22px 30px;
-            font-size: 1.25rem;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            animation: float 6s ease-in-out infinite;
+        /* Main Title Header Group */
+        .brand-title-wrap {
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 18px;
+            margin-bottom: 8px;
         }
 
-        .btn-text {
+        /* SHIELD Title - index.html look with an intense electric flicker */
+        .title-shield {
+            font-size: clamp(2.4rem, 4.6vw, 3.4rem);
+            font-weight: 800;
+            letter-spacing: 6px;
+            line-height: 1;
+            color: #ffffff;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35);
+            animation: electricFlicker 3.4s infinite;
+            display: inline-block;
             position: relative;
-            z-index: 2;
         }
 
-        .btn-bg-icon {
+        /* Tetris-block frame around the edges of SHIELD (ring masked out of a block pattern) */
+        .title-shield::after {
+            content: '';
             position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
-            opacity: 0.10;
-            color: #00ff66;
+            top: -10px;
+            bottom: -10px;
+            left: -10px;
+            right: -2px; /* letter-spacing adds 6px of trailing space; this keeps the frame centered on the glyphs */
+            padding: 6px; /* frame thickness: one block cell */
+            background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='24'><rect x='0.5' y='0.5' width='5' height='5' fill='%2300ff66'/><rect x='6.5' y='0.5' width='5' height='5' fill='%2300ff66'/><rect x='12.5' y='0.5' width='5' height='5' fill='%2300ff66'/><rect x='18.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='30.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='36.5' y='0.5' width='5' height='5' fill='%23a7e7ff'/><rect x='42.5' y='0.5' width='5' height='5' fill='%2300ff66'/><rect x='0.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='18.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='24.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='30.5' y='6.5' width='5' height='5' fill='%23a7e7ff'/><rect x='42.5' y='6.5' width='5' height='5' fill='%2300ff66'/><rect x='0.5' y='12.5' width='5' height='5' fill='%23a7e7ff'/><rect x='6.5' y='12.5' width='5' height='5' fill='%23a7e7ff'/><rect x='18.5' y='12.5' width='5' height='5' fill='%2300ff66'/><rect x='24.5' y='12.5' width='5' height='5' fill='%2300ff66'/><rect x='42.5' y='12.5' width='5' height='5' fill='%2300ff66'/><rect x='6.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='12.5' y='18.5' width='5' height='5' fill='%2300ff66'/><rect x='18.5' y='18.5' width='5' height='5' fill='%2300ff66'/><rect x='30.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='36.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/><rect x='42.5' y='18.5' width='5' height='5' fill='%23a7e7ff'/></svg>") 0 0 / 48px 24px repeat;
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            filter: drop-shadow(0 0 4px rgba(0, 255, 102, 0.6));
             pointer-events: none;
-            z-index: 1;
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            animation: screenBlink 1.8s steps(1, end) infinite;
         }
 
-        .option-item:hover .btn-bg-icon {
-            opacity: 0.20;
-            transform: translate(-50%, -50%) scale(1.1);
+        /* Screen cutting off and snapping back on fast; blocks jump cells each time */
+        @keyframes screenBlink {
+            0%   { opacity: 0.85; background-position: 0 0; transform: translateX(0); filter: drop-shadow(0 0 4px rgba(0, 255, 102, 0.6)); }
+            6%   { opacity: 0; }
+            9%   { opacity: 1; background-position: 6px 0; transform: translateX(-2px); }
+            12%  { opacity: 0; }
+            14%  { opacity: 0.9; background-position: 0 6px; transform: translateX(0); }
+            38%  { opacity: 0.85; background-position: 12px 6px; }
+            40%  { opacity: 0; }
+            41%  { opacity: 1; transform: translateX(3px); }
+            43%  { opacity: 0; }
+            45%  { opacity: 0.85; background-position: 18px 0; transform: translateX(0); }
+            70%  { opacity: 0.85; background-position: 6px 12px; }
+            72%  { opacity: 0; }
+            73%  { opacity: 1; filter: brightness(1.8) drop-shadow(0 0 6px rgba(0, 255, 102, 0.85)); }
+            75%  { opacity: 0.1; }
+            77%  { opacity: 0.9; background-position: 0 0; filter: drop-shadow(0 0 4px rgba(0, 255, 102, 0.6)); }
+            100% { opacity: 0.85; }
         }
 
-        .option-item:nth-child(1) { animation-delay: 0s; }
-        .option-item:nth-child(2) { animation-delay: 2s; }
-        .option-item:nth-child(3) { animation-delay: 4s; }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px) translateX(0px);
-            }
-            50% {
-                transform: translateY(-6px) translateX(3px);
-            }
+        /* Electricity cutting out and surging back on, with irregular stutters */
+        @keyframes electricFlicker {
+            0%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
+            3% { opacity: 0.15; text-shadow: none; }
+            4% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
+            6% { opacity: 0.05; text-shadow: none; }
+            7% { opacity: 0.9; }
+            8% { opacity: 0.1; text-shadow: none; }
+            9% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
+            24% { opacity: 1; }
+            25% { opacity: 0.2; text-shadow: none; }
+            26% { opacity: 0.8; }
+            27% { opacity: 0.05; text-shadow: none; }
+            28% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
+            41% { opacity: 1; }
+            42% { opacity: 0.1; text-shadow: none; }
+            43% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
+            44% { opacity: 0.3; text-shadow: none; }
+            45% { opacity: 0.95; }
+            47% { opacity: 0.02; text-shadow: none; }
+            48% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
+            68% { opacity: 1; }
+            69% { opacity: 0.12; text-shadow: none; }
+            70% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
+            72% { opacity: 0.4; text-shadow: none; }
+            73% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
+            88% { opacity: 1; }
+            89% { opacity: 0.05; text-shadow: none; }
+            90% { opacity: 0.9; }
+            91% { opacity: 0.1; text-shadow: none; }
+            92% { opacity: 1; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6), 0 0 20px rgba(0, 255, 102, 0.6), 0 0 40px rgba(0, 255, 102, 0.35); }
         }
 
-        .option-item::before {
+        /* AP Title - Chrome plated, brighter specular sweep and stronger ice-blue glow */
+        .title-ap {
+            font-size: clamp(3.2rem, 8vw, 5.2rem);
+            font-weight: 900;
+            letter-spacing: 4px;
+            line-height: 1;
+            background: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 30%, #8A96A0 50%, #FFFFFF 70%, #E0E0E0 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            filter: drop-shadow(0 0 18px rgba(167, 231, 255, 0.85)) drop-shadow(0 0 40px rgba(167, 231, 255, 0.5));
+            animation: chromeShine 3s linear infinite;
+            /* AP stays solid, NO glitch or flicker */
+            transform: none !important;
+            opacity: 1 !important;
+        }
+
+        @keyframes chromeShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Subtitle */
+        .subtitle {
+            font-size: 0.95rem;
+            color: #00a3ff;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 22px;
+            text-shadow: 0 0 10px rgba(0, 163, 255, 0.6);
+            opacity: 0.39;
+            filter: url(#rough-text);
+        }
+
+        /* Tagline Copy Block */
+        .tagline-block {
+            font-size: 20px;
+            line-height: 1.5;
+            color: var(--text-high-contrast);
+            max-width: 680px;
+            margin-bottom: 35px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+            font-weight: 500;
+        }
+
+        .tagline-block p {
+            margin-bottom: 6px;
+        }
+
+        .tagline-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Lead line - soft light halo so it lifts off the pitch-black background */
+        .tagline-block p:first-child {
+            text-shadow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(167, 231, 255, 0.2);
+        }
+
+        /* Slogan - bright metallic gold sweep with a subtle glow; no dark shadows */
+        .slogan {
+            font-weight: 800;
+            background: linear-gradient(110deg, #b8860b 0%, #f5d76e 20%, #fffbe6 30%, #f5d76e 40%, #d4af37 55%, #ffe58a 70%, #fff8dc 78%, #d4af37 90%, #b8860b 100%);
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            /* The inherited dark text-shadow bleeds through the transparent fill and dulls the gold */
+            text-shadow: none;
+            animation: metalSheen 4s linear infinite;
+            filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.35));
+        }
+
+        @keyframes metalSheen {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Stacked Buttons Container */
+        .button-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+            align-items: center;
+        }
+
+        /* Button Styling */
+        .cyber-btn {
+            width: 440px;
+            min-height: 90px;
+            background: rgba(167, 231, 255, 0.12);
+            border: 2px solid var(--matrix-blue);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            text-decoration: none;
+            color: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 12px rgba(167, 231, 255, 0.55), 0 0 2px var(--matrix-blue), inset 0 0 12px rgba(167, 231, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-btn::before {
             content: '';
             position: absolute;
             top: 0;
@@ -189,145 +298,337 @@
             background: linear-gradient(
                 90deg,
                 transparent,
-                rgba(0, 255, 102, 0.15),
+                rgba(167, 231, 255, 0.35),
                 transparent
             );
             transition: 0.5s;
         }
 
-        .option-item:hover {
-            background: rgba(0, 35, 12, 0.85);
-            border-color: #00ff66;
-            color: #00ff66;
-            transform: scale(1.03) translateX(6px);
-            box-shadow: 0 0 25px rgba(0, 255, 102, 0.4), inset 0 0 10px rgba(0, 255, 102, 0.2);
-            text-shadow: 0 0 8px rgba(0, 255, 102, 0.8);
+        .cyber-btn:hover {
+            background: rgba(167, 231, 255, 0.25);
+            border-color: var(--matrix-blue);
+            box-shadow: 0 0 28px rgba(167, 231, 255, 0.85), 0 0 4px var(--matrix-blue), inset 0 0 18px rgba(167, 231, 255, 0.3);
+            transform: translateY(-4px) scale(1.03);
         }
 
-        .option-item:hover::before {
+        .cyber-btn:active {
+            transform: translateY(-1px) scale(1.01);
+        }
+
+        .cyber-btn:hover::before {
             left: 100%;
         }
 
-        /* Subtle indicator */
-        .option-item::after {
-            content: '>';
+        /* Icon Container & SVGs */
+        .btn-icon-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        /* Soft blue halo behind each symbol so it reads at a glance */
+        .btn-icon-wrap::before {
+            content: '';
             position: absolute;
-            right: 25px;
-            color: #008833;
-            transition: 0.3s;
-            z-index: 2;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(167, 231, 255, 0.5) 0%, rgba(167, 231, 255, 0.15) 45%, transparent 70%);
+            animation: iconPulse 2.4s ease-in-out infinite;
         }
 
-        .option-item:hover::after {
-            color: #00ff66;
-            transform: translateX(4px);
+        .btn-svg-icon {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            color: #cfe9ff;
+            filter: drop-shadow(0 0 4px #a7e7ff) drop-shadow(0 0 12px rgba(167, 231, 255, 0.95));
+            transition: transform 0.3s ease, filter 0.3s ease;
         }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px 15px;
+        .cyber-btn:hover .btn-svg-icon {
+            transform: scale(1.12);
+            filter: drop-shadow(0 0 6px #d6f4ff) drop-shadow(0 0 18px #a7e7ff);
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { opacity: 0.6; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1.08); }
+        }
+
+        /* Oversized $ standing in for the "s" in "cash" - metallic silver with a moving shine */
+        .big-dollar {
+            display: inline-block;
+            font-size: 1.52em;
+            font-weight: 800;
+            /* line-height 1 so the gradient box covers the full glyph; negative margin keeps the line height steady */
+            line-height: 1;
+            vertical-align: -0.12em;
+            margin: -0.15em 1px;
+            padding: 0 2px;
+            background: linear-gradient(110deg, #8c8c8c 0%, #e8e8e8 25%, #ffffff 35%, #a9a9a9 50%, #f2f2f2 65%, #ffffff 72%, #9a9a9a 100%);
+            background-size: 250% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: silverShine 2.8s linear infinite;
+            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 8px rgba(167, 231, 255, 0.6));
+        }
+
+        @keyframes silverShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 100% center; }
+        }
+
+        /* Button Text Layout */
+        .btn-content {
+            flex-grow: 1;
+            text-align: left;
+            padding-left: 20px;
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .btn-line1 {
+            font-size: 15px;
+            color: var(--text-high-contrast);
+            opacity: 0.9;
+            font-weight: 500;
+            letter-spacing: 1px;
+            line-height: 1.2;
+            margin-bottom: 3px;
+        }
+
+        .btn-line2 {
+            font-size: 19px;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Right Arrow Indicator */
+        .btn-arrow {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--matrix-blue);
+            transition: transform 0.3s ease, color 0.3s ease;
+            text-shadow: 0 0 10px rgba(167, 231, 255, 0.9);
+            flex-shrink: 0;
+        }
+
+        .cyber-btn:hover .btn-arrow {
+            transform: translateX(5px);
+            color: #FFFFFF;
+            text-shadow: 0 0 12px var(--matrix-blue);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 520px) {
+            .cyber-btn {
+                width: 100%;
+                min-width: unset;
+                height: 85px;
+                padding: 0 18px;
             }
-            .option-item {
-                font-size: 1rem;
-                padding: 18px 20px;
+
+            .btn-content {
+                padding-left: 14px;
+            }
+
+            .btn-line1 {
+                font-size: 14px;
+            }
+
+            .btn-line2 {
+                font-size: 16px;
+            }
+
+            .tagline-block {
+                font-size: 17px;
+                padding: 0 10px;
+            }
+
+            .brand-title-wrap {
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- Rough-texture filter for the subtitle -->
+    <svg width="0" height="0" style="position: absolute;" aria-hidden="true">
+        <!-- Displaced edges plus punched-out grain for a worn, rough print -->
+        <filter id="rough-text" x="-5%" y="-30%" width="110%" height="160%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="7" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+            <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="3" result="grain"/>
+            <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3 2.2" result="specks"/>
+            <feComposite in="rough" in2="specks" operator="in"/>
+        </filter>
+    </svg>
+
+    <!-- Cyber Scanlines -->
     <div class="scanlines"></div>
+
+    <!-- Matrix Code Rain Canvas -->
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="container">
-        <div class="brand-header">
-            <h1>SHIELD</h1>
-            <div class="slogan">Protocols</div>
-            <div class="subheadline">Identity Armor & Leak Defense for Creators</div>
+    <!-- Main Hero Center Stack -->
+    <main class="hero-container">
+        
+        <!-- Main Title Group -->
+        <div class="brand-title-wrap">
+            <h1 class="title-shield" data-text="SHIELD">SHIELD</h1>
+            <h1 class="title-ap">AP</h1>
         </div>
 
-        <div class="options-container">
-            <div class="option-item" onclick="selectOption('PROTECT MY IP')">
-                <svg class="btn-bg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                    <rect x="9" y="11" width="6" height="5" rx="1"/>
-                    <path d="M10 11V9.5a2 2 0 0 1 4 0V11"/>
-                </svg>
-                <span class="btn-text">Protect my IP</span>
-            </div>
-            <div class="option-item" onclick="selectOption('DELETE LEAKED CONTENT')">
-                <svg class="btn-bg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                    <line x1="4" y1="4" x2="20" y2="20"/>
-                </svg>
-                <span class="btn-text">Delete Leaked Content</span>
-            </div>
-            <div class="option-item" onclick="selectOption('PRINT MONEY W/ PROTOCOLS')">
-                <svg class="btn-bg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-                    <path d="M6 9V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v5"/>
-                    <rect x="6" y="14" width="12" height="8" rx="1"/>
-                    <path d="M12 16v4M10.8 17c0-.5.5-.8 1.2-.8s1.2.3 1.2.8c0 1-1.4 1.1-1.4 1.7 0 .5.5.8 1.2.8s1.2-.3 1.2-.8"/>
-                </svg>
-                <span class="btn-text">Print Money w/ Protocols</span>
-            </div>
-        </div>
-    </div>
+        <!-- Subtitle -->
+        <div class="subtitle">ANTI-AGENT PROTOCOL</div>
 
+        <!-- Tagline Explanation Block -->
+        <div class="tagline-block">
+            <p>AI bots scrape your IP, clone your face, and leak your content in seconds.</p>
+            <p class="slogan">Value your peace. We shield it.</p>
+        </div>
+
+        <!-- Three Stacked Action Buttons -->
+        <div class="button-stack">
+            
+            <!-- Button 1: IP Protection -->
+            <a href="#" class="cyber-btn" role="button">
+                <div class="btn-icon-wrap">
+                    <!-- Shield with Lock Icon -->
+                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <rect x="9" y="10" width="6" height="5" rx="1" fill="currentColor"/>
+                        <path d="M10 10V8.5a2 2 0 0 1 4 0V10" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="btn-content">
+                    <div class="btn-line1">Protect my</div>
+                    <div class="btn-line2">INTELLECTUAL PROPERTY</div>
+                </div>
+                <div class="btn-arrow">&gt;</div>
+            </a>
+
+            <!-- Button 2: Delete Leaked Content -->
+            <a href="#" class="cyber-btn" role="button">
+                <div class="btn-icon-wrap">
+                    <!-- Magnifying Glass with X Icon -->
+                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="10.5" cy="10.5" r="6.5"/>
+                        <line x1="15.5" y1="15.5" x2="21" y2="21" stroke-width="2.5"/>
+                        <line x1="8.5" y1="8.5" x2="12.5" y2="12.5" stroke-width="2"/>
+                        <line x1="12.5" y1="8.5" x2="8.5" y2="12.5" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="btn-content">
+                    <div class="btn-line1">Delete my</div>
+                    <div class="btn-line2">LEAKED Content</div>
+                </div>
+                <div class="btn-arrow">&gt;</div>
+            </a>
+
+            <!-- Button 3: Monetization & Protocols -->
+            <a href="#" class="cyber-btn" role="button">
+                <div class="btn-icon-wrap">
+                    <!-- Cash Bill with Wings Icon -->
+                    <svg class="btn-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Main Banknote -->
+                        <rect x="5" y="8" width="14" height="8" rx="1.5"/>
+                        <circle cx="12" cy="12" r="2"/>
+                        <!-- Left Wing -->
+                        <path d="M5 10C3 8 1 9 1 12c0 2 2 2.5 4 1.5"/>
+                        <!-- Right Wing -->
+                        <path d="M19 10c2-2 4-1 4 2 0 2-2 2.5-4 1.5"/>
+                    </svg>
+                </div>
+                <div class="btn-content">
+                    <div class="btn-line1">Print ca<span class="big-dollar">$</span>h</div>
+                    <div class="btn-line2">w/ PROTOCOLS</div>
+                </div>
+                <div class="btn-arrow">&gt;</div>
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- Matrix Code Rain Script -->
     <script>
-        // Matrix digital rain background
         const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
+        // Opaque context keeps the background solid pitch black
+        const ctx = canvas.getContext('2d', { alpha: false });
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
+        // Same glyph set and 14px grid as the reference matrix background
         const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
         const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+-<>/?\\|';
         const alphabet = katakana + latin;
 
         const fontSize = 14;
-        let columns = Math.floor(canvas.width / fontSize);
+        // Wider spacing than the glyph size keeps the rain airy and less intrusive
+        const colSpacing = 24;
+        const rowSpacing = 22;
+        let columns = 0;
+        let rainDrops = [];
 
-        const rainDrops = [];
-        for (let x = 0; x < columns; x++) {
-            rainDrops[x] = 1;
+        function resizeCanvas() {
+            // Render at device pixel ratio so glyphs stay crisp on retina screens
+            const dpr = window.devicePixelRatio || 1;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            columns = Math.ceil(width / colSpacing);
+            // Staggered start rows so columns don't all begin in unison
+            rainDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
+
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
         }
 
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.08)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-            ctx.fillStyle = '#00ff66';
-            ctx.font = fontSize + 'px monospace';
+        function drawMatrix() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            // Translucent black wash leaves the fading tails
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Re-applied every frame: resizing the canvas resets context state
+            ctx.fillStyle = '#a7e7ff';
+            ctx.font = fontSize + "px 'Share Tech Mono', monospace";
 
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                const x = i * fontSize;
-                const y = rainDrops[i] * fontSize;
+                const x = i * colSpacing;
+                const y = rainDrops[i] * rowSpacing;
 
                 ctx.fillText(text, x, y);
 
-                if (y > canvas.height && Math.random() > 0.975) {
+                if (y > height && Math.random() > 0.975) {
                     rainDrops[i] = 0;
                 }
                 rainDrops[i]++;
             }
         }
 
+        // Same 65ms row cadence as the reference matrix
         setInterval(drawMatrix, 65);
-
-        function selectOption(optionName) {
-            console.log(`Selected: ${optionName}`);
-            // Add action redirection or handshake simulation if desired
-        }
     </script>
 </body>
 </html>
