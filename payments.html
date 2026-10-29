@@ -78,7 +78,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
+            background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.22) 50%);
             background-size: 100% 3px;
             z-index: 2;
             pointer-events: none;
@@ -97,10 +97,13 @@
         }
 
         .back-link {
-            color: var(--ice-blue);
+            font-family: 'JetBrains Mono', monospace;
+            color: #E2F4FF;
             text-decoration: none;
             font-size: 14px;
-            letter-spacing: 1px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            word-spacing: 3px;
             text-shadow: 0 0 8px rgba(167, 231, 255, 0.5);
             transition: color 0.2s ease;
         }
@@ -113,14 +116,17 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 11px;
-            letter-spacing: 2px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            word-spacing: 4px;
             text-transform: uppercase;
-            color: var(--shield-green);
-            padding: 4px 10px;
-            border: 1px solid rgba(var(--shield-green-rgb), 0.45);
+            color: #69FFB4;
+            padding: 6px 12px;
+            border: 1px solid rgba(105, 255, 180, 0.55);
             border-radius: 999px;
-            background: rgba(var(--shield-green-rgb), 0.08);
+            background: rgba(42, 50, 60, 0.92);
         }
 
         .status-dot {
@@ -181,152 +187,176 @@
         }
 
         .subtitle {
-            font-size: 0.95rem;
-            color: var(--blue);
-            letter-spacing: 5px;
+            font-size: 0.98rem;
+            color: #D6E4F0;
+            letter-spacing: 2.5px;
+            word-spacing: 6px;
             text-transform: uppercase;
             font-weight: 700;
             margin-top: 16px;
             margin-bottom: 18px;
-            text-shadow: 0 0 10px rgba(var(--blue-rgb), 0.6);
-            opacity: 0.45;
-            filter: url(#rough-text);
+            text-shadow: 0 0 12px rgba(var(--ice-rgb), 0.45);
+            opacity: 0.95;
         }
 
         .tagline-block {
-            font-size: 16px;
-            line-height: 1.55;
-            color: var(--text);
+            font-size: 16.5px;
+            line-height: 1.6;
+            word-spacing: 2px;
+            color: #F5F7FA;
             max-width: 680px;
             margin: 0 auto;
-            text-shadow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(var(--ice-rgb), 0.2);
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
         }
 
-        /* ---------- TERMINAL SHELL ---------- */
+        /* ---------- TERMINAL SHELL (GREY TONE HIGH-CONTRAST WORKFLOW) ---------- */
         .terminal {
             width: 100%;
             max-width: 780px;
-            margin-top: 36px;
-            padding: 32px 26px;
-            background: rgba(4, 10, 18, 0.86);
-            border: 1px solid rgba(var(--blue-rgb), 0.45);
+            margin-top: 32px;
+            padding: 34px 28px;
+            background: linear-gradient(180deg, rgba(42, 49, 58, 0.96) 0%, rgba(30, 36, 44, 0.98) 100%);
+            border: 1px solid rgba(200, 212, 226, 0.45);
             border-radius: 14px;
-            box-shadow: 0 0 34px rgba(var(--blue-rgb), 0.25), inset 0 0 18px rgba(var(--blue-rgb), 0.08);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 16px 44px rgba(0, 0, 0, 0.75), 0 0 28px rgba(var(--ice-rgb), 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             text-align: left;
         }
 
         .section-label {
-            font-size: 11px;
-            letter-spacing: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            letter-spacing: 1.5px;
+            word-spacing: 5px;
             text-transform: uppercase;
-            color: var(--ice-blue);
+            color: #FFFFFF;
             font-weight: 800;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            padding-left: 10px;
+            border-left: 3px solid var(--ice-blue);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
         }
 
         /* ---------- PLAN SELECTOR ---------- */
         .plan-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-bottom: 24px;
+            gap: 16px;
+            margin-bottom: 26px;
         }
 
         .plan-option {
             position: relative;
-            padding: 18px 16px;
+            padding: 20px 18px;
             border-radius: 10px;
-            background: rgba(0, 0, 0, 0.72);
-            border: 1px solid rgba(var(--blue-rgb), 0.35);
+            background: #343D48;
+            border: 1px solid rgba(210, 220, 232, 0.38);
             color: #FFFFFF;
             cursor: pointer;
             text-align: left;
             font: inherit;
-            transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+            transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease;
         }
 
         .plan-option:hover {
-            border-color: rgba(var(--ice-rgb), 0.7);
+            background: #3C4653;
+            border-color: rgba(255, 255, 255, 0.75);
             transform: translateY(-2px);
         }
 
         .plan-option.is-selected {
-            border: 2px solid var(--ice);
-            background: linear-gradient(135deg, rgba(var(--blue-rgb), 0.22), rgba(0, 0, 0, 0.85));
-            box-shadow: 0 0 24px rgba(var(--blue-rgb), 0.5), inset 0 0 14px rgba(var(--ice-rgb), 0.14);
+            border: 2px solid var(--ice-blue);
+            background: linear-gradient(145deg, #3E4A59 0%, #2F3946 100%);
+            box-shadow: 0 0 22px rgba(var(--ice-rgb), 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         .plan-badge {
             display: inline-block;
-            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
             font-weight: 800;
-            letter-spacing: 2px;
+            letter-spacing: 1.2px;
+            word-spacing: 3px;
             text-transform: uppercase;
-            padding: 3px 8px;
+            padding: 4px 9px;
             border-radius: 4px;
-            margin-bottom: 8px;
-            color: var(--ice);
-            background: rgba(var(--blue-rgb), 0.2);
-            border: 1px solid rgba(var(--ice-rgb), 0.4);
+            margin-bottom: 10px;
+            color: #10161D;
+            background: #D8E6F2;
+            border: 1px solid #FFFFFF;
         }
 
         .plan-badge.save {
-            color: #000000;
-            background: linear-gradient(90deg, var(--silver), var(--ice));
-            border: none;
+            color: #0B1016;
+            background: linear-gradient(90deg, #FFFFFF, var(--ice-blue));
+            border: 1px solid #FFFFFF;
         }
 
         .plan-name {
-            font-size: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.02rem;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 0.4px;
+            word-spacing: 2px;
             color: #FFFFFF;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .plan-price {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--ice-blue);
-            margin-bottom: 6px;
-            text-shadow: 0 0 10px rgba(var(--ice-rgb), 0.5);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
         }
 
         .plan-price span {
-            font-size: 0.82rem;
-            color: #9A9A9A;
-            font-weight: 400;
+            font-size: 0.88rem;
+            color: #E2E8F0;
+            font-weight: 600;
         }
 
         .plan-desc {
-            font-size: 0.82rem;
-            color: #B4BCC4;
-            line-height: 1.45;
+            font-size: 0.88rem;
+            color: #EDF2F7;
+            line-height: 1.55;
+            word-spacing: 1.5px;
         }
 
         /* Protocol Quick-Switch Bar (if user came from a Status / IRL / Aura / Ghost Protocol) */
         .protocol-switch-wrap {
-            margin-bottom: 26px;
+            margin-bottom: 28px;
         }
 
         .protocol-select {
             width: 100%;
-            height: 48px;
-            padding: 0 14px;
+            height: 52px;
+            padding: 0 16px;
             border-radius: 8px;
-            background: #000000;
-            border: 1px solid rgba(var(--ice-rgb), 0.4);
+            background: #36404C;
+            border: 1px solid rgba(220, 230, 240, 0.55);
             color: #FFFFFF;
-            font: inherit;
-            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.92rem;
+            font-weight: 700;
+            word-spacing: 2px;
             outline: none;
             cursor: pointer;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+        }
+
+        .protocol-select option {
+            background: #2B333E;
+            color: #FFFFFF;
+            font-weight: 600;
         }
 
         .protocol-select:focus {
-            border-color: var(--ice);
+            border-color: #FFFFFF;
+            background: #3D4856;
             box-shadow: 0 0 14px rgba(var(--ice-rgb), 0.45);
         }
 
@@ -334,14 +364,14 @@
         .intake-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 16px;
             margin-bottom: 28px;
         }
 
         .field {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
 
         .field.full {
@@ -349,32 +379,40 @@
         }
 
         .field label {
-            font-size: 11px;
-            letter-spacing: 2px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            word-spacing: 3px;
             text-transform: uppercase;
-            color: #B8C2CC;
+            color: #F1F5F9;
         }
 
         .field input {
-            height: 50px;
-            padding: 0 14px;
-            background: #000000;
-            border: 1px solid rgba(var(--ice-rgb), 0.35);
+            height: 52px;
+            padding: 0 16px;
+            background: #36404C;
+            border: 1px solid rgba(220, 230, 240, 0.5);
             border-radius: 8px;
             color: #FFFFFF;
-            font: inherit;
-            font-size: 0.92rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.94rem;
+            font-weight: 600;
+            word-spacing: 2px;
             outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
 
         .field input:focus {
-            border-color: var(--ice);
-            box-shadow: 0 0 12px rgba(var(--ice-rgb), 0.4);
+            background: #3E4957;
+            border-color: #FFFFFF;
+            box-shadow: 0 0 12px rgba(var(--ice-rgb), 0.45);
         }
 
         .field input::placeholder {
-            color: #626A73;
+            color: #CBD5E1;
+            font-weight: 400;
+            opacity: 0.85;
         }
 
         /* ---------- SUMMARY BAR ---------- */
@@ -382,36 +420,41 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 18px;
+            padding: 18px 20px;
             border-radius: 10px;
-            background: rgba(0, 0, 0, 0.85);
-            border: 1px solid rgba(var(--ice-rgb), 0.35);
-            margin-bottom: 24px;
+            background: #384350;
+            border: 1px solid rgba(226, 236, 246, 0.55);
+            margin-bottom: 26px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
         }
 
         .summary-left {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
         }
 
         .summary-plan {
-            font-size: 0.98rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.04rem;
             font-weight: 800;
             color: #FFFFFF;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            word-spacing: 2px;
         }
 
         .summary-note {
-            font-size: 0.78rem;
-            color: #9A9A9A;
+            font-size: 0.86rem;
+            color: #E2E8F0;
+            word-spacing: 2px;
         }
 
         .summary-amount {
-            font-size: 1.65rem;
-            font-weight: 900;
-            color: var(--ice-blue);
-            text-shadow: 0 0 12px rgba(var(--ice-rgb), 0.6);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            text-shadow: 0 0 12px rgba(var(--ice-rgb), 0.55);
         }
 
         /* ---------- DUAL PAYMENT RAILS: BTCPAY & WOMPI ---------- */
@@ -428,10 +471,10 @@
             justify-content: center;
             gap: 6px;
             width: 100%;
-            min-height: 78px;
-            padding: 14px 18px;
+            min-height: 80px;
+            padding: 16px 18px;
             border-radius: 12px;
-            font: inherit;
+            font-family: 'JetBrains Mono', monospace;
             cursor: pointer;
             text-decoration: none;
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
@@ -439,39 +482,40 @@
 
         /* Rail 1: BTCPay Server (Bitcoin / Lightning) */
         .btn-btcpay {
-            background: linear-gradient(135deg, rgba(var(--btc-orange-rgb), 0.18), rgba(0, 0, 0, 0.9));
-            border: 2px solid var(--btc-orange);
+            background: linear-gradient(135deg, #443729 0%, #333B46 100%);
+            border: 2px solid #FFA42E;
             color: #FFFFFF;
-            box-shadow: 0 0 22px rgba(var(--btc-orange-rgb), 0.38), inset 0 0 14px rgba(var(--btc-orange-rgb), 0.12);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 18px rgba(var(--btc-orange-rgb), 0.32);
         }
 
         .btn-btcpay:hover {
             transform: translateY(-3px);
-            background: linear-gradient(135deg, rgba(var(--btc-orange-rgb), 0.28), rgba(0, 0, 0, 0.92));
-            box-shadow: 0 0 32px rgba(var(--btc-orange-rgb), 0.7), inset 0 0 18px rgba(var(--btc-orange-rgb), 0.22);
+            background: linear-gradient(135deg, #52412F 0%, #3B4552 100%);
+            box-shadow: 0 8px 26px rgba(var(--btc-orange-rgb), 0.55);
         }
 
         /* Rail 2: Wompi (Card / Fiat / Instant Gateway) */
         .btn-wompi {
-            background: linear-gradient(90deg, var(--silver), var(--ice));
-            border: 2px solid var(--ice);
-            color: #000000;
-            box-shadow: 0 0 24px rgba(var(--ice-rgb), 0.7);
+            background: linear-gradient(90deg, #E2E8F0, #B8EEFF);
+            border: 2px solid #FFFFFF;
+            color: #0B1017;
+            box-shadow: 0 6px 22px rgba(var(--ice-rgb), 0.5);
         }
 
         .btn-wompi:hover {
             transform: translateY(-3px);
-            background: linear-gradient(90deg, #d8d8d8, #bfe9fa);
-            box-shadow: 0 0 36px rgba(var(--ice-rgb), 0.95);
+            background: linear-gradient(90deg, #F1F5F9, #D1F4FF);
+            box-shadow: 0 8px 30px rgba(var(--ice-rgb), 0.8);
         }
 
         .rail-top {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1rem;
-            font-weight: 900;
-            letter-spacing: 1.5px;
+            font-size: 1.02rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            word-spacing: 3px;
             text-transform: uppercase;
         }
 
@@ -482,21 +526,34 @@
         }
 
         .rail-sub {
-            font-size: 0.76rem;
-            letter-spacing: 1px;
-            opacity: 0.85;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            word-spacing: 2px;
+            opacity: 0.96;
+        }
+
+        .btn-btcpay .rail-sub {
+            color: #FDE6C4;
+        }
+
+        .btn-wompi .rail-sub {
+            color: #1A2430;
         }
 
         .security-foot {
-            margin-top: 22px;
+            margin-top: 24px;
             padding-top: 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.22);
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 10px;
-            font-size: 0.78rem;
-            color: #88929C;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            font-weight: 600;
+            word-spacing: 3px;
+            color: #E2E8F0;
         }
 
         /* ---------- BTCPAY & SETTLEMENT MODAL ---------- */
@@ -504,7 +561,7 @@
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: rgba(0, 0, 0, 0.88);
+            background: rgba(10, 14, 20, 0.86);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             display: none;
@@ -519,36 +576,41 @@
 
         .modal-card {
             width: 100%;
-            max-width: 460px;
-            background: rgba(6, 12, 20, 0.98);
-            border: 2px solid var(--btc-orange);
+            max-width: 470px;
+            background: linear-gradient(180deg, #2D3540 0%, #232A34 100%);
+            border: 2px solid #FFA42E;
             border-radius: 14px;
             padding: 28px 24px;
             text-align: center;
-            box-shadow: 0 0 42px rgba(var(--btc-orange-rgb), 0.45), 0 16px 48px rgba(0, 0, 0, 0.95);
+            box-shadow: 0 0 42px rgba(var(--btc-orange-rgb), 0.38), 0 16px 48px rgba(0, 0, 0, 0.9);
         }
 
         .modal-badge {
-            font-size: 11px;
-            letter-spacing: 3px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            letter-spacing: 1.5px;
+            word-spacing: 4px;
             text-transform: uppercase;
-            color: var(--btc-orange);
+            color: #FFB85C;
             font-weight: 800;
             margin-bottom: 8px;
         }
 
         .modal-title {
-            font-size: 1.3rem;
-            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.32rem;
+            font-weight: 800;
             color: #FFFFFF;
-            letter-spacing: 1.5px;
+            letter-spacing: 0.8px;
+            word-spacing: 3px;
             margin-bottom: 10px;
         }
 
         .modal-desc {
-            font-size: 0.88rem;
-            color: #C0C8D0;
-            line-height: 1.5;
+            font-size: 0.92rem;
+            color: #F1F5F9;
+            line-height: 1.55;
+            word-spacing: 2px;
             margin-bottom: 16px;
         }
 
@@ -565,46 +627,53 @@
         }
 
         .invoice-box {
-            background: #000000;
-            border: 1px solid rgba(var(--btc-orange-rgb), 0.5);
+            background: #36404D;
+            border: 1px solid rgba(255, 184, 92, 0.6);
             border-radius: 8px;
             padding: 12px 14px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             text-align: left;
         }
 
         .invoice-label {
-            font-size: 10px;
-            letter-spacing: 2px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            word-spacing: 3px;
             text-transform: uppercase;
-            color: var(--btc-orange);
-            margin-bottom: 4px;
+            color: #FFD08A;
+            margin-bottom: 5px;
         }
 
         .invoice-val {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
+            font-size: 0.84rem;
+            font-weight: 600;
             color: #FFFFFF;
             word-break: break-all;
+            line-height: 1.45;
         }
 
         .modal-actions {
             display: flex;
             gap: 12px;
             justify-content: center;
+            margin-top: 6px;
         }
 
         .btn-modal-primary {
             flex: 1;
             height: 48px;
             border-radius: 8px;
-            border: 1px solid var(--btc-orange);
-            background: var(--btc-orange);
-            color: #000000;
-            font: inherit;
+            border: 1px solid #FFB85C;
+            background: #FFA024;
+            color: #0B1016;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
-            font-weight: 900;
-            letter-spacing: 1px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            word-spacing: 2px;
             cursor: pointer;
         }
 
@@ -612,43 +681,45 @@
             height: 48px;
             padding: 0 18px;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            background: transparent;
-            color: #B8B8B8;
-            font: inherit;
-            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            background: #36404D;
+            color: #FFFFFF;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.86rem;
+            font-weight: 700;
             cursor: pointer;
         }
 
         /* Wompi Modal Variant */
         .modal-card.wompi-card {
-            border-color: var(--ice);
-            box-shadow: 0 0 42px rgba(var(--ice-rgb), 0.45), 0 16px 48px rgba(0, 0, 0, 0.95);
+            border-color: var(--ice-blue);
+            box-shadow: 0 0 42px rgba(var(--ice-rgb), 0.38), 0 16px 48px rgba(0, 0, 0, 0.9);
         }
 
         .wompi-card .modal-badge {
-            color: var(--ice-blue);
+            color: #C8F2FF;
         }
 
         .wompi-card .invoice-box {
-            border-color: rgba(var(--ice-rgb), 0.45);
+            border-color: rgba(200, 242, 255, 0.55);
         }
 
         .wompi-card .invoice-label {
-            color: var(--ice-blue);
+            color: #C8F2FF;
         }
 
         .btn-wompi-launch {
             flex: 1;
             height: 48px;
             border-radius: 8px;
-            border: 1px solid var(--ice);
-            background: linear-gradient(90deg, var(--silver), var(--ice));
-            color: #000000;
-            font: inherit;
+            border: 1px solid #FFFFFF;
+            background: linear-gradient(90deg, #E2E8F0, #B8EEFF);
+            color: #0B1017;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
-            font-weight: 900;
-            letter-spacing: 1px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            word-spacing: 2px;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
@@ -664,14 +735,16 @@
         }
 
         .wompi-method-pill {
-            padding: 8px 6px;
+            padding: 9px 6px;
             border-radius: 6px;
-            background: rgba(var(--blue-rgb), 0.14);
-            border: 1px solid rgba(var(--ice-rgb), 0.35);
-            font-size: 0.75rem;
+            background: #394554;
+            border: 1px solid rgba(220, 234, 248, 0.55);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
             font-weight: 800;
             color: #FFFFFF;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
+            word-spacing: 2px;
         }
 
         @media (max-width: 700px) {
@@ -845,8 +918,8 @@
                 <div class="invoice-label">BTCPAY INVOICE ID &amp; LIGHTNING PAYLOAD</div>
                 <div class="invoice-val" id="btcpay-invoice-val">lnbc499900n1pshieldap...</div>
             </div>
-            <div class="invoice-box" style="border-color: rgba(143, 216, 242, 0.45);">
-                <div class="invoice-label" style="color: var(--ice);">PRE-ASSIGNED CREATOR AUTH TOKEN</div>
+            <div class="invoice-box" style="border-color: rgba(200, 242, 255, 0.65);">
+                <div class="invoice-label" style="color: #D0F4FF;">PRE-ASSIGNED CREATOR AUTH TOKEN</div>
                 <div class="invoice-val" id="btcpay-auth-token">SHLD-PF-...</div>
             </div>
             <div class="modal-actions">
@@ -875,8 +948,8 @@
                 <div class="invoice-label">WOMPI CHECKOUT LINK</div>
                 <div class="invoice-val" id="wompi-link-val">Connecting to production.wompi.co...</div>
             </div>
-            <div class="invoice-box" style="border-color: rgba(0, 191, 99, 0.45);">
-                <div class="invoice-label" style="color: var(--shield-green);">PRE-ASSIGNED CREATOR AUTH TOKEN</div>
+            <div class="invoice-box" style="border-color: rgba(82, 255, 168, 0.6);">
+                <div class="invoice-label" style="color: #69FFB4;">PRE-ASSIGNED CREATOR AUTH TOKEN</div>
                 <div class="invoice-val" id="wompi-auth-token">SHLD-PF-...</div>
             </div>
             <div class="modal-actions">
