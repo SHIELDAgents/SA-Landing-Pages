@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete My LEAKED Content // SHIELD AP</title>
     <meta name="description" content="We delete leaked creator content from Telegram, Reddit, Discord, EroMe and file hosts. DMCA filed instantly, unlimited takedowns.">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SHIELD AP">
     <!-- Cyber & Monospace Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -174,7 +179,7 @@
             text-shadow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(var(--ice-rgb), 0.2);
         }
 
-        /* ---------- HERO HEADLINE: LEAKED IN WORRY RED ---------- */
+        /* ---------- HERO HEADLINE: LEAKED IN WORRY RED (40% REDUCED GLOW) ---------- */
         .hero-headline {
             margin-top: 46px;
             font-size: clamp(1.8rem, 4.4vw, 2.9rem);
@@ -192,7 +197,7 @@
             text-shadow: 0 0 14px rgba(var(--ice-rgb), 0.6);
         }
 
-        /* Worry Red Alarm Effect: visceral threat pulse & glowing aura */
+        /* Worry Red Alarm Effect: 40% reduced glow intensity */
         .leaked {
             color: var(--worry-red);
             display: inline-block;
@@ -204,13 +209,13 @@
         @keyframes worryAlarmPulse {
             0%, 100% {
                 color: #FF1A24;
-                text-shadow: 0 0 10px rgba(255, 26, 36, 0.9), 0 0 22px rgba(255, 0, 40, 0.65), 0 0 35px rgba(255, 0, 0, 0.4);
-                filter: drop-shadow(0 0 4px rgba(255, 26, 36, 0.6));
+                text-shadow: 0 0 6px rgba(255, 26, 36, 0.54), 0 0 13px rgba(255, 0, 40, 0.39), 0 0 21px rgba(255, 0, 0, 0.24);
+                filter: drop-shadow(0 0 2px rgba(255, 26, 36, 0.36));
             }
             50% {
                 color: #FF4753;
-                text-shadow: 0 0 16px rgba(255, 71, 83, 1), 0 0 32px rgba(255, 0, 50, 0.95), 0 0 50px rgba(255, 0, 0, 0.75);
-                filter: drop-shadow(0 0 12px rgba(255, 0, 40, 0.95));
+                text-shadow: 0 0 10px rgba(255, 71, 83, 0.6), 0 0 19px rgba(255, 0, 50, 0.57), 0 0 30px rgba(255, 0, 0, 0.45);
+                filter: drop-shadow(0 0 7px rgba(255, 0, 40, 0.57));
             }
         }
 
@@ -261,7 +266,7 @@
             text-align: left;
         }
 
-        /* Worry red on numbers with warning glow */
+        /* Worry red on numbers with 40% reduced warning glow */
         .benefit-num {
             color: var(--worry-red);
             font-weight: 900;
@@ -503,6 +508,7 @@
             max-width: 100%;
             border-radius: 10px;
             text-decoration: none;
+            font: inherit;
             font-size: 0.95rem;
             font-weight: 800;
             letter-spacing: 1.2px;
@@ -525,7 +531,7 @@
         }
 
         /* =====================================================================
-           UNTOUCHED ORIGINAL SECTIONS & STYLES AFTER GET CREATOR LICENSE BUTTON
+           PRINTFLOW SEGMENT
            ===================================================================== */
 
         /* PRINT section: ice and green glow at about 33% strength behind the content */
@@ -587,14 +593,6 @@
             box-shadow: 0 0 18px rgba(0, 191, 99, 0.35);
         }
 
-        .offer-tag {
-            font-size: 11px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--shield-green);
-            margin-bottom: 6px;
-        }
-
         .offer-name {
             font-size: 16px;
             font-weight: 800;
@@ -645,6 +643,138 @@
             width: 32px;
             height: 32px;
             flex-shrink: 0;
+        }
+
+        /* Slightly bigger $ replacing S in Start */
+        .big-dollar {
+            display: inline-block;
+            font-size: 1.28em;
+            font-weight: 900;
+            line-height: 1;
+            vertical-align: -0.05em;
+            margin-right: 1px;
+        }
+
+        /* ---------- PWA HOME SCREEN + AUTH TOKEN MODAL ---------- */
+        .pwa-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .pwa-modal-backdrop.is-open {
+            display: flex;
+        }
+
+        .pwa-modal {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(6, 12, 20, 0.98);
+            border: 2px solid var(--ice);
+            border-radius: 14px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(var(--ice-rgb), 0.45), 0 16px 48px rgba(0, 0, 0, 0.95);
+        }
+
+        .pwa-modal-badge {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--shield-green);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .pwa-modal-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .pwa-modal-desc {
+            font-size: 0.9rem;
+            color: #C0C8D0;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .pwa-token-box {
+            background: #000000;
+            border: 1px solid rgba(var(--ice-rgb), 0.45);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .pwa-token-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ice);
+            margin-bottom: 4px;
+        }
+
+        .pwa-token-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #FFFFFF;
+            word-break: break-all;
+            font-weight: 700;
+        }
+
+        .pwa-steps {
+            font-size: 0.85rem;
+            color: #B0B8C0;
+            text-align: left;
+            background: rgba(var(--blue-rgb), 0.1);
+            border-left: 2px solid var(--ice);
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            line-height: 1.55;
+        }
+
+        .pwa-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-pwa-action {
+            flex: 1;
+            height: 48px;
+            border-radius: 8px;
+            border: 1px solid var(--ice);
+            background: linear-gradient(90deg, var(--silver), var(--ice));
+            color: #000000;
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .btn-pwa-close {
+            height: 48px;
+            padding: 0 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: transparent;
+            color: #B8B8B8;
+            font: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
         }
 
         @media (max-width: 720px) {
@@ -809,7 +939,7 @@
             <!-- Card A: Delete Leaks -->
             <div class="card">
                 <h3>Delete My Leaked Content</h3>
-                <div class="card-price">$49.99/month <span style="font-size:0.85rem;font-weight:400;color:#9a9a9a;">or <a href="/payments?plan=delete_yearly">$399/year</a></span></div>
+                <div class="card-price">$49.99/month <span style="font-size:0.85rem;font-weight:400;color:#9a9a9a;">or <a href="/payments">$399/year</a></span></div>
                 <ul class="card-list">
                     <li>30-minute scan + instant DMCA</li>
                     <li>Telegram, Reddit, EroMe & tubes</li>
@@ -817,7 +947,7 @@
                     <li>Unlimited private takedowns</li>
                 </ul>
                 <div class="card-foot">
-                    <button type="button" class="btn-delete" onclick="window.location.href='/payments?plan=delete_monthly'">
+                    <button type="button" class="btn-delete" onclick="window.location.href='/payments'">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                             <rect x="9" y="11" width="6" height="5" rx="1" fill="currentColor"/>
@@ -828,46 +958,39 @@
                 </div>
             </div>
 
-            <!-- Card B: Free Creator License (with PrintFlow replacing Dashboard) -->
+            <!-- Card B: Free Creator License -->
             <div class="card card-highlight">
                 <h3>Get Creator License <span class="card-free">(FREE)</span></h3>
-                <div class="card-desc">Opens the creator PrintFlow. Same protection + become Agent. Your contact details, handle and reference pack are collected there.</div>
+                <div class="card-desc">Unlock the Creator PrintFlow. Top-notch protection + Agent Status. Actually Monetize your audience.</div>
                 <div class="card-foot">
-                    <a href="/creator?free=true" class="btn-card btn-card-premium" role="button">Get Creator License (FREE) &gt;</a>
+                    <button type="button" class="btn-card btn-card-premium" data-pwa-trigger="license">Get Creator License (FREE) &gt;</button>
                 </div>
             </div>
         </section>
 
-        <!-- =====================================================================
-             UNTOUCHED ORIGINAL SECTIONS & SCRIPTS AFTER GET CREATOR LICENSE BUTTON
-             ===================================================================== -->
-
-        <!-- Print cash -->
+        <!-- Print cash / PrintFlow -->
         <section class="print">
             <h2 class="print-title">Leaks Deleted? Now Print.</h2>
 
             <div class="offers">
                 <a class="offer" href="/payments?plan=status_tag">
-                    <div class="offer-tag">Offer 01</div>
                     <div class="offer-name">Status Tag</div>
                     <div class="offer-price">$169</div>
                     <div class="offer-desc">AI photo with you, sell PPV</div>
                 </a>
                 <a class="offer" href="/payments?plan=irl_status">
-                    <div class="offer-tag">Offer 02</div>
                     <div class="offer-name">IRL Status</div>
                     <div class="offer-price">$1.7k+</div>
                     <div class="offer-desc">IRL perception shift</div>
                 </a>
                 <a class="offer" href="/payments?plan=aura_protocol">
-                    <div class="offer-tag">Offer 03</div>
                     <div class="offer-name">Aura Protocol</div>
                     <div class="offer-price">$3.6k+</div>
                     <div class="offer-desc">Full ghost team</div>
                 </a>
             </div>
 
-            <button type="button" class="btn-print" onclick="window.location.href='/payments?plan=aura_protocol'">
+            <button type="button" class="btn-print" data-pwa-trigger="printflow">
                 <!-- Banknote with flying bills -->
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <rect x="3" y="8" width="18" height="10" rx="1.5"/>
@@ -875,11 +998,31 @@
                     <path d="M6 4.5l4-1.5M14 3l4 1.5"/>
                     <path d="M18.5 19.5l2 1.5M5.5 19.5L3.5 21"/>
                 </svg>
-                Start Printing NOW &gt;
+                <span><span class="big-dollar">$</span>tart Printing NOW &gt;</span>
             </button>
         </section>
 
     </main>
+
+    <!-- PWA Home Screen Save & Auth Token Modal -->
+    <div class="pwa-modal-backdrop" id="pwa-modal" role="dialog" aria-modal="true" aria-labelledby="pwa-modal-title">
+        <div class="pwa-modal">
+            <div class="pwa-modal-badge">AUTH TOKEN GENERATED</div>
+            <h3 class="pwa-modal-title" id="pwa-modal-title">Save Creator PrintFlow</h3>
+            <p class="pwa-modal-desc">Your encrypted Creator Auth Token is now active and bound to this device. Save SHIELD AP to your Home Screen to access your PrintFlow &amp; Vault.</p>
+            <div class="pwa-token-box">
+                <div class="pwa-token-label">ACTIVE CREATOR AUTH TOKEN</div>
+                <div class="pwa-token-value" id="pwa-token-display">GENERATING...</div>
+            </div>
+            <div class="pwa-steps" id="pwa-install-instructions">
+                Tap <strong>Add to Home Screen</strong> (in your browser Share / menu bar) to install your standalone PrintFlow app.
+            </div>
+            <div class="pwa-modal-actions">
+                <button type="button" class="btn-pwa-action" id="pwa-copy-btn">Copy Auth Token &amp; Save</button>
+                <button type="button" class="btn-pwa-close" id="pwa-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Matrix Code Rain Script: 70% ice blue, 30% green -->
     <script>
@@ -944,11 +1087,9 @@
         const benefitCells = document.querySelectorAll('.benefit');
 
         benefitCells.forEach((cell) => {
-            // Tap / Click handling for mobile touch & accessibility
             cell.addEventListener('click', (e) => {
                 const isCurrentlyActive = cell.classList.contains('is-active');
 
-                // Close any open popups on other benefits
                 benefitCells.forEach((otherCell) => {
                     if (otherCell !== cell) {
                         otherCell.classList.remove('is-active');
@@ -956,7 +1097,6 @@
                     }
                 });
 
-                // Toggle current
                 if (isCurrentlyActive) {
                     cell.classList.remove('is-active');
                     cell.setAttribute('aria-expanded', 'false');
@@ -966,7 +1106,6 @@
                 }
             });
 
-            // Keyboard accessibility (Enter / Space)
             cell.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -975,13 +1114,88 @@
             });
         });
 
-        // Close popups when clicking or tapping outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.benefit')) {
                 benefitCells.forEach((cell) => {
                     cell.classList.remove('is-active');
                     cell.setAttribute('aria-expanded', 'false');
                 });
+            }
+        });
+
+        // PWA Service Worker & Home Screen Save + Auth Token Generator
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function generateAuthToken(source) {
+            const bytes = new Uint8Array(16);
+            if (window.crypto && window.crypto.getRandomValues) {
+                window.crypto.getRandomValues(bytes);
+            } else {
+                for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
+            }
+            const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+            const token = 'SHLD-PF-' + hex.slice(0, 8) + '-' + hex.slice(8, 16) + '-' + hex.slice(16, 24);
+            try {
+                localStorage.setItem('shield_auth_token', token);
+                localStorage.setItem('shield_auth_source', source || 'pwa');
+                localStorage.setItem('shield_auth_ts', String(Date.now()));
+                document.cookie = 'shield_auth_token=' + token + '; path=/; max-age=31536000; SameSite=Lax';
+            } catch (_) {}
+            return token;
+        }
+
+        const pwaModal = document.getElementById('pwa-modal');
+        const pwaTokenDisplay = document.getElementById('pwa-token-display');
+        const pwaCopyBtn = document.getElementById('pwa-copy-btn');
+        const pwaCloseBtn = document.getElementById('pwa-close-btn');
+
+        async function triggerPwaInstall(source) {
+            const token = generateAuthToken(source);
+            pwaTokenDisplay.textContent = token;
+
+            if (deferredPrompt) {
+                try {
+                    deferredPrompt.prompt();
+                    await deferredPrompt.userChoice;
+                } catch (_) {}
+                deferredPrompt = null;
+            }
+
+            pwaModal.classList.add('is-open');
+        }
+
+        document.querySelectorAll('[data-pwa-trigger]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                triggerPwaInstall(btn.getAttribute('data-pwa-trigger'));
+            });
+        });
+
+        pwaCopyBtn.addEventListener('click', () => {
+            const token = pwaTokenDisplay.textContent;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(token).catch(() => {});
+            }
+            pwaCopyBtn.textContent = 'Token Copied & Saved';
+            setTimeout(() => {
+                pwaCopyBtn.textContent = 'Copy Auth Token & Save';
+            }, 2000);
+        });
+
+        pwaCloseBtn.addEventListener('click', () => {
+            pwaModal.classList.remove('is-open');
+        });
+
+        pwaModal.addEventListener('click', (e) => {
+            if (e.target === pwaModal) {
+                pwaModal.classList.remove('is-open');
             }
         });
     </script>

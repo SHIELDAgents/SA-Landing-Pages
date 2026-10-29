@@ -4,21 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Protect My IP // SHIELD AP</title>
+    <meta name="description" content="AI Labyrinth, scraper bot block, bi-weekly leak scans, auto DMCA takedowns, voice and face clone shield.">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SHIELD AP">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* Cyber blues, darkened a notch for a deeper space feel */
+            /* Cyber blues & ice */
             --blue: #008ad6;
             --blue-deep: #0066bb;
             --blue-bright: #2f86d6;
             --blue-rgb: 0, 138, 214;
             --ice: #8fd8f2;
             --ice-rgb: 143, 216, 242;
+            --ice-blue: #a7e7ff;
             --silver: #C0C0C0;
             --text: #F0F0F0;
+
+            /* Subtle warning yellow for 01-05 package benefits */
+            --warn-yellow: #FFC400;
+            --warn-yellow-rgb: 255, 196, 0;
+
+            /* Shield green for PrintFlow aura & offer hover */
+            --shield-green: #00bf63;
+            --shield-green-rgb: 0, 191, 99;
         }
 
         * {
@@ -28,14 +43,14 @@
         }
 
         html, body {
-            background-color: #000000 !important; /* Always pitch black */
+            min-height: 100%;
+            background-color: #000000 !important;
             color: var(--text);
             font-family: 'Share Tech Mono', monospace;
             overflow-x: hidden;
         }
 
         body {
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -64,38 +79,79 @@
             pointer-events: none;
         }
 
+        .topbar {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 22px 24px 0;
+            text-align: left;
+        }
+
+        .back-link {
+            color: var(--ice-blue);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(167, 231, 255, 0.5);
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #FFFFFF;
+        }
+
         .page {
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 900px;
+            max-width: 860px;
             margin: 0 auto;
-            padding: 60px 20px 30px;
+            padding: 16px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
         }
 
-        /* ---------- HEADER ---------- */
+        /* ---------- HEADER: CENTERED AP WITH METALLIC LUXURY SHINE ---------- */
+        header {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
         .title-ap {
-            font-size: clamp(3.6rem, 9vw, 5.6rem);
+            font-size: clamp(3.8rem, 10vw, 6.2rem);
             font-weight: 900;
-            letter-spacing: 4px;
+            letter-spacing: 6px;
             line-height: 1;
             display: inline-block;
-            background: linear-gradient(135deg, #E0E0E0 0%, #FFFFFF 30%, #8A96A0 50%, #FFFFFF 70%, #E0E0E0 100%);
-            background-size: 200% auto;
+            background: linear-gradient(135deg, 
+                #8E9BA8 0%, 
+                #FFFFFF 18%, 
+                #5D6C7C 36%, 
+                #E8EFF5 52%, 
+                #505F6E 68%, 
+                #FFFFFF 84%, 
+                #8E9BA8 100%
+            );
+            background-size: 240% auto;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 18px rgba(var(--ice-rgb), 0.85)) drop-shadow(0 0 40px rgba(var(--ice-rgb), 0.5));
-            animation: chromeShine 3s linear infinite;
+            color: transparent;
+            filter: drop-shadow(0 0 18px rgba(var(--ice-rgb), 0.85)) drop-shadow(0 0 42px rgba(var(--ice-rgb), 0.45));
+            animation: luxuryMetallicShine 3.4s linear infinite;
         }
 
-        @keyframes chromeShine {
+        @keyframes luxuryMetallicShine {
             0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
+            100% { background-position: 240% center; }
         }
 
-        /* Translucent subtitle, matching index.html */
+        /* Translucent subtitle */
         .subtitle {
             font-size: 0.95rem;
             color: var(--blue);
@@ -105,13 +161,13 @@
             margin-top: 18px;
             margin-bottom: 22px;
             text-shadow: 0 0 10px rgba(var(--blue-rgb), 0.6);
-            opacity: 0.39;
+            opacity: 0.45;
             filter: url(#rough-text);
         }
 
         .tagline-block {
-            font-size: 18px;
-            line-height: 1.5;
+            font-size: 17px;
+            line-height: 1.55;
             color: var(--text);
             max-width: 680px;
             margin: 0 auto;
@@ -119,7 +175,7 @@
             text-shadow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(var(--ice-rgb), 0.2);
         }
 
-        /* ---------- 70%: IP OFFER ---------- */
+        /* ---------- HERO HEADLINE ---------- */
         .hero-headline {
             margin-top: 46px;
             font-size: clamp(1.8rem, 4.4vw, 2.9rem);
@@ -137,65 +193,161 @@
             text-shadow: 0 0 14px rgba(var(--ice-rgb), 0.6);
         }
 
-        /* Benefit cells: interactive, held inside a translucent blue aura */
+        /* ---------- TOP 5 BENEFITS: SUBTLE WARNING YELLOW GLOW + HOVER/TOUCH POP-UP ---------- */
         .benefits {
             max-width: 680px;
+            width: 100%;
             margin: 50px auto 0;
             display: flex;
             flex-direction: column;
             gap: 14px;
+            position: relative;
         }
 
         .benefit {
-            display: flex;
-            gap: 16px;
-            align-items: flex-start;
+            position: relative;
             width: 100%;
-            padding: 16px 20px;
+            padding: 18px 22px;
             text-align: left;
             font: inherit;
             color: inherit;
-            background: linear-gradient(135deg, rgba(var(--blue-rgb), 0.14), rgba(0, 0, 0, 0.55));
-            border: 1px solid rgba(var(--blue-rgb), 0.35);
+            background: linear-gradient(135deg, rgba(var(--warn-yellow-rgb), 0.10), rgba(0, 0, 0, 0.60));
+            border: 1px solid rgba(var(--warn-yellow-rgb), 0.32);
             border-radius: 10px;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 0 18px rgba(var(--blue-rgb), 0.25), inset 0 0 12px rgba(var(--blue-rgb), 0.08);
+            box-shadow: 0 0 16px rgba(var(--warn-yellow-rgb), 0.18), inset 0 0 10px rgba(var(--warn-yellow-rgb), 0.06);
             cursor: pointer;
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
-        }
-
-        .benefit:hover,
-        .benefit:focus-visible,
-        .benefit.is-active {
             outline: none;
-            border-color: rgba(var(--ice-rgb), 0.7);
-            transform: translateY(-3px);
-            box-shadow: 0 0 34px rgba(var(--blue-rgb), 0.6), 0 0 8px rgba(var(--ice-rgb), 0.35), inset 0 0 18px rgba(var(--blue-rgb), 0.22);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease, z-index 0.1s ease;
         }
 
+        .benefit-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .benefit-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        /* Warning yellow numbers with subtle glow */
         .benefit-num {
-            color: var(--ice);
-            font-weight: 800;
-            font-size: 1.1rem;
-            line-height: 1.2;
-            text-shadow: 0 0 8px rgba(var(--ice-rgb), 0.6);
+            color: var(--warn-yellow);
+            font-weight: 900;
+            font-size: 1.15rem;
+            line-height: 1;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+            text-shadow: 0 0 8px rgba(var(--warn-yellow-rgb), 0.45);
         }
 
         .benefit-title {
             color: #FFFFFF;
             font-weight: 800;
             letter-spacing: 1.5px;
-            font-size: 1rem;
+            font-size: 0.98rem;
+            line-height: 1.35;
         }
 
-        .benefit-text {
-            color: #B8B8B8;
-            font-size: 0.9rem;
-            margin-top: 4px;
-            line-height: 1.4;
+        /* Interactive hint beacon */
+        .benefit-indicator {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--warn-yellow);
+            opacity: 0.65;
+            transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
+            flex-shrink: 0;
         }
 
+        /* Hover & Active card state */
+        .benefit:hover,
+        .benefit:focus-visible,
+        .benefit.is-active {
+            z-index: 40;
+            border-color: rgba(var(--warn-yellow-rgb), 0.65);
+            transform: translateY(-3px);
+            box-shadow: 0 0 28px rgba(var(--warn-yellow-rgb), 0.38), 0 0 6px rgba(var(--warn-yellow-rgb), 0.25), inset 0 0 16px rgba(var(--warn-yellow-rgb), 0.14);
+        }
+
+        .benefit:hover .benefit-indicator,
+        .benefit.is-active .benefit-indicator {
+            opacity: 1;
+            color: #FFFFFF;
+            transform: rotate(45deg);
+        }
+
+        /* Pop-up showing description on hover or finger touch */
+        .benefit-popup {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 20px;
+            background: rgba(14, 12, 4, 0.97);
+            border: 1px solid rgba(var(--warn-yellow-rgb), 0.6);
+            border-radius: 10px;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.95), 0 0 22px rgba(var(--warn-yellow-rgb), 0.35), inset 0 0 12px rgba(var(--warn-yellow-rgb), 0.08);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-6px) scale(0.98);
+            transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+            pointer-events: none;
+            text-align: left;
+        }
+
+        .benefit-popup .popup-pointer {
+            position: absolute;
+            top: -7px;
+            left: 32px;
+            width: 12px;
+            height: 12px;
+            background: rgba(14, 12, 4, 0.97);
+            border-left: 1px solid rgba(var(--warn-yellow-rgb), 0.6);
+            border-top: 1px solid rgba(var(--warn-yellow-rgb), 0.6);
+            transform: rotate(45deg);
+        }
+
+        .benefit-popup .popup-badge {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--warn-yellow);
+            font-weight: 800;
+            margin-bottom: 6px;
+            text-shadow: 0 0 6px rgba(var(--warn-yellow-rgb), 0.45);
+        }
+
+        .benefit-popup .popup-text {
+            color: #E2E8F0;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        /* Show pop-up on mouse hover or touch active */
+        .benefit:hover .benefit-popup,
+        .benefit:focus-within .benefit-popup,
+        .benefit.is-active .benefit-popup {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        /* ---------- CTA ROW (MIDDLE): CARD A & CARD B ---------- */
         .cta-row {
             display: flex;
             justify-content: center;
@@ -203,6 +355,7 @@
             gap: 26px;
             flex-wrap: wrap;
             margin-top: 56px;
+            margin-bottom: 72px;
         }
 
         .card {
@@ -237,6 +390,12 @@
             text-shadow: 0 0 8px rgba(var(--blue-rgb), 0.5);
         }
 
+        .card-price a {
+            color: var(--ice);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
         .card-list {
             list-style: none;
             text-align: left;
@@ -244,6 +403,8 @@
             color: #B8B8B8;
             font-size: 0.9rem;
             line-height: 1.7;
+            width: 100%;
+            padding: 0 10px;
         }
 
         .card-list li::before {
@@ -262,15 +423,19 @@
             font-size: 0.9rem;
             line-height: 1.5;
             margin-bottom: 24px;
+            padding: 10px 4px;
         }
 
         .card-foot {
             margin-top: auto;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         /* Middle buttons: 320x64, 2px border, translucent blue */
         .btn-card {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 320px;
@@ -281,9 +446,10 @@
             background: rgba(var(--blue-rgb), 0.1);
             color: #FFFFFF;
             text-decoration: none;
-            font-size: 1rem;
+            font: inherit;
+            font-size: 0.95rem;
             font-weight: 800;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.2px;
             cursor: pointer;
             box-shadow: 0 0 12px rgba(var(--blue-rgb), 0.5), inset 0 0 12px rgba(var(--blue-rgb), 0.12);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
@@ -295,190 +461,265 @@
             box-shadow: 0 0 26px rgba(var(--blue-rgb), 0.85), inset 0 0 16px rgba(var(--blue-rgb), 0.25);
         }
 
-        /* Card B: silver to ice gradient, glow, scale 1.05 */
+        /* Card B: silver to ice gradient, glow, scale 1.04 */
         .btn-card-premium {
             border: 2px solid var(--ice);
             background: linear-gradient(90deg, var(--silver), var(--ice));
             color: #000000;
             box-shadow: 0 0 22px rgba(var(--ice-rgb), 0.75), 0 0 4px var(--ice);
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
 
         .btn-card-premium:hover {
             background: linear-gradient(90deg, #d8d8d8, #bfe9fa);
-            transform: scale(1.08) translateY(-3px);
+            transform: scale(1.07) translateY(-3px);
             box-shadow: 0 0 32px rgba(var(--ice-rgb), 0.95), 0 0 6px var(--ice);
         }
 
-        /* ---------- 30-35%: PRINT CASH W/ PROTOCOLS ---------- */
-        .print-band {
+        /* =====================================================================
+           PRINTFLOW SEGMENT (MATCHING LEAKS.HTML)
+           ===================================================================== */
+
+        .print {
             position: relative;
-            z-index: 2;
-            margin-top: 90px;
-            padding: 80px 20px 70px;
-            border-top: 2px solid var(--silver);
-            background: radial-gradient(ellipse at center, rgba(var(--blue-rgb), 0.06) 0%, rgba(0, 0, 0, 0) 70%), #000000;
-            text-align: center;
+            isolation: isolate;
+            width: 100%;
+            padding: 56px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .print-inner {
-            max-width: 900px;
-            margin: 0 auto;
+        .print::before {
+            content: '';
+            position: absolute;
+            inset: -60px -40px;
+            background: radial-gradient(ellipse at center, rgba(0, 191, 99, 0.33) 0%, rgba(167, 231, 255, 0.2) 35%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .print-headline {
-            font-size: clamp(2rem, 5vw, 3.2rem);
+        .print-title {
+            font-size: clamp(1.7rem, 4vw, 2.4rem);
             font-weight: 900;
             line-height: 1.15;
-            letter-spacing: 2px;
-            color: #FFFFFF;
-            text-shadow: 0 0 14px rgba(var(--ice-rgb), 0.45);
-        }
-
-        .print-headline .line2 {
-            display: block;
-            background: linear-gradient(90deg, #C0C0C0, #FFFFFF, #8fd8f2, #C0C0C0);
-            background-size: 200% auto;
+            margin-bottom: 28px;
+            background: linear-gradient(90deg, #C0C0C0, #FFFFFF);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(var(--ice-rgb), 0.45));
-            animation: chromeShine 4s linear infinite;
-        }
-
-        /* Oversized silver $ standing in for the "s" */
-        .big-dollar {
-            display: inline-block;
-            font-size: 1.52em;
-            font-weight: 800;
-            line-height: 1;
-            vertical-align: -0.12em;
-            margin: -0.15em 1px;
-            padding: 0 2px;
-            background: linear-gradient(110deg, #8c8c8c 0%, #e8e8e8 25%, #ffffff 35%, #a9a9a9 50%, #f2f2f2 65%, #ffffff 72%, #9a9a9a 100%);
-            background-size: 250% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: silverShine 2.8s linear infinite;
-            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 8px rgba(var(--ice-rgb), 0.6));
-        }
-
-        @keyframes silverShine {
-            0% { background-position: 0% center; }
-            100% { background-position: 100% center; }
+            color: transparent;
+            filter: drop-shadow(0 0 14px rgba(167, 231, 255, 0.7));
         }
 
         .offers {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 48px;
+            gap: 14px;
+            width: 100%;
+            max-width: 760px;
+            margin-bottom: 40px;
         }
 
         .offer {
-            padding: 28px 18px;
+            display: block;
+            padding: 18px;
             background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(192, 192, 192, 0.3);
+            border: 1px solid rgba(167, 231, 255, 0.35);
             border-radius: 10px;
-            box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
+            text-align: left;
+            color: #FFFFFF;
+            text-decoration: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .offer-title {
-            color: var(--silver);
+        .offer:hover {
+            border-color: var(--shield-green);
+            box-shadow: 0 0 18px rgba(0, 191, 99, 0.35);
+        }
+
+        .offer-name {
+            font-size: 16px;
             font-weight: 800;
-            letter-spacing: 2px;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            min-height: 2.6em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-bottom: 6px;
         }
 
         .offer-price {
-            margin: 14px 0 8px;
-            font-size: 1.9rem;
-            font-weight: 900;
-            background: linear-gradient(90deg, #FFFFFF, #8fd8f2, #C0C0C0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 6px rgba(var(--ice-rgb), 0.4));
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ice-blue);
+            margin-bottom: 8px;
         }
 
-        .offer-note {
-            color: #9A9A9A;
-            font-size: 0.85rem;
-            line-height: 1.5;
+        .offer-desc {
+            font-size: 13px;
+            line-height: 1.45;
+            color: #9a9a9a;
         }
 
-        /* Final button: 480x88, silver to ice, thicker than the middle buttons */
-        .btn-final {
+        /* Start Printing: 480x88, thicker silver to ice gradient, money icon 32px */
+        .btn-print {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
+            gap: 14px;
             width: 480px;
             max-width: 100%;
             height: 88px;
-            margin-top: 60px;
-            padding: 0 28px;
-            border: 2px solid var(--ice);
+            background: linear-gradient(90deg, #C0C0C0, #a7e7ff);
+            border: 3px solid var(--ice-blue);
             border-radius: 12px;
-            background: linear-gradient(90deg, var(--silver), var(--ice));
             color: #000000;
-            text-decoration: none;
-            font-size: 1.35rem;
+            font: inherit;
+            font-size: 20px;
             font-weight: 900;
             letter-spacing: 2px;
-            box-shadow: 0 0 28px rgba(var(--ice-rgb), 0.8), 0 0 6px var(--ice), 0 8px 24px rgba(0, 0, 0, 0.7);
+            cursor: pointer;
+            box-shadow: 0 0 28px rgba(167, 231, 255, 0.7);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
         }
 
-        /* Shine sweep across the silver button */
-        .btn-final::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
-            animation: buttonSheen 3s ease-in-out infinite;
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(167, 231, 255, 0.95);
         }
 
-        @keyframes buttonSheen {
-            0%, 60% { left: -100%; }
-            100% { left: 140%; }
+        .btn-print svg {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
         }
 
-        .btn-final:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 0 40px rgba(var(--ice-rgb), 1), 0 0 8px var(--ice), 0 12px 28px rgba(0, 0, 0, 0.7);
+        /* Slightly bigger $ replacing S in Start */
+        .big-dollar {
+            display: inline-block;
+            font-size: 1.28em;
+            font-weight: 900;
+            line-height: 1;
+            vertical-align: -0.05em;
+            margin-right: 1px;
         }
 
-        /* The $ on the button: bigger than the caps, with a dark edge so the silver reads on the silver gradient */
-        .btn-final .big-dollar {
-            font-size: 1.9em;
-            background: linear-gradient(110deg, #5a5a5a 0%, #ffffff 30%, #b5b5b5 48%, #ffffff 62%, #6e6e6e 85%, #e6e6e6 100%);
-            background-size: 250% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
+        /* ---------- PWA HOME SCREEN + AUTH TOKEN MODAL ---------- */
+        .pwa-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .footer {
-            position: relative;
-            z-index: 2;
+        .pwa-modal-backdrop.is-open {
+            display: flex;
+        }
+
+        .pwa-modal {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(6, 12, 20, 0.98);
+            border: 2px solid var(--ice);
+            border-radius: 14px;
+            padding: 28px 24px;
             text-align: center;
-            padding: 30px 20px;
-            border-top: 1px solid rgba(var(--blue-rgb), 0.2);
-            color: #6F6F6F;
-            font-size: 0.8rem;
+            box-shadow: 0 0 40px rgba(var(--ice-rgb), 0.45), 0 16px 48px rgba(0, 0, 0, 0.95);
+        }
+
+        .pwa-modal-badge {
+            font-size: 11px;
             letter-spacing: 3px;
             text-transform: uppercase;
+            color: var(--shield-green);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .pwa-modal-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .pwa-modal-desc {
+            font-size: 0.9rem;
+            color: #C0C8D0;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .pwa-token-box {
+            background: #000000;
+            border: 1px solid rgba(var(--ice-rgb), 0.45);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .pwa-token-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ice);
+            margin-bottom: 4px;
+        }
+
+        .pwa-token-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #FFFFFF;
+            word-break: break-all;
+            font-weight: 700;
+        }
+
+        .pwa-steps {
+            font-size: 0.85rem;
+            color: #B0B8C0;
+            text-align: left;
+            background: rgba(var(--blue-rgb), 0.1);
+            border-left: 2px solid var(--ice);
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            line-height: 1.55;
+        }
+
+        .pwa-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-pwa-action {
+            flex: 1;
+            height: 48px;
+            border-radius: 8px;
+            border: 1px solid var(--ice);
+            background: linear-gradient(90deg, var(--silver), var(--ice));
+            color: #000000;
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .btn-pwa-close {
+            height: 48px;
+            padding: 0 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: transparent;
+            color: #B8B8B8;
+            font: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
         }
 
         @media (max-width: 720px) {
@@ -491,9 +732,21 @@
             .btn-card {
                 width: 100%;
             }
-            .btn-final {
-                width: 100%;
-                font-size: 1.1rem;
+            .benefit-popup {
+                left: -10px;
+                right: -10px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cta-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-print {
+                height: 72px;
+                font-size: 17px;
             }
         }
 
@@ -521,9 +774,13 @@
     <div class="scanlines"></div>
     <canvas id="matrix-canvas"></canvas>
 
+    <div class="topbar">
+        <a class="back-link" href="/">&larr; Back to SHIELD AP</a>
+    </div>
+
     <main class="page">
 
-        <!-- HEADER -->
+        <!-- HEADER: CENTERED AP WITH METALLIC LUXURY SHINE -->
         <header>
             <h1 class="title-ap">AP</h1>
             <div class="subtitle">Anti-Agent Protocol</div>
@@ -540,102 +797,166 @@
             </h2>
         </section>
 
-        <!-- TOP 5 BENEFITS: interactive cells -->
+        <!-- TOP 5 BENEFITS: Subtle warning yellow glow + hover/touch pop-up -->
         <section class="benefits">
-            <button type="button" class="benefit" aria-pressed="false">
-                <span class="benefit-num">01</span>
-                <span>
-                    <span class="benefit-title" style="display:block">BI-WEEKLY LEAK SCANS</span>
-                    <span class="benefit-text" style="display:block">2 deep scans/month across 200M+ sites, Telegram, Reddit, Google.</span>
-                </span>
-            </button>
-            <button type="button" class="benefit" aria-pressed="false">
-                <span class="benefit-num">02</span>
-                <span>
-                    <span class="benefit-title" style="display:block">AI LABYRINTH + BOT BLOCK</span>
-                    <span class="benefit-text" style="display:block">Cloudflare-grade. One-click block + decoy pages waste scraper bots.</span>
-                </span>
-            </button>
-            <button type="button" class="benefit" aria-pressed="false">
-                <span class="benefit-num">03</span>
-                <span>
-                    <span class="benefit-title" style="display:block">AUTO DMCA TAKEDOWNS</span>
-                    <span class="benefit-text" style="display:block">Auto notices to host + Google. 4-24h Google delist, 2-4 days site removal. Private filing.</span>
-                </span>
-            </button>
-            <button type="button" class="benefit" aria-pressed="false">
-                <span class="benefit-num">04</span>
-                <span>
-                    <span class="benefit-title" style="display:block">VOICE &amp; FACE CLONE SHIELD</span>
-                    <span class="benefit-text" style="display:block">Under ELVIS + NO FAKES Act. Invisible watermark + content credentials.</span>
-                </span>
-            </button>
-            <button type="button" class="benefit" aria-pressed="false">
-                <span class="benefit-num">05</span>
-                <span>
-                    <span class="benefit-title" style="display:block">OWNED VAULT</span>
-                    <span class="benefit-text" style="display:block">Receipts + files in PWA Vault. No platform can delete.</span>
-                </span>
-            </button>
+            <div class="benefit" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">
+                <div class="benefit-header">
+                    <div class="benefit-left">
+                        <span class="benefit-num">01</span>
+                        <span class="benefit-title">BI-WEEKLY LEAK SCANS</span>
+                    </div>
+                    <span class="benefit-indicator" aria-hidden="true">+</span>
+                </div>
+                <div class="benefit-popup" role="tooltip">
+                    <div class="popup-pointer"></div>
+                    <div class="popup-badge">SHIELD INTEL 01</div>
+                    <div class="popup-text">2 deep scans/month across 200M+ sites, Telegram, Reddit, Google.</div>
+                </div>
+            </div>
+
+            <div class="benefit" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">
+                <div class="benefit-header">
+                    <div class="benefit-left">
+                        <span class="benefit-num">02</span>
+                        <span class="benefit-title">AI LABYRINTH + BOT BLOCK</span>
+                    </div>
+                    <span class="benefit-indicator" aria-hidden="true">+</span>
+                </div>
+                <div class="benefit-popup" role="tooltip">
+                    <div class="popup-pointer"></div>
+                    <div class="popup-badge">SHIELD INTEL 02</div>
+                    <div class="popup-text">Cloudflare-grade. One-click block + decoy pages waste scraper bots.</div>
+                </div>
+            </div>
+
+            <div class="benefit" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">
+                <div class="benefit-header">
+                    <div class="benefit-left">
+                        <span class="benefit-num">03</span>
+                        <span class="benefit-title">AUTO DMCA TAKEDOWNS</span>
+                    </div>
+                    <span class="benefit-indicator" aria-hidden="true">+</span>
+                </div>
+                <div class="benefit-popup" role="tooltip">
+                    <div class="popup-pointer"></div>
+                    <div class="popup-badge">SHIELD INTEL 03</div>
+                    <div class="popup-text">Auto notices to host + Google. 4-24h Google delist, 2-4 days site removal. Private filing.</div>
+                </div>
+            </div>
+
+            <div class="benefit" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">
+                <div class="benefit-header">
+                    <div class="benefit-left">
+                        <span class="benefit-num">04</span>
+                        <span class="benefit-title">VOICE &amp; FACE CLONE SHIELD</span>
+                    </div>
+                    <span class="benefit-indicator" aria-hidden="true">+</span>
+                </div>
+                <div class="benefit-popup" role="tooltip">
+                    <div class="popup-pointer"></div>
+                    <div class="popup-badge">SHIELD INTEL 04</div>
+                    <div class="popup-text">Under ELVIS + NO FAKES Act. Invisible watermark + content credentials.</div>
+                </div>
+            </div>
+
+            <div class="benefit" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">
+                <div class="benefit-header">
+                    <div class="benefit-left">
+                        <span class="benefit-num">05</span>
+                        <span class="benefit-title">OWNED VAULT</span>
+                    </div>
+                    <span class="benefit-indicator" aria-hidden="true">+</span>
+                </div>
+                <div class="benefit-popup" role="tooltip">
+                    <div class="popup-pointer"></div>
+                    <div class="popup-badge">SHIELD INTEL 05</div>
+                    <div class="popup-text">Receipts + files in PWA Vault. No platform can delete.</div>
+                </div>
+            </div>
         </section>
 
         <!-- MIDDLE CTA: two cards, Card B highlighted -->
         <section class="cta-row">
+            <!-- Card A: Protect My IP -->
             <div class="card">
                 <h3>Protect My IP</h3>
-                <div class="card-price">$49.99/month or $399/year</div>
+                <div class="card-price">$49.99/month <span style="font-size:0.85rem;font-weight:400;color:#9a9a9a;">or <a href="/payments">$399/year</a></span></div>
                 <ul class="card-list">
-                    <li>2 scans/mo</li>
-                    <li>Unlimited DMCA</li>
-                    <li>Bot block guide</li>
+                    <li>2 deep leak scans/month</li>
+                    <li>AI Labyrinth + scraper bot block</li>
+                    <li>Unlimited auto DMCA takedowns</li>
+                    <li>Voice &amp; face clone shield + Vault</li>
                 </ul>
                 <div class="card-foot">
-                    <a href="#" class="btn-card" role="button">Start Protection &gt;</a>
+                    <button type="button" class="btn-card" onclick="window.location.href='/payments'">Start Protection &gt;</button>
                 </div>
             </div>
 
+            <!-- Card B: Free Creator License -->
             <div class="card card-highlight">
                 <h3>Get Creator License <span class="card-free">(FREE)</span></h3>
-                <div class="card-desc">Same protection + become Agent / Creator Dashboard.</div>
+                <div class="card-desc">Unlock the Creator PrintFlow. Top-notch protection + Agent Status. Actually Monetize your audience.</div>
                 <div class="card-foot">
-                    <a href="#" class="btn-card btn-card-premium" role="button">Get Creator License (FREE)</a>
+                    <button type="button" class="btn-card btn-card-premium" data-pwa-trigger="license">Get Creator License (FREE) &gt;</button>
                 </div>
             </div>
         </section>
 
-    </main>
-
-    <!-- 30-35%: PRINT CASH W/ PROTOCOLS -->
-    <section class="print-band">
-        <div class="print-inner">
-            <h2 class="print-headline">
-                Protected? NOW
-                <span class="line2">Print ca<span class="big-dollar">$</span>h w/ PROTOCOLS</span>
-            </h2>
+        <!-- PrintFlow segment matching leaks.html -->
+        <section class="print">
+            <h2 class="print-title">Protected? Now Print.</h2>
 
             <div class="offers">
-                <div class="offer">
-                    <div class="offer-title">Status Virtual / Status Stack</div>
-                    <div class="offer-price">$149</div>
-                    <div class="offer-note">For influencers, virtual status tag.</div>
-                </div>
-                <div class="offer">
-                    <div class="offer-title">Status IRL</div>
-                    <div class="offer-price">$1.5k+</div>
-                    <div class="offer-note">IRL perception shift, 1hr attractive person.</div>
-                </div>
-                <div class="offer">
-                    <div class="offer-title">Ghost Protocol</div>
-                    <div class="offer-price">$3.4k+</div>
-                    <div class="offer-note">Full ghost team.</div>
-                </div>
+                <a class="offer" href="/payments?plan=status_tag">
+                    <div class="offer-name">Status Tag</div>
+                    <div class="offer-price">$169</div>
+                    <div class="offer-desc">AI photo with you, sell PPV</div>
+                </a>
+                <a class="offer" href="/payments?plan=irl_status">
+                    <div class="offer-name">IRL Status</div>
+                    <div class="offer-price">$1.7k+</div>
+                    <div class="offer-desc">IRL perception shift</div>
+                </a>
+                <a class="offer" href="/payments?plan=aura_protocol">
+                    <div class="offer-name">Aura Protocol</div>
+                    <div class="offer-price">$3.6k+</div>
+                    <div class="offer-desc">Full ghost team</div>
+                </a>
             </div>
 
-            <a href="/protocols" class="btn-final" role="button"><span class="big-dollar">$</span>tart Printing NOW</a>
-        </div>
-    </section>
+            <button type="button" class="btn-print" data-pwa-trigger="printflow">
+                <!-- Banknote with flying bills -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="8" width="18" height="10" rx="1.5"/>
+                    <circle cx="12" cy="13" r="2.2"/>
+                    <path d="M6 4.5l4-1.5M14 3l4 1.5"/>
+                    <path d="M18.5 19.5l2 1.5M5.5 19.5L3.5 21"/>
+                </svg>
+                <span><span class="big-dollar">$</span>tart Printing NOW &gt;</span>
+            </button>
+        </section>
 
-    <footer class="footer">SHIELD AP // Anti-Agent Protocol</footer>
+    </main>
+
+    <!-- PWA Home Screen Save & Auth Token Modal -->
+    <div class="pwa-modal-backdrop" id="pwa-modal" role="dialog" aria-modal="true" aria-labelledby="pwa-modal-title">
+        <div class="pwa-modal">
+            <div class="pwa-modal-badge">AUTH TOKEN GENERATED</div>
+            <h3 class="pwa-modal-title" id="pwa-modal-title">Save Creator PrintFlow</h3>
+            <p class="pwa-modal-desc">Your encrypted Creator Auth Token is now active and bound to this device. Save SHIELD AP to your Home Screen to access your PrintFlow &amp; Vault.</p>
+            <div class="pwa-token-box">
+                <div class="pwa-token-label">ACTIVE CREATOR AUTH TOKEN</div>
+                <div class="pwa-token-value" id="pwa-token-display">GENERATING...</div>
+            </div>
+            <div class="pwa-steps" id="pwa-install-instructions">
+                Tap <strong>Add to Home Screen</strong> (in your browser Share / menu bar) to install your standalone PrintFlow app.
+            </div>
+            <div class="pwa-modal-actions">
+                <button type="button" class="btn-pwa-action" id="pwa-copy-btn">Copy Auth Token &amp; Save</button>
+                <button type="button" class="btn-pwa-close" id="pwa-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Rain: blue glyphs glowing through space, plus a fainter ice layer; one shared opaque canvas
@@ -647,7 +968,6 @@
         const alphabet = katakana + latin;
 
         const fontSize = 14;
-        // Wide spacing keeps the rain airy and in the background
         const colSpacing = 24;
         const rowSpacing = 22;
         let columns = 0;
@@ -692,31 +1012,135 @@
             const width = window.innerWidth;
             const height = window.innerHeight;
 
-            // Translucent black wash leaves the fading tails
             ctx.shadowBlur = 0;
             ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
             ctx.fillRect(0, 0, width, height);
 
-            // Re-applied every frame: resizing the canvas resets context state
             ctx.font = fontSize + "px 'Share Tech Mono', monospace";
 
-            // Half the previous opacity, so the rain sits further back
             drawDrops(blueDrops, 'rgba(0, 138, 214, 0.25)', 'rgba(0, 138, 214, 0.8)', 0, height);
             drawDrops(iceDrops, 'rgba(143, 216, 242, 0.06)', 'rgba(143, 216, 242, 0.6)', colSpacing / 2, height);
         }
 
-        // Benefit cells: click toggles the activated aura
-        document.querySelectorAll('.benefit').forEach((cell) => {
-            cell.addEventListener('click', () => {
-                const active = cell.classList.toggle('is-active');
-                cell.setAttribute('aria-pressed', String(active));
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        setInterval(drawMatrix, 65);
+
+        // Benefits: pop-up toggle on mouse hover, finger touch, and keyboard
+        const benefitCells = document.querySelectorAll('.benefit');
+
+        benefitCells.forEach((cell) => {
+            cell.addEventListener('click', (e) => {
+                const isCurrentlyActive = cell.classList.contains('is-active');
+
+                benefitCells.forEach((otherCell) => {
+                    if (otherCell !== cell) {
+                        otherCell.classList.remove('is-active');
+                        otherCell.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                if (isCurrentlyActive) {
+                    cell.classList.remove('is-active');
+                    cell.setAttribute('aria-expanded', 'false');
+                } else {
+                    cell.classList.add('is-active');
+                    cell.setAttribute('aria-expanded', 'true');
+                }
+            });
+
+            cell.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    cell.click();
+                }
             });
         });
 
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        // Same 65ms row cadence as index.html
-        setInterval(drawMatrix, 65);
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.benefit')) {
+                benefitCells.forEach((cell) => {
+                    cell.classList.remove('is-active');
+                    cell.setAttribute('aria-expanded', 'false');
+                });
+            }
+        });
+
+        // PWA Service Worker & Home Screen Save + Auth Token Generator
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function generateAuthToken(source) {
+            const bytes = new Uint8Array(16);
+            if (window.crypto && window.crypto.getRandomValues) {
+                window.crypto.getRandomValues(bytes);
+            } else {
+                for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
+            }
+            const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+            const token = 'SHLD-PF-' + hex.slice(0, 8) + '-' + hex.slice(8, 16) + '-' + hex.slice(16, 24);
+            try {
+                localStorage.setItem('shield_auth_token', token);
+                localStorage.setItem('shield_auth_source', source || 'pwa');
+                localStorage.setItem('shield_auth_ts', String(Date.now()));
+                document.cookie = 'shield_auth_token=' + token + '; path=/; max-age=31536000; SameSite=Lax';
+            } catch (_) {}
+            return token;
+        }
+
+        const pwaModal = document.getElementById('pwa-modal');
+        const pwaTokenDisplay = document.getElementById('pwa-token-display');
+        const pwaCopyBtn = document.getElementById('pwa-copy-btn');
+        const pwaCloseBtn = document.getElementById('pwa-close-btn');
+
+        async function triggerPwaInstall(source) {
+            const token = generateAuthToken(source);
+            pwaTokenDisplay.textContent = token;
+
+            if (deferredPrompt) {
+                try {
+                    deferredPrompt.prompt();
+                    await deferredPrompt.userChoice;
+                } catch (_) {}
+                deferredPrompt = null;
+            }
+
+            pwaModal.classList.add('is-open');
+        }
+
+        document.querySelectorAll('[data-pwa-trigger]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                triggerPwaInstall(btn.getAttribute('data-pwa-trigger'));
+            });
+        });
+
+        pwaCopyBtn.addEventListener('click', () => {
+            const token = pwaTokenDisplay.textContent;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(token).catch(() => {});
+            }
+            pwaCopyBtn.textContent = 'Token Copied & Saved';
+            setTimeout(() => {
+                pwaCopyBtn.textContent = 'Copy Auth Token & Save';
+            }, 2000);
+        });
+
+        pwaCloseBtn.addEventListener('click', () => {
+            pwaModal.classList.remove('is-open');
+        });
+
+        pwaModal.addEventListener('click', (e) => {
+            if (e.target === pwaModal) {
+                pwaModal.classList.remove('is-open');
+            }
+        });
     </script>
 </body>
 </html>
