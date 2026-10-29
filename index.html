@@ -237,10 +237,10 @@
             text-shadow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(167, 231, 255, 0.2);
         }
 
-        /* Slogan - neon matrix-green metallic sweep with a subtle glow; no dark shadows */
+        /* Slogan - deep cyber-blue metallic sweep (a shade under the brand blue) with a faint green neon outline */
         .slogan {
             font-weight: 800;
-            background: linear-gradient(110deg, #00a862 0%, #00ff88 20%, #e6fff2 30%, #00ff88 40%, #00c46f 55%, #7dffbc 70%, #e6fff2 78%, #00c46f 90%, #00a862 100%);
+            background: linear-gradient(110deg, #003f85 0%, #0060bf 20%, #5aa3e8 30%, #0060bf 40%, #00509f 55%, #3d86d6 70%, #6fb2f0 78%, #00509f 90%, #003f85 100%);
             background-size: 250% auto;
             -webkit-background-clip: text;
             background-clip: text;
@@ -249,7 +249,8 @@
             /* The inherited dark text-shadow bleeds through the transparent fill and dulls the gold */
             text-shadow: none;
             animation: metalSheen 4s linear infinite;
-            filter: drop-shadow(0 0 4px rgba(0, 255, 136, 0.6)) drop-shadow(0 0 10px rgba(0, 255, 136, 0.35));
+            /* Thin green neon outline: a tight edge glow plus a faint halo */
+            filter: drop-shadow(0 0 0.5px rgba(0, 255, 136, 0.7)) drop-shadow(0 0 5px rgba(0, 255, 136, 0.3));
         }
 
         @keyframes metalSheen {
@@ -792,7 +793,7 @@
         <!-- Tagline Explanation Block -->
         <div class="tagline-block">
             <p>AI bots scrape your IP, clone your face, and leak your content in seconds.</p>
-            <p class="slogan">Value your peace. We shield it.</p>
+            <p class="slogan">Value your Peace. We Shield it.</p>
         </div>
 
         <!-- Three Stacked Action Buttons -->
@@ -971,7 +972,7 @@
         setInterval(drawMatrix, 65);
     </script>
 
-    <!-- Anti-agent scan: 8.64-second neuron swarm loop, then the sample result -->
+    <!-- Anti-agent scan: 11.8-second neuron swarm loop, then the sample result -->
     <script>
         const scanForm = document.getElementById('scan-form');
         const scanBtn = document.getElementById('scan-btn');
@@ -981,46 +982,57 @@
         const scanCtx = scanCanvas.getContext('2d', { alpha: false });
         const scanResult = document.getElementById('scan-result');
 
-        const SCAN_DURATION = 8640; // ms; one full swarm loop per scan
-        const SWARM_NODES = 64;
-        const SWARM_LAYERS = 4;
+        const SCAN_DURATION = 11800; // ms; one full swarm loop per scan
+        const SWARM_NODES = 120;
+        const SWARM_LAYERS = 5;
+        const SWARM_ROWS = SWARM_NODES / SWARM_LAYERS;
+        // Loop schedule as fractions of SCAN_DURATION: search starts at 1.4s, network is symmetric by 9.4s,
+        // holds through 10.9s, then dissolves back into the swarm so the loop seam is seamless
+        const SEARCH_START = 0.12;
+        const SETTLED_AT = 0.8;
+        const DISSOLVE_AT = 0.92;
         // Cold, muted palette: ice, glacier teal, periwinkle
         const SWARM_COLORS = ['#a7e7ff', '#6fd0ff', '#7fa8ff', '#8ff0e0', '#c4d4ff'];
         const lerp = (a, b, k) => a + (b - a) * k;
+        const smooth = (x) => {
+            const c = Math.min(1, Math.max(0, x));
+            return c * c * (3 - 2 * c);
+        };
 
-        // Node layout lives in 0-1 space so the swarm survives resizes
+        // Node layout lives in 0-1 space so the swarm survives resizes.
+        // Target network is mirror-symmetric: layers sit at 0.1..0.9 and rows are evenly spaced around 0.5
         const swarm = Array.from({ length: SWARM_NODES }, (_, i) => {
             const layer = i % SWARM_LAYERS;
             const row = Math.floor(i / SWARM_LAYERS);
-            const rows = SWARM_NODES / SWARM_LAYERS;
             return {
                 layer,
+                row,
                 sx: Math.random(),
                 sy: Math.random(),
-                tx: 0.12 + layer * (0.76 / (SWARM_LAYERS - 1)),
-                ty: 0.12 + ((row + 0.5) / rows) * 0.76,
+                tx: 0.1 + layer * (0.8 / (SWARM_LAYERS - 1)),
+                ty: 0.1 + ((row + 0.5) / SWARM_ROWS) * 0.8,
                 phase: Math.random() * Math.PI * 2,
-                cycles: 1 + Math.floor(Math.random() * 3), // whole cycles per loop so drift repeats seamlessly
+                phase2: Math.random() * Math.PI * 2,
+                cycles: 2 + Math.floor(Math.random() * 4), // whole cycles per loop so motion repeats seamlessly
                 color: SWARM_COLORS[i % SWARM_COLORS.length]
             };
         });
 
-        // Synapses: each node wires to two nodes in the next layer
+        // Synapses: each node wires to its row and the mirrored row in the next layer, keeping the link pattern symmetric
         const swarmEdges = [];
         swarm.forEach((node, i) => {
             if (node.layer === SWARM_LAYERS - 1) return;
-            for (let k = 0; k < 2; k++) {
-                const rowInNext = Math.floor(Math.random() * (SWARM_NODES / SWARM_LAYERS));
-                swarmEdges.push([i, node.layer + 1 + rowInNext * SWARM_LAYERS]);
-            }
+            const next = node.layer + 1;
+            swarmEdges.push([i, next + node.row * SWARM_LAYERS]);
+            swarmEdges.push([i, next + (SWARM_ROWS - 1 - node.row) * SWARM_LAYERS]);
         });
 
-        // 0 = scattered swarm, 1 = fully wired network. Gathers, holds, disperses, and meets itself at the loop seam
+        // 0 = scattered swarm, 1 = symmetric network. Searches for a path, locks in, holds, then disperses
         function swarmAssembly(t) {
-            const ease = (x) => x * x * (3 - 2 * x);
-            if (t < 0.6) return ease(t / 0.6);
-            if (t < 0.8) return 1;
-            return ease((1 - t) / 0.2);
+            if (t < SEARCH_START) return 0;
+            if (t < SETTLED_AT) return smooth((t - SEARCH_START) / (SETTLED_AT - SEARCH_START));
+            if (t < DISSOLVE_AT) return 1;
+            return smooth((1 - t) / (1 - DISSOLVE_AT));
         }
 
         function swarmPosition(node, t, p) {
@@ -1028,11 +1040,13 @@
             const sway = 0.08 * (1 - p * 0.5);
             const sx = node.sx + sway * Math.sin(orbit);
             const sy = node.sy + sway * Math.cos(orbit * 2);
-            // Light jitter while the swarm is loose; settles once the network locks in
-            const jitter = (1 - p) * 0.012 * Math.sin(orbit * 3);
+            // Searching wander peaks mid-route and dies out as each node finds its slot in the symmetric shape
+            const search = 0.14 * Math.sin(Math.PI * p);
+            const wx = search * Math.sin(orbit * 3 + node.phase2);
+            const wy = search * Math.cos(orbit * 2 + node.phase2);
             return {
-                x: Math.min(0.97, Math.max(0.03, lerp(sx, node.tx, p) + jitter)),
-                y: Math.min(0.97, Math.max(0.03, lerp(sy, node.ty, p) + jitter))
+                x: Math.min(0.97, Math.max(0.03, lerp(sx, node.tx, p) + wx)),
+                y: Math.min(0.97, Math.max(0.03, lerp(sy, node.ty, p) + wy))
             };
         }
 
