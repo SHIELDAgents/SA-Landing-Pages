@@ -237,10 +237,10 @@
             text-shadow: 0 0 8px rgba(240, 240, 240, 0.35), 0 0 18px rgba(167, 231, 255, 0.2);
         }
 
-        /* Slogan - bright metallic gold sweep with a subtle glow; no dark shadows */
+        /* Slogan - neon matrix-green metallic sweep with a subtle glow; no dark shadows */
         .slogan {
             font-weight: 800;
-            background: linear-gradient(110deg, #b8860b 0%, #f5d76e 20%, #fffbe6 30%, #f5d76e 40%, #d4af37 55%, #ffe58a 70%, #fff8dc 78%, #d4af37 90%, #b8860b 100%);
+            background: linear-gradient(110deg, #00a862 0%, #00ff88 20%, #e6fff2 30%, #00ff88 40%, #00c46f 55%, #7dffbc 70%, #e6fff2 78%, #00c46f 90%, #00a862 100%);
             background-size: 250% auto;
             -webkit-background-clip: text;
             background-clip: text;
@@ -249,7 +249,7 @@
             /* The inherited dark text-shadow bleeds through the transparent fill and dulls the gold */
             text-shadow: none;
             animation: metalSheen 4s linear infinite;
-            filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.35));
+            filter: drop-shadow(0 0 4px rgba(0, 255, 136, 0.6)) drop-shadow(0 0 10px rgba(0, 255, 136, 0.35));
         }
 
         @keyframes metalSheen {
@@ -494,8 +494,19 @@
             box-shadow: 0 0 24px rgba(167, 231, 255, 0.55);
         }
 
+        /* Channel screenshot fills the thumbnail frame */
+        .intel-thumb img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         /* YouTube-style red play button with white triangle */
         .yt-play {
+            position: relative;
+            z-index: 1;
             width: 64px;
             height: 44px;
             border-radius: 12px;
@@ -847,8 +858,8 @@
 
         <!-- FIELD INTEL: channel briefing from @iTOpsSHIELD -->
         <section class="intel">
-            <!-- Replace this placeholder with a screenshot of the iTOpsSHIELD channel page (banner, avatar, Titan video) -->
             <a class="intel-thumb" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener" aria-label="Open the iTOpsSHIELD channel on YouTube">
+                <img src="iTOps.png" alt="iTOpsSHIELD channel page" loading="lazy">
                 <span class="yt-play">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
                 </span>
@@ -960,7 +971,7 @@
         setInterval(drawMatrix, 65);
     </script>
 
-    <!-- Anti-agent scan: 2-second rain, then the sample result -->
+    <!-- Anti-agent scan: 8.64-second neuron swarm loop, then the sample result -->
     <script>
         const scanForm = document.getElementById('scan-form');
         const scanBtn = document.getElementById('scan-btn');
@@ -970,36 +981,129 @@
         const scanCtx = scanCanvas.getContext('2d', { alpha: false });
         const scanResult = document.getElementById('scan-result');
 
-        // Reuses the glyph set from the main rain script; same green / ice-blue pairing
-        function startScanRain() {
+        const SCAN_DURATION = 8640; // ms; one full swarm loop per scan
+        const SWARM_NODES = 64;
+        const SWARM_LAYERS = 4;
+        // Cold, muted palette: ice, glacier teal, periwinkle
+        const SWARM_COLORS = ['#a7e7ff', '#6fd0ff', '#7fa8ff', '#8ff0e0', '#c4d4ff'];
+        const lerp = (a, b, k) => a + (b - a) * k;
+
+        // Node layout lives in 0-1 space so the swarm survives resizes
+        const swarm = Array.from({ length: SWARM_NODES }, (_, i) => {
+            const layer = i % SWARM_LAYERS;
+            const row = Math.floor(i / SWARM_LAYERS);
+            const rows = SWARM_NODES / SWARM_LAYERS;
+            return {
+                layer,
+                sx: Math.random(),
+                sy: Math.random(),
+                tx: 0.12 + layer * (0.76 / (SWARM_LAYERS - 1)),
+                ty: 0.12 + ((row + 0.5) / rows) * 0.76,
+                phase: Math.random() * Math.PI * 2,
+                cycles: 1 + Math.floor(Math.random() * 3), // whole cycles per loop so drift repeats seamlessly
+                color: SWARM_COLORS[i % SWARM_COLORS.length]
+            };
+        });
+
+        // Synapses: each node wires to two nodes in the next layer
+        const swarmEdges = [];
+        swarm.forEach((node, i) => {
+            if (node.layer === SWARM_LAYERS - 1) return;
+            for (let k = 0; k < 2; k++) {
+                const rowInNext = Math.floor(Math.random() * (SWARM_NODES / SWARM_LAYERS));
+                swarmEdges.push([i, node.layer + 1 + rowInNext * SWARM_LAYERS]);
+            }
+        });
+
+        // 0 = scattered swarm, 1 = fully wired network. Gathers, holds, disperses, and meets itself at the loop seam
+        function swarmAssembly(t) {
+            const ease = (x) => x * x * (3 - 2 * x);
+            if (t < 0.6) return ease(t / 0.6);
+            if (t < 0.8) return 1;
+            return ease((1 - t) / 0.2);
+        }
+
+        function swarmPosition(node, t, p) {
+            const orbit = 2 * Math.PI * t * node.cycles + node.phase;
+            const sway = 0.08 * (1 - p * 0.5);
+            const sx = node.sx + sway * Math.sin(orbit);
+            const sy = node.sy + sway * Math.cos(orbit * 2);
+            // Light jitter while the swarm is loose; settles once the network locks in
+            const jitter = (1 - p) * 0.012 * Math.sin(orbit * 3);
+            return {
+                x: Math.min(0.97, Math.max(0.03, lerp(sx, node.tx, p) + jitter)),
+                y: Math.min(0.97, Math.max(0.03, lerp(sy, node.ty, p) + jitter))
+            };
+        }
+
+        function startScanSwarm() {
             const dpr = window.devicePixelRatio || 1;
             const width = scanStage.clientWidth;
             const height = scanStage.clientHeight;
             scanCanvas.width = Math.floor(width * dpr);
             scanCanvas.height = Math.floor(height * dpr);
             scanCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-            const size = 14;
-            const columns = Math.ceil(width / size);
-            const drops = Array.from({ length: columns }, () => Math.floor(Math.random() * -10));
             scanCtx.fillStyle = '#000000';
             scanCtx.fillRect(0, 0, width, height);
 
-            return setInterval(() => {
-                scanCtx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-                scanCtx.fillRect(0, 0, width, height);
-                scanCtx.font = size + "px 'Share Tech Mono', monospace";
+            const start = performance.now();
+            let frame;
 
-                for (let i = 0; i < drops.length; i++) {
-                    scanCtx.fillStyle = Math.random() < 0.3 ? '#00bf63' : '#a7e7ff';
-                    const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                    scanCtx.fillText(text, i * size, drops[i] * size);
-                    if (drops[i] * size > height && Math.random() > 0.95) {
-                        drops[i] = 0;
-                    }
-                    drops[i]++;
+            function draw(now) {
+                const t = ((now - start) % SCAN_DURATION) / SCAN_DURATION;
+                const p = swarmAssembly(t);
+                const pts = swarm.map((node) => {
+                    const pos = swarmPosition(node, t, p);
+                    return { x: pos.x * width, y: pos.y * height };
+                });
+
+                // Soft trail so the swarm reads as motion rather than flicker
+                scanCtx.globalAlpha = 1;
+                scanCtx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                scanCtx.fillRect(0, 0, width, height);
+
+                // Synapses fade in as the network wires together
+                scanCtx.strokeStyle = 'rgba(167, 231, 255, ' + (0.3 * p).toFixed(3) + ')';
+                scanCtx.lineWidth = 1;
+                scanCtx.beginPath();
+                for (const [a, b] of swarmEdges) {
+                    scanCtx.moveTo(pts[a].x, pts[a].y);
+                    scanCtx.lineTo(pts[b].x, pts[b].y);
                 }
-            }, 60);
+                scanCtx.stroke();
+
+                // Signal pulses travel the synapses once the network is formed
+                if (p > 0.5) {
+                    scanCtx.fillStyle = '#e6fbff';
+                    scanCtx.globalAlpha = 0.9 * p;
+                    for (let k = 0; k < 6; k++) {
+                        const [a, b] = swarmEdges[(k * 37) % swarmEdges.length];
+                        const f = (t * 3 + k / 6) % 1; // integer multiple of the loop, so pulses wrap cleanly
+                        scanCtx.beginPath();
+                        scanCtx.arc(lerp(pts[a].x, pts[b].x, f), lerp(pts[a].y, pts[b].y, f), 1.6, 0, Math.PI * 2);
+                        scanCtx.fill();
+                    }
+                }
+
+                // Nodes: faint halo plus a bright core
+                swarm.forEach((node, i) => {
+                    scanCtx.fillStyle = node.color;
+                    scanCtx.globalAlpha = 0.12;
+                    scanCtx.beginPath();
+                    scanCtx.arc(pts[i].x, pts[i].y, 4.5, 0, Math.PI * 2);
+                    scanCtx.fill();
+                    scanCtx.globalAlpha = 0.85;
+                    scanCtx.beginPath();
+                    scanCtx.arc(pts[i].x, pts[i].y, 1.8, 0, Math.PI * 2);
+                    scanCtx.fill();
+                });
+                scanCtx.globalAlpha = 1;
+
+                frame = requestAnimationFrame(draw);
+            }
+
+            frame = requestAnimationFrame(draw);
+            return () => cancelAnimationFrame(frame);
         }
 
         scanForm.addEventListener('submit', (event) => {
@@ -1011,13 +1115,13 @@
             scanResult.classList.remove('is-visible');
             scanStage.classList.add('is-visible');
 
-            const timer = startScanRain();
+            const stopSwarm = startScanSwarm();
             setTimeout(() => {
-                clearInterval(timer);
+                stopSwarm();
                 scanResult.classList.add('is-visible');
                 scanBtnLabel.textContent = 'Scan Now (FREE)';
                 scanBtn.disabled = false;
-            }, 2000);
+            }, SCAN_DURATION);
         });
     </script>
 </body>
