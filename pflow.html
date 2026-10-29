@@ -28,9 +28,11 @@
             --silver: #C0C0C0;
             --text: #F0F0F0;
 
-            /* SHIELD green & AURA ice/platinum accents */
+            /* SHIELD green & AURA pastel accents */
             --shield-green: #00bf63;
             --shield-green-rgb: 0, 191, 99;
+            --aura-pastel: #F4B8E4;
+            --aura-pastel-rgb: 244, 184, 228;
             --warn-yellow: #FFC400;
             --warn-yellow-rgb: 255, 196, 0;
         }
@@ -239,13 +241,13 @@
         }
 
         .division-shield {
-            border: 1px solid rgba(var(--shield-green-rgb), 0.4);
-            box-shadow: 0 0 28px rgba(var(--shield-green-rgb), 0.14), inset 0 0 18px rgba(var(--shield-green-rgb), 0.05);
+            border: 1px solid rgba(var(--blue-rgb), 0.45);
+            box-shadow: 0 0 28px rgba(var(--blue-rgb), 0.22), inset 0 0 18px rgba(var(--blue-rgb), 0.08);
         }
 
         .division-aura {
-            border: 1px solid rgba(var(--ice-rgb), 0.45);
-            box-shadow: 0 0 28px rgba(var(--ice-rgb), 0.18), inset 0 0 18px rgba(var(--ice-rgb), 0.06);
+            border: 1px solid rgba(var(--aura-pastel-rgb), 0.45);
+            box-shadow: 0 0 28px rgba(var(--aura-pastel-rgb), 0.18), inset 0 0 18px rgba(var(--aura-pastel-rgb), 0.06);
         }
 
         .division-badge {
@@ -260,17 +262,17 @@
         }
 
         .division-shield .division-badge {
-            color: var(--shield-green);
-            background: rgba(var(--shield-green-rgb), 0.12);
-            border: 1px solid rgba(var(--shield-green-rgb), 0.4);
-            text-shadow: 0 0 8px rgba(var(--shield-green-rgb), 0.5);
+            color: var(--ice);
+            background: rgba(var(--blue-rgb), 0.16);
+            border: 1px solid rgba(var(--blue-rgb), 0.5);
+            text-shadow: 0 0 8px rgba(var(--blue-rgb), 0.65);
         }
 
         .division-aura .division-badge {
-            color: var(--ice-blue);
-            background: rgba(var(--ice-rgb), 0.12);
-            border: 1px solid rgba(var(--ice-rgb), 0.4);
-            text-shadow: 0 0 8px rgba(var(--ice-rgb), 0.5);
+            color: var(--aura-pastel);
+            background: rgba(var(--aura-pastel-rgb), 0.12);
+            border: 1px solid rgba(var(--aura-pastel-rgb), 0.45);
+            text-shadow: 0 0 8px rgba(var(--aura-pastel-rgb), 0.55);
         }
 
         .division-title {
@@ -314,23 +316,25 @@
         }
 
         .division-shield .protocol-card {
-            border: 1px solid rgba(var(--shield-green-rgb), 0.32);
+            background: linear-gradient(145deg, rgba(var(--blue-rgb), 0.14), rgba(0, 0, 0, 0.88));
+            border: 1px solid rgba(var(--blue-rgb), 0.38);
         }
 
         .division-shield .protocol-card:hover {
             transform: translateY(-4px);
-            border-color: var(--shield-green);
-            box-shadow: 0 0 24px rgba(var(--shield-green-rgb), 0.35);
+            border-color: var(--ice);
+            box-shadow: 0 0 26px rgba(var(--blue-rgb), 0.55), inset 0 0 14px rgba(var(--blue-rgb), 0.15);
         }
 
         .division-aura .protocol-card {
-            border: 1px solid rgba(var(--ice-rgb), 0.35);
+            background: linear-gradient(145deg, rgba(var(--aura-pastel-rgb), 0.11), rgba(0, 0, 0, 0.88));
+            border: 1px solid rgba(var(--aura-pastel-rgb), 0.35);
         }
 
         .division-aura .protocol-card:hover {
             transform: translateY(-4px);
-            border-color: var(--ice-blue);
-            box-shadow: 0 0 24px rgba(var(--ice-rgb), 0.45);
+            border-color: var(--aura-pastel);
+            box-shadow: 0 0 26px rgba(var(--aura-pastel-rgb), 0.45), inset 0 0 14px rgba(var(--aura-pastel-rgb), 0.14);
         }
 
         .protocol-name {
@@ -349,13 +353,13 @@
         }
 
         .division-shield .protocol-price {
-            color: var(--shield-green);
-            text-shadow: 0 0 10px rgba(var(--shield-green-rgb), 0.45);
+            color: var(--ice);
+            text-shadow: 0 0 10px rgba(var(--blue-rgb), 0.6);
         }
 
         .division-aura .protocol-price {
-            color: var(--ice-blue);
-            text-shadow: 0 0 10px rgba(var(--ice-rgb), 0.5);
+            color: var(--aura-pastel);
+            text-shadow: 0 0 10px rgba(var(--aura-pastel-rgb), 0.55);
         }
 
         .protocol-desc {
