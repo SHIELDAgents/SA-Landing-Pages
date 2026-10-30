@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrintFlow // My IP Protected</title>
+<link rel="manifest" href="/app/manifest.json">
+<meta name="theme-color" content="#00ff88">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Printflow">
+<link rel="apple-touch-icon" href="/app/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/app/app.css">
+</head>
+<body data-page="myip">
+<main class="wrap">
+
+  <section class="banner">
+    <h1>My IP Protected for <span id="h">@handle</span> <span style="color:var(--neon)">&#10004;</span></h1>
+    <p><span class="tier" id="tier">FREE TIER</span>Early Nov Access &middot; PrintFlow</p>
+  </section>
+
+  <!-- Card 1: Free Intensive Scans -->
+  <article class="card">
+    <h2><span>Free Intensive Scans Every 3 Days</span><span class="tag">5 sources</span></h2>
+    <p class="muted">Reddit Leak Repost Index &middot; URLScan Live Web Crawl &middot; Public Scraper &middot; HackerNews / MediaWiki &middot; Social Telemetry (IG, TikTok, X, YT)</p>
+    <div class="grid">
+      <div class="stat"><small>Last scan</small><strong id="sLast" style="font-size:13px">never</strong></div>
+      <div class="stat"><small>Scrapes today</small><strong id="sScr">0</strong></div>
+      <div class="stat"><small>Domains</small><strong id="sDom">0</strong></div>
+      <div class="stat"><small>Leak threads</small><strong id="sLeak">0</strong></div>
+      <div class="stat"><small>Owed</small><strong id="sOwed">$0.00</strong></div>
+      <div class="stat"><small>Next scan</small><strong id="sNext" style="font-size:13px">-</strong></div>
+    </div>
+    <button class="btn" id="btnScan">Run First Scan Free</button>
+    <p class="muted" style="margin-top:10px">Free every 3 days. Monthly $49.99 scans daily. Annual $399 scans every 6 hours.</p>
+  </article>
+
+  <!-- Card 2: Free Vault Retention -->
+  <article class="card">
+    <h2><span>Free Vault Retention</span><span class="tag" id="vTag">Vault empty</span></h2>
+    <p class="muted">Treasury: 30 sec video, face picture, 30 sec voice, links (YouTube, Instagram, OnlyFans). Proof for the TAKE IT DOWN Act.</p>
+    <div class="row" style="margin:12px 0">
+      <div><label>Video (30s)</label><input type="file" id="fVideo" accept="video/*"></div>
+      <div><label>Face picture</label><input type="file" id="fPic" accept="image/*"></div>
+      <div><label>Voice (30s)</label><input type="file" id="fVoice" accept="audio/*"></div>
+    </div>
+    <label>Links (YouTube, Instagram, OnlyFans)</label>
+    <input id="vLinks" placeholder="https://youtube.com/..., https://onlyfans.com/...">
+    <button class="btn" id="btnVault" style="margin-top:12px">Upload to Vault</button>
+    <p class="muted" id="vNote" style="margin-top:8px"></p>
+  </article>
+
+  <!-- Card 3: Free Shield Bolt -->
+  <article class="card">
+    <h2><span>Free Shield Bolt Auto Snapshot</span><span class="tag" id="bTag">No website</span></h2>
+    <p class="muted">Bolt grabs fast, before billions of bots scrape. Vault stores. A Worker snapshots your HTML and images to the R2 Vault every 3 days.</p>
+    <div class="row" style="margin-top:12px">
+      <input id="bUrl" type="url" placeholder="https://yourwebsite.com">
+      <button class="btn" id="btnBolt">Add Website Free</button>
+    </div>
+  </article>
+
+  <!-- Paywall -->
+  <section class="card lock">
+    <h2><span>Pay Per Crawl Protocol &middot; Dec 1st</span><span class="tag" style="border-color:var(--red);color:var(--red)">Locked</span></h2>
+    <p class="muted" style="color:#d1d5db">Get paid when AI bots crawl you, plus 48h TAKE IT DOWN Act auto filing.</p>
+    <a class="btn red" href="/paymentsap.html" style="margin-top:12px">Upgrade $49.99/mo Sovereign</a>
+  </section>
+</main>
+
+<script src="/app/app.js"></script>
+<script>
+const $ = PF.$, DAY = 864e5, SCAN_KEY = 'pf_scan', VAULT_KEY = 'pf_vault';
+const load = (k) => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (_) { return null; } };
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function render() {
+  const u = PF.store.user;
+  $('#h').textContent = '@' + (u.handle || 'handle');
+  $('#tier').textContent = (u.tier || 'free').toUpperCase().replace('_', ' ') + ' TIER';
+  const s = load(SCAN_KEY);
+  if (s) {
+    $('#sLast').textContent = new Date(s.at).toLocaleString();
+    $('#sScr').textContent = s.scrapes; $('#sDom').textContent = s.domains;
+    $('#sLeak').textContent = s.leaks; $('#sOwed').textContent = '$' + s.owed;
+    $('#btnScan').textContent = 'Run Scan Again';
+  }
+  const v = load(VAULT_KEY);
+  if (v) { $('#vTag').textContent = 'Vault Active'; $('#vNote').textContent = 'Saved: ' + v.items.map(esc).join(', ') + ' (pending cloud sync)'; }
+  if (u.website_link) { $('#bUrl').value = u.website_link; $('#bTag').textContent = 'Bolt active'; }
+}
+
+function countdown() {
+  const s = load(SCAN_KEY);
+  if (!s) { $('#sNext').textContent = 'run first scan'; return; }
+  const left = s.at + 3 * DAY - Date.now();
+  if (left <= 0) { $('#sNext').textContent = 'due now'; return; }
+  $('#sNext').textContent = Math.floor(left / DAY) + 'd ' + Math.floor(left % DAY / 36e5) + 'h ' + Math.floor(left % 36e5 / 6e4) + 'm';
+}
+
+$('#btnScan').onclick = async () => {
+  const handle = (PF.store.user.handle || '').replace(/^@+/, '');
+  if (!handle) { PF.toast('Set your handle in the license pop-up first'); return PF.openModal(); }
+  const b = $('#btnScan'); b.disabled = true; b.textContent = 'Scanning 5 sources...';
+  try {
+    const [d] = await Promise.all([
+      fetch('/api/shield-scan?platform=instagram&handle=' + encodeURIComponent(handle)).then((r) => r.json()),
+      new Promise((r) => setTimeout(r, 10000))
+    ]);
+    if (d.exists === false) PF.toast('Handle not found, check spelling');
+    else {
+      localStorage.setItem(SCAN_KEY, JSON.stringify({
+        at: Date.now(), scrapes: d.scrapes_today || 0, domains: (d.detected_locations || []).length,
+        leaks: d.leaks_found || 0, owed: d.estimated_owed || '0.00'
+      }));
+      PF.toast('Scan complete');
+    }
+  } catch (_) { PF.toast('Scan interrupted, try again'); }
+  b.disabled = false; b.textContent = 'Run Scan Again'; render(); countdown();
+};
+
+$('#btnVault').onclick = () => {
+  const items = ['fVideo', 'fPic', 'fVoice'].map((id) => $('#' + id).files[0]).filter(Boolean).map((f) => f.name);
+  const links = $('#vLinks').value.split(',').map((l) => l.trim()).filter(Boolean);
+  if (!items.length && !links.length) return PF.toast('Add a file or link first');
+  localStorage.setItem(VAULT_KEY, JSON.stringify({ items: items.concat(links), at: Date.now() }));
+  PF.toast('Vault updated'); render();
+};
+
+$('#btnBolt').onclick = () => {
+  const url = $('#bUrl').value.trim();
+  if (!/^https?:\/\/.+\..+/.test(url)) return PF.toast('Enter a full website URL');
+  PF.store.setUser({ website_link: url }); PF.toast('Shield Bolt armed: snapshots every 3 days'); render();
+};
+
+document.addEventListener('pf:ready', render);
+setInterval(countdown, 30000); countdown();
+</script>
+</body>
+</html>

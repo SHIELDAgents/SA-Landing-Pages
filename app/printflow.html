@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrintFlow // Print With Protocols</title>
+<link rel="manifest" href="/app/manifest.json">
+<meta name="theme-color" content="#00ff88">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Printflow">
+<link rel="apple-touch-icon" href="/app/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/app/app.css">
+</head>
+<body data-page="printflow">
+<main class="wrap">
+
+  <section class="banner">
+    <h1>PrintFlow</h1>
+    <p>Pick the services you sell, set your own prices and availability. Jobs only reach you for what you check.</p>
+  </section>
+
+  <section class="card" style="border-color:var(--gold)">
+    <h2><span style="color:var(--gold)">70% YOU / 30% SHIELD</span><span class="tag" style="border-color:var(--gold);color:var(--gold)">Auto split</span></h2>
+    <p class="muted">A customer buys a $100 status tag: $70 goes to you, $30 to Shield, no human involved. Paid to your BTC address or fiat account.</p>
+  </section>
+
+  <section class="card">
+    <h2><span>Virtual Protocols</span><span class="tag">You set the price</span></h2>
+    <div class="proto"><label><input type="checkbox" id="c_status" checked>Status Protocols: status tag</label>
+      <span>$<input type="number" id="p_status" value="100" min="1"></span></div>
+    <div class="proto"><label><input type="checkbox" id="c_ai" checked>AI picture with fan</label>
+      <span>$<input type="number" id="p_ai" value="50" min="1"></span></div>
+    <div class="proto"><label><input type="checkbox" id="c_peace" checked>Peace Protocols</label>
+      <span>$<input type="number" id="p_peace" value="139" min="1"></span></div>
+    <div class="proto"><label><input type="checkbox" id="c_ppc">Pay Per Crawl Protocol (Dec 1st)</label><span class="muted">Auto toll</span></div>
+    <label class="muted" style="text-transform:none;display:flex;gap:8px;margin-top:10px;color:var(--muted)">
+      <input type="checkbox" id="onlyTwo" style="width:16px;height:16px;accent-color:var(--neon)">I only do status tags and peace protocols</label>
+  </section>
+
+  <section class="card">
+    <h2><span>IRL Availability</span><span class="tag">Dates and times matter</span></h2>
+    <div class="row">
+      <div><label>IRL</label><select id="irl"><option value="0">Virtual only</option><option value="1">IRL available</option></select></div>
+      <div><label>City</label><input id="city" placeholder="City"></div>
+      <div><label>Dates / times</label><input id="dates" placeholder="e.g. Fri-Sun evenings"></div>
+      <div><label>IRL price (USD)</label><input id="p_irl" type="number" min="1" placeholder="Your rate"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span>Your 70% Payout</span></h2>
+    <div class="row">
+      <div><label>BTC address</label><input id="btc" placeholder="bc1..."></div>
+      <div><label>Fiat account / Wompi</label><input id="fiat" placeholder="Account or Wompi ID"></div>
+    </div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="save">Save</button></div>
+    <p class="muted" id="split" style="margin-top:10px"></p>
+  </section>
+</main>
+
+<script src="/app/app.js"></script>
+<script>
+const $ = PF.$, KEY = 'pf_services';
+const IDS = ['c_status', 'c_ai', 'c_peace', 'c_ppc', 'onlyTwo', 'p_status', 'p_ai', 'p_peace', 'irl', 'city', 'dates', 'p_irl', 'btc', 'fiat'];
+
+function load() {
+  let s = {}; try { s = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (_) {}
+  IDS.forEach((id) => {
+    if (!(id in s)) return;
+    const el = $('#' + id);
+    if (el.type === 'checkbox') el.checked = !!s[id]; else el.value = s[id];
+  });
+  split();
+}
+
+function split() {
+  const p = Number($('#p_status').value) || 0;
+  $('#split').textContent = 'Status tag at $' + p.toFixed(2) + ': you $' + (p * .7).toFixed(2) + ' / Shield $' + (p * .3).toFixed(2);
+}
+
+$('#onlyTwo').onchange = (e) => {
+  if (!e.target.checked) return;
+  $('#c_status').checked = true; $('#c_peace').checked = true; $('#c_ai').checked = false; $('#c_ppc').checked = false;
+};
+['p_status'].forEach((id) => $('#' + id).addEventListener('input', split));
+
+$('#save').onclick = () => {
+  const s = {};
+  IDS.forEach((id) => { const el = $('#' + id); s[id] = el.type === 'checkbox' ? el.checked : el.value; });
+  localStorage.setItem(KEY, JSON.stringify(s));
+  PF.store.setUser({ location_city: s.city, payout: { btc: s.btc, fiat: s.fiat } });
+  PF.toast('Saved. Jobs match what you checked.');
+};
+document.addEventListener('DOMContentLoaded', load);
+</script>
+</body>
+</html>

@@ -15,3 +15,6 @@
 /checkout                     /paymentsap.html  302
 /payments                     /paymentsap.html  302
 /payments.html                /paymentsap.html  302
+
+# PrintFlow PWA: start_url /app opens page 1
+/app   /app/myip.html  200

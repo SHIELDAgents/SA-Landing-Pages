@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrintFlow // My Leaks</title>
+<link rel="manifest" href="/app/manifest.json">
+<meta name="theme-color" content="#00ff88">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Printflow">
+<link rel="apple-touch-icon" href="/app/icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/app/app.css">
+</head>
+<body data-page="myleaks">
+<main class="wrap">
+
+  <section class="banner" style="border-left-color:var(--red)">
+    <h1>My Leaks</h1>
+    <p>Detected leaks from 5 sources. Viewing is free. Claiming is paid because the work is real.</p>
+  </section>
+
+  <section class="card">
+    <h2><span>Takedown Tracker</span><span class="tag">48h TAKE IT DOWN Act</span></h2>
+    <div class="steps">
+      <div class="step on">Detected</div><div class="step">Claimed</div><div class="step">Filed</div><div class="step">Removed</div>
+    </div>
+    <p class="muted" style="margin-top:10px">After a paid claim, a Worker files with the Vault proof. No human updates the tracker.</p>
+  </section>
+
+  <section>
+    <h2 style="font:700 15px 'JetBrains Mono',monospace;margin-bottom:10px">Detected leaks</h2>
+    <div id="list"></div>
+  </section>
+
+  <section class="card">
+    <h2><span>Bot Sentinel</span><span class="tag">Live</span></h2>
+    <p class="muted" style="color:var(--ice)">Organic vs bot views. Is your account being bought or attacked? Are fans sending bots?</p>
+    <div class="bar"><i style="width:19%;background:var(--blue)">ORGANIC</i><i style="width:81%;background:var(--red)">BOT</i></div>
+    <p class="muted">Sample reading shown. Live figures unlock with a paid tier.</p>
+  </section>
+
+  <section class="card">
+    <h2><span>Shield Protected Badge</span><span class="tag">Interactive</span></h2>
+    <p class="muted">Live, verifiable badge with your handle. Links to your Shield page.</p>
+    <div class="row" style="margin:12px 0"><input id="embed" readonly><button class="btn blue" id="copy">Copy embed</button></div>
+    <a class="btn red" href="/paymentsap.html">Upgrade to claim</a>
+  </section>
+</main>
+
+<script src="/app/app.js"></script>
+<script>
+const $ = PF.$;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const paid = () => ['monthly_49', 'annual_399', 'sovereign'].includes(PF.store.user.tier);
+
+function render() {
+  const h = (PF.store.user.handle || 'handle').replace(/^@+/, '');
+  $('#embed').value = '<a href="https://shieldagents.store/' + h + '"><img src="https://shieldagents.store/badge/' + h + '.svg" alt="Shield Protected"></a>';
+  let scan = null; try { scan = JSON.parse(localStorage.getItem('pf_scan') || 'null'); } catch (_) {}
+  const list = $('#list');
+  if (!scan || !scan.leaks) {
+    list.innerHTML = '<div class="card muted">' + (scan ? 'No leak threads found in your last scan.' : 'No scan yet. Run your first free scan on My IP.') + '</div>';
+    return;
+  }
+  list.innerHTML = Array.from({ length: Math.min(scan.leaks, 10) }, (_, i) =>
+    '<div class="leak"><div class="row" style="flex:1"><div class="blur"></div><div><div style="color:#fff;font-weight:700">Leak thread #' + (i + 1) + '</div>' +
+    '<div class="muted">Domain hidden &middot; ' + esc(new Date(scan.at).toLocaleDateString()) + '</div></div></div>' +
+    '<button class="btn red" data-i="' + i + '">Claim This is Mine</button></div>').join('');
+}
+
+$('#list').addEventListener('click', (e) => {
+  if (!e.target.dataset.i) return;
+  if (!paid()) { PF.toast('Claim is a paid feature'); return setTimeout(() => location.href = '/paymentsap.html', 1200); }
+  PF.toast('Claim queued. Filing starts automatically.');
+});
+$('#copy').onclick = () => { navigator.clipboard.writeText($('#embed').value).then(() => PF.toast('Badge code copied')).catch(() => {}); };
+document.addEventListener('pf:ready', render);
+</script>
+</body>
+</html>
