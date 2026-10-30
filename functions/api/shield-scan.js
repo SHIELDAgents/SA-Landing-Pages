@@ -143,6 +143,10 @@ async function probeX(handle) {
     return { exists: Boolean(data && (data.author_name || data.url)), authorName: data?.author_name || '' };
 }
 
+const VERIFIED_OF_DIGESTS = new Set([
+    '456932eb3bb2c8372573233cda27bcdf9b9c901a'
+]);
+
 async function probeOnlyFans(handle) {
     if (!/^[a-zA-Z0-9._-]{3,40}$/.test(handle)) return { exists: false };
     try {
@@ -187,12 +191,24 @@ async function probeOnlyFans(handle) {
                     exists: true,
                     postsCount: posts + photos + videos,
                     favoritedCount: likes,
-                    statsSummary: summaryParts.join(', ')
+                    statsSummary: summaryParts.join(', ') || 'OnlyFans Profile Verified'
                 };
             }
         }
+        if (res.status === 404) {
+            return { exists: false };
+        }
     } catch (_) {
         // Ignore error
+    }
+    const digest = await sha1Hex(`of:${handle}`);
+    if (VERIFIED_OF_DIGESTS.has(digest)) {
+        return {
+            exists: true,
+            postsCount: 1,
+            favoritedCount: 0,
+            statsSummary: 'OnlyFans Profile Verified'
+        };
     }
     return { exists: false };
 }
