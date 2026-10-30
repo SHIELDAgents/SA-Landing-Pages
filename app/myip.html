@@ -71,32 +71,36 @@
 
 <script src="/app/app.js"></script>
 <script>
-const $ = PF.$, DAY = 864e5, SCAN_KEY = 'pf_scan', VAULT_KEY = 'pf_vault';
-const load = (k) => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (_) { return null; } };
+const $ = PF.$, DAY = 864e5;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 function render() {
   const u = PF.store.user;
   $('#h').textContent = '@' + (u.handle || 'handle');
   $('#tier').textContent = (u.tier || 'free').toUpperCase().replace('_', ' ') + ' TIER';
-  const s = load(SCAN_KEY);
-  if (s) {
-    $('#sLast').textContent = new Date(s.at).toLocaleString();
+  const s = u.scan_summary;
+  if (s && u.last_scan_at) {
+    $('#sLast').textContent = new Date(u.last_scan_at.replace(' ', 'T') + 'Z').toLocaleString();
     $('#sScr').textContent = s.scrapes; $('#sDom').textContent = s.domains;
-    $('#sLeak').textContent = s.leaks; $('#sOwed').textContent = '$' + s.owed;
+    $('#sLeak').textContent = s.leaks; $('#sOwed').textContent = '$' + (s.owed || '0.00');
     $('#btnScan').textContent = 'Run Scan Again';
   }
-  const v = load(VAULT_KEY);
-  if (v) { $('#vTag').textContent = 'Vault Active'; $('#vNote').textContent = 'Saved: ' + v.items.map(esc).join(', ') + ' (pending cloud sync)'; }
+  $('#vTag').textContent = u.vault_status === 'active' ? 'Vault Active' : 'Vault empty';
   if (u.website_link) { $('#bUrl').value = u.website_link; $('#bTag').textContent = 'Bolt active'; }
+  countdown();
 }
 
 function countdown() {
-  const s = load(SCAN_KEY);
-  if (!s) { $('#sNext').textContent = 'run first scan'; return; }
-  const left = s.at + 3 * DAY - Date.now();
-  if (left <= 0) { $('#sNext').textContent = 'due now'; return; }
-  $('#sNext').textContent = Math.floor(left / DAY) + 'd ' + Math.floor(left % DAY / 36e5) + 'h ' + Math.floor(left % 36e5 / 6e4) + 'm';
+  const u = PF.store.user;
+  if (!u.last_scan_at) { $('#sNext').textContent = 'run first scan'; return; }
+  const left = new Date(u.last_scan_at.replace(' ', 'T') + 'Z').getTime() + 3 * DAY - Date.now();
+  $('#sNext').textContent = left <= 0 ? 'due now' :
+    Math.floor(left / DAY) + 'd ' + Math.floor(left % DAY / 36e5) + 'h ' + Math.floor(left % 36e5 / 6e4) + 'm';
+}
+
+async function refresh() {
+  const r = await PF.api('/api/verify-token');
+  if (r.user) { localStorage.setItem('shield_user', JSON.stringify(r.user)); render(); }
 }
 
 $('#btnScan').onclick = async () => {
@@ -110,32 +114,37 @@ $('#btnScan').onclick = async () => {
     ]);
     if (d.exists === false) PF.toast('Handle not found, check spelling');
     else {
-      localStorage.setItem(SCAN_KEY, JSON.stringify({
-        at: Date.now(), scrapes: d.scrapes_today || 0, domains: (d.detected_locations || []).length,
-        leaks: d.leaks_found || 0, owed: d.estimated_owed || '0.00'
-      }));
-      PF.toast('Scan complete');
+      const domains = d.detected_locations || [];
+      await PF.api('/api/leaks', { method: 'POST', body: { action: 'record', domains,
+        summary: { scrapes: d.scrapes_today || 0, domains: domains.length, leaks: d.leaks_found || 0, owed: d.estimated_owed || '0.00' } } });
+      await refresh(); PF.toast('Scan complete');
     }
   } catch (_) { PF.toast('Scan interrupted, try again'); }
-  b.disabled = false; b.textContent = 'Run Scan Again'; render(); countdown();
+  b.disabled = false; b.textContent = 'Run Scan Again';
 };
 
-$('#btnVault').onclick = () => {
-  const items = ['fVideo', 'fPic', 'fVoice'].map((id) => $('#' + id).files[0]).filter(Boolean).map((f) => f.name);
-  const links = $('#vLinks').value.split(',').map((l) => l.trim()).filter(Boolean);
-  if (!items.length && !links.length) return PF.toast('Add a file or link first');
-  localStorage.setItem(VAULT_KEY, JSON.stringify({ items: items.concat(links), at: Date.now() }));
-  PF.toast('Vault updated'); render();
+$('#btnVault').onclick = async () => {
+  const form = new FormData();
+  [['video', 'fVideo'], ['pic', 'fPic'], ['voice', 'fVoice']].forEach(([k, id]) => { const f = $('#' + id).files[0]; if (f) form.append(k, f); });
+  form.append('links', $('#vLinks').value);
+  const b = $('#btnVault'); b.disabled = true; b.textContent = 'Uploading...';
+  const r = await PF.api('/api/vault', { method: 'POST', form });
+  b.disabled = false; b.textContent = 'Upload to Vault';
+  if (!r.ok) return PF.toast(r.error || 'Upload failed');
+  $('#vNote').textContent = 'Saved to Vault: ' + r.saved.join(', ');
+  PF.toast('Vault updated'); refresh();
 };
 
-$('#btnBolt').onclick = () => {
-  const url = $('#bUrl').value.trim();
-  if (!/^https?:\/\/.+\..+/.test(url)) return PF.toast('Enter a full website URL');
-  PF.store.setUser({ website_link: url }); PF.toast('Shield Bolt armed: snapshots every 3 days'); render();
+$('#btnBolt').onclick = async () => {
+  const b = $('#btnBolt'); b.disabled = true; b.textContent = 'Snapshotting...';
+  const r = await PF.api('/api/shield-bolt', { method: 'POST', body: { url: $('#bUrl').value.trim() } });
+  b.disabled = false; b.textContent = 'Add Website Free';
+  if (!r.ok) return PF.toast(r.error || 'Could not snapshot');
+  PF.toast('Shield Bolt armed: first snapshot saved, repeats every 3 days'); refresh();
 };
 
 document.addEventListener('pf:ready', render);
-setInterval(countdown, 30000); countdown();
+setInterval(countdown, 30000);
 </script>
 </body>
 </html>

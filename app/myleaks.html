@@ -52,27 +52,38 @@
 <script>
 const $ = PF.$;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const paid = () => ['monthly_49', 'annual_399', 'sovereign'].includes(PF.store.user.tier);
+const STEPS = ['detected', 'claimed', 'filed', 'removed'];
 
-function render() {
+function badge() {
   const h = (PF.store.user.handle || 'handle').replace(/^@+/, '');
   $('#embed').value = '<a href="https://shieldagents.store/' + h + '"><img src="https://shieldagents.store/badge/' + h + '.svg" alt="Shield Protected"></a>';
-  let scan = null; try { scan = JSON.parse(localStorage.getItem('pf_scan') || 'null'); } catch (_) {}
-  const list = $('#list');
-  if (!scan || !scan.leaks) {
-    list.innerHTML = '<div class="card muted">' + (scan ? 'No leak threads found in your last scan.' : 'No scan yet. Run your first free scan on My IP.') + '</div>';
-    return;
-  }
-  list.innerHTML = Array.from({ length: Math.min(scan.leaks, 10) }, (_, i) =>
-    '<div class="leak"><div class="row" style="flex:1"><div class="blur"></div><div><div style="color:#fff;font-weight:700">Leak thread #' + (i + 1) + '</div>' +
-    '<div class="muted">Domain hidden &middot; ' + esc(new Date(scan.at).toLocaleDateString()) + '</div></div></div>' +
-    '<button class="btn red" data-i="' + i + '">Claim This is Mine</button></div>').join('');
 }
 
-$('#list').addEventListener('click', (e) => {
-  if (!e.target.dataset.i) return;
-  if (!paid()) { PF.toast('Claim is a paid feature'); return setTimeout(() => location.href = '/paymentsap.html', 1200); }
-  PF.toast('Claim queued. Filing starts automatically.');
+async function render() {
+  badge();
+  if (!PF.store.token) return;
+  const r = await PF.api('/api/leaks');
+  const list = $('#list');
+  if (!r.ok) { list.innerHTML = '<div class="card muted">Could not load leaks.</div>'; return; }
+  if (!r.leaks.length) {
+    list.innerHTML = '<div class="card muted">No leaks recorded yet. Run a free scan on My IP.</div>';
+    return;
+  }
+  const top = Math.max(...r.leaks.map((l) => STEPS.indexOf(l.status)));
+  document.querySelectorAll('.step').forEach((el, i) => el.classList.toggle('on', i <= top));
+  list.innerHTML = r.leaks.map((l) =>
+    '<div class="leak"><div class="row" style="flex:1"><div class="blur"></div><div>' +
+    '<div style="color:#fff;font-weight:700;' + (r.paid ? '' : 'filter:blur(5px)') + '">' + esc(l.subject || 'hidden-domain.example') + '</div>' +
+    '<div class="muted">' + esc(l.created_at.slice(0, 10)) + ' &middot; ' + esc(l.status) + '</div></div></div>' +
+    (l.status === 'detected' ? '<button class="btn red" data-id="' + l.id + '">Claim This is Mine</button>' : '<span class="tag">' + esc(l.status) + '</span>') + '</div>').join('');
+}
+
+$('#list').addEventListener('click', async (e) => {
+  const id = e.target.dataset.id; if (!id) return;
+  const r = await PF.api('/api/leaks', { method: 'POST', body: { action: 'claim', id: Number(id) } });
+  if (r.status === 402) { PF.toast('Claim is a paid feature'); return setTimeout(() => location.href = '/paymentsap.html', 1200); }
+  if (!r.ok) return PF.toast(r.error || 'Claim failed');
+  PF.toast('Claimed. Filing is handled automatically.'); render();
 });
 $('#copy').onclick = () => { navigator.clipboard.writeText($('#embed').value).then(() => PF.toast('Badge code copied')).catch(() => {}); };
 document.addEventListener('pf:ready', render);

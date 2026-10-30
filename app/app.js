@@ -8,40 +8,53 @@ const PF = (() => {
     setUser(patch) { localStorage.setItem(USER, JSON.stringify({ ...store.user, ...patch })); }
   };
 
-  const genToken = () => {
-    const c = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ', a = new Uint8Array(4);
-    crypto.getRandomValues(a);
-    return 'SHIELD-' + Array.from(a, (n) => c[n % c.length]).join('');
-  };
-  const isToken = (t) => /^SHIELD-[A-Z0-9]{4}$/.test(t);
+  let pending = false;
+  const isToken = (t) => /^SHIELD-[A-Z0-9]{4,12}$/.test(t);
+
+  // Authenticated fetch: the token is the credential, sent as X-Shield-Token.
+  async function api(path, { method = 'GET', body, form, token } = {}) {
+    const headers = { 'X-Shield-Token': token || store.token };
+    if (body) headers['Content-Type'] = 'application/json';
+    const r = await fetch(path, { method, headers, body: form || (body ? JSON.stringify(body) : undefined) });
+    let data = {}; try { data = await r.json(); } catch (_) {}
+    return { status: r.status, ok: r.ok && data.ok !== false, ...data };
+  }
 
   function toast(msg) {
     const t = $('#toast'); t.textContent = msg; t.classList.add('show');
     clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  // Server check is best-effort; the app works from localStorage if the endpoint is unavailable.
   async function verify(token) {
-    try {
-      const r = await fetch('/api/verify-token?token=' + encodeURIComponent(token));
-      if (r.ok) return await r.json();
-    } catch (_) {}
-    return null;
+    try { const r = await api('/api/verify-token', { token }); return r.status === 401 ? { invalid: true } : r; } catch (_) { return null; }
   }
 
   async function copyAndSave() {
     const token = $('#mTokenText').textContent.trim();
     const name = $('#mName').value.trim(), handle = $('#mHandle').value.trim().replace(/^@+/, '');
+    if (!isToken(token)) return toast('Token not ready yet, try again');
+    if (!name || !handle) return toast('Add your name and handle');
+    const r = await api('/api/verify-token', { method: 'POST', token, body: { name, handle } });
+    if (!r.ok) return toast(r.error || 'Could not save license');
     localStorage.setItem(KEY, token);
-    store.setUser({ name, handle, token, tier: store.user.tier || 'free', user_type: 'creator' });
+    store.setUser(r.user);
     try { await navigator.clipboard.writeText(token); } catch (_) {}
     $('#pillToken').textContent = token;
     toast('Token ' + token + ' copied + saved. Add to Home Screen as Printflow.');
     closeModal(); document.dispatchEvent(new Event('pf:ready'));
   }
 
-  function openModal() {
-    $('#mTokenText').textContent = store.token || genToken();
+  async function openModal() {
+    $('#mTokenText').textContent = store.token || 'SHIELD-........';
+    if (!store.token && !pending) {
+      pending = true;
+      try {
+        const r = await fetch('/api/verify-token', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'issue' }) });
+        const d = await r.json();
+        if (d.token) $('#mTokenText').textContent = d.token; else toast('Could not issue a token');
+      } catch (_) { toast('Offline: try again when connected'); }
+      pending = false;
+    }
     $('#mName').value = store.user.name || ''; $('#mHandle').value = store.user.handle || '';
     $('#modal').classList.add('open');
   }
@@ -51,8 +64,10 @@ const PF = (() => {
     try {
       const t = (await navigator.clipboard.readText()).trim().toUpperCase();
       if (!isToken(t)) return toast('Clipboard has no SHIELD-XXXX token');
-      localStorage.setItem(KEY, t); $('#pillToken').textContent = t; $('#mTokenText').textContent = t;
-      toast('Token ' + t + ' pasted'); document.dispatchEvent(new Event('pf:ready'));
+      const v = await verify(t);
+      if (!v || !v.user) return toast('That token is not recognised');
+      localStorage.setItem(KEY, t); store.setUser(v.user); $('#pillToken').textContent = t; $('#mTokenText').textContent = t;
+      closeModal(); toast('Token ' + t + ' pasted'); document.dispatchEvent(new Event('pf:ready'));
     } catch (_) { toast('Clipboard blocked: paste manually'); }
   }
 
@@ -97,12 +112,15 @@ const PF = (() => {
     rain();
 
     // Auto-identify: saved token wins; otherwise offer clipboard paste, then the license pop-up.
-    if (store.token) verify(store.token).then((d) => { if (d && d.user) store.setUser(d.user); document.dispatchEvent(new Event('pf:ready')); });
+    if (store.token) verify(store.token).then((d) => {
+      if (d && d.invalid) { localStorage.removeItem(KEY); localStorage.removeItem(USER); $('#pillToken').textContent = 'no token'; return openModal(); }
+      if (d && d.user) localStorage.setItem(USER, JSON.stringify(d.user));
+      document.dispatchEvent(new Event('pf:ready'));
+    });
     else { openModal(); }
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/app/sw.js', { scope: '/app' }).catch(() => {});
-    document.dispatchEvent(new Event('pf:ready'));
   }
 
   document.addEventListener('DOMContentLoaded', init);
-  return { $, store, toast, openModal };
+  return { $, store, toast, openModal, api };
 })();

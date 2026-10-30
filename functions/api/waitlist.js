@@ -48,18 +48,8 @@ function getDatabase(env) {
     return env.shield_waitlist || env.DB || null;
 }
 
-async function ensureWaitlistTable(db) {
-    await db.prepare(
-        `CREATE TABLE IF NOT EXISTS waitlist (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT UNIQUE NOT NULL,
-            handle TEXT NOT NULL,
-            created_at TEXT NOT NULL,
-            ip_hash TEXT NOT NULL,
-            source TEXT NOT NULL
-        )`
-    ).run();
-}
+// The waitlist table is defined in schema.sql (name, user_type, email, handle, tier_interest,
+// token_issued, converted_to_user, plus ip_hash/source for rate limiting).
 
 async function handleWaitlistPost(request, env) {
     if (request.method === 'OPTIONS') {
@@ -81,6 +71,9 @@ async function handleWaitlistPost(request, env) {
     const rawHandle = String((payload && payload.handle) || '').trim();
     const handle = rawHandle.replace(/^@+/, '').trim();
     const source = String((payload && payload.source) || 'main_page').trim().slice(0, 64) || 'main_page';
+    const name = String((payload && payload.name) || '').trim().slice(0, 100);
+    const userType = ['creator', 'agent', 'customer'].includes(payload && payload.user_type) ? payload.user_type : 'creator';
+    const tierInterest = ['free', 'monthly_49', 'annual_399'].includes(payload && payload.tier_interest) ? payload.tier_interest : 'free';
     const createdAt = new Date().toISOString();
 
     if (!email || email.length > 254 || !EMAIL_REGEX.test(email)) {
@@ -102,8 +95,6 @@ async function handleWaitlistPost(request, env) {
 
     if (db) {
         try {
-            await ensureWaitlistTable(db);
-
             const rateRow = await db
                 .prepare('SELECT COUNT(*) AS cnt FROM waitlist WHERE ip_hash = ?1 AND created_at >= ?2')
                 .bind(ipHash, oneHourAgoIso)
@@ -116,9 +107,9 @@ async function handleWaitlistPost(request, env) {
 
             await db
                 .prepare(
-                    'INSERT INTO waitlist (email, handle, created_at, ip_hash, source) VALUES (?1, ?2, ?3, ?4, ?5) ON CONFLICT(email) DO UPDATE SET handle = excluded.handle, source = excluded.source'
+                    'INSERT INTO waitlist (name, user_type, email, handle, tier_interest, created_at, ip_hash, source) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8) ON CONFLICT(email) DO UPDATE SET handle = excluded.handle, name = CASE WHEN excluded.name != \'\' THEN excluded.name ELSE waitlist.name END, source = excluded.source'
                 )
-                .bind(email, handle, createdAt, ipHash, source)
+                .bind(name, userType, email, handle, tierInterest, createdAt, ipHash, source)
                 .run();
 
             return jsonResponse(

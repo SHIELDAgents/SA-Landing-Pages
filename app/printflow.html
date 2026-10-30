@@ -61,16 +61,19 @@
 
 <script src="/app/app.js"></script>
 <script>
-const $ = PF.$, KEY = 'pf_services';
+const $ = PF.$;
 const IDS = ['c_status', 'c_ai', 'c_peace', 'c_ppc', 'onlyTwo', 'p_status', 'p_ai', 'p_peace', 'irl', 'city', 'dates', 'p_irl', 'btc', 'fiat'];
 
-function load() {
-  let s = {}; try { s = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (_) {}
-  IDS.forEach((id) => {
-    if (!(id in s)) return;
-    const el = $('#' + id);
-    if (el.type === 'checkbox') el.checked = !!s[id]; else el.value = s[id];
-  });
+function fill() {
+  const u = PF.store.user, sv = u.services || {}, av = u.availability || {};
+  const set = (id, v) => { const el = $('#' + id); if (v == null) return; if (el.type === 'checkbox') el.checked = !!v; else el.value = v; };
+  if (sv.status_tag) { set('c_status', sv.status_tag.on); set('p_status', sv.status_tag.price); }
+  if (sv.ai_picture_fan) { set('c_ai', sv.ai_picture_fan.on); set('p_ai', sv.ai_picture_fan.price); }
+  if (sv.peace) { set('c_peace', sv.peace.on); set('p_peace', sv.peace.price); }
+  if (sv.pay_per_crawl) set('c_ppc', sv.pay_per_crawl.on);
+  set('onlyTwo', sv.only_status_and_peace);
+  set('irl', av.irl ? '1' : '0'); set('dates', av.dates); set('p_irl', av.price_irl);
+  set('city', u.location_city); set('btc', u.payout_btc); set('fiat', u.payout_fiat);
   split();
 }
 
@@ -83,16 +86,20 @@ $('#onlyTwo').onchange = (e) => {
   if (!e.target.checked) return;
   $('#c_status').checked = true; $('#c_peace').checked = true; $('#c_ai').checked = false; $('#c_ppc').checked = false;
 };
-['p_status'].forEach((id) => $('#' + id).addEventListener('input', split));
+$('#p_status').addEventListener('input', split);
 
-$('#save').onclick = () => {
-  const s = {};
-  IDS.forEach((id) => { const el = $('#' + id); s[id] = el.type === 'checkbox' ? el.checked : el.value; });
-  localStorage.setItem(KEY, JSON.stringify(s));
-  PF.store.setUser({ location_city: s.city, payout: { btc: s.btc, fiat: s.fiat } });
+$('#save').onclick = async () => {
+  if (!PF.store.token) return PF.openModal();
+  const body = {};
+  IDS.forEach((id) => { const el = $('#' + id); body[id] = el.type === 'checkbox' ? el.checked : el.value; });
+  const r = await PF.api('/api/printflow', { method: 'POST', body });
+  if (!r.ok) return PF.toast(r.error || 'Could not save');
+  const v = await PF.api('/api/verify-token');
+  if (v.user) localStorage.setItem('shield_user', JSON.stringify(v.user));
   PF.toast('Saved. Jobs match what you checked.');
 };
-document.addEventListener('DOMContentLoaded', load);
+document.addEventListener('pf:ready', fill);
+document.addEventListener('DOMContentLoaded', split);
 </script>
 </body>
 </html>
