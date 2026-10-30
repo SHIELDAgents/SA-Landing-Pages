@@ -9,7 +9,9 @@
 /printflow                    /pflow  302
 /protocols                    /pflow  302
 
-# Payments aliases -> /payments
-/Pay                          /payments  302
-/pay                          /payments  302
-/checkout                     /payments  302
+# Payments aliases -> /paymentsap.html
+/Pay                          /paymentsap.html  302
+/pay                          /paymentsap.html  302
+/checkout                     /paymentsap.html  302
+/payments                     /paymentsap.html  302
+/payments.html                /paymentsap.html  302
