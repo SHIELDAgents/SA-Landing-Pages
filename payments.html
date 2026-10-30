@@ -464,69 +464,50 @@
             gap: 16px;
         }
 
-        .btn-rail {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            width: 100%;
-            min-height: 56px;
+        .pay-btn {
+            background: white;
+            color: black;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
             padding: 14px 20px;
             border-radius: 8px;
-            background: #FFFFFF;
-            border: 1px solid #D1D5DB;
-            color: #111827;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            line-height: 1.2;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            width: 100%;
+            min-height: 54px;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), 0 1px 2px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.06);
             transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
             -webkit-font-smoothing: antialiased;
         }
 
-        .btn-rail:hover {
-            background: #F3F4F6;
-            border-color: #9CA3AF;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
+        .pay-btn:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
         }
 
-        .btn-rail:active {
-            background: #E5E7EB;
+        .pay-btn:active {
+            background: #e5e7eb;
         }
 
-        .rail-text {
-            color: #111827;
-            font-size: 16px;
-            font-weight: 700;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        .rail-icons {
+        .icons-inside {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            color: #111827;
             flex-shrink: 0;
         }
 
-        .rail-icons svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-            color: #111827;
-            flex-shrink: 0;
+        .pay-icon {
+            width: 20px;
+            height: 14px;
+            object-fit: contain;
             display: block;
-        }
-
-        .rail-icons svg.icon-wide {
-            width: auto;
-            height: 16px;
         }
 
         .security-foot {
@@ -841,40 +822,21 @@
             <div class="section-label">03 // SELECT ENCRYPTED SETTLEMENT RAIL</div>
             <div class="rails-grid">
                 <!-- Rail 1: BTCPay Server -->
-                <button type="button" class="btn-rail btn-btcpay" id="btn-pay-btcpay">
-                    <span class="rail-text">Pay with BTCPay</span>
-                    <span class="rail-icons" aria-hidden="true">
-                        <!-- Bitcoin (monochrome black 16px) -->
-                        <svg viewBox="0 0 24 24" title="Bitcoin">
-                            <path d="M17.06 11.57c.59-.69.94-1.59.94-2.57 0-2.21-1.79-4-4-4V3h-2v2h-2V3H8v2H6v2h2v10H6v2h2v2h2v-2h2v2h2v-2c2.21 0 4-1.79 4-4 0-1.45-.78-2.73-1.94-3.43zM10 7h4c1.1 0 2 .9 2 2s-.9 2-2 2h-4V7zm4 10h-4v-4h4c1.1 0 2 .9 2 2s-.9 2-2 2z"/>
-                        </svg>
-                        <!-- Lightning (monochrome black 16px) -->
-                        <svg viewBox="0 0 24 24" title="Lightning">
-                            <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
-                        </svg>
-                        <!-- Ethereum (monochrome black 16px) -->
-                        <svg viewBox="0 0 24 24" title="Ethereum">
-                            <path d="M12 1.75l-6.25 10.5L12 16l6.25-3.75L12 1.75zM5.75 13.5L12 22.25l6.25-8.75L12 17.25 5.75 13.5z"/>
-                        </svg>
+                <button type="button" class="pay-btn pay-btcpay" id="btn-pay-btcpay">
+                    Pay with BTCPay
+                    <span class="icons-inside">
+                        <img src="/icons/bitcoin.svg" onerror="this.onerror=null;this.src='icons/bitcoin.svg'" alt="Bitcoin" class="pay-icon">
+                        <img src="/icons/ethereum.svg" onerror="this.onerror=null;this.src='icons/ethereum.svg'" alt="Ethereum" class="pay-icon">
                     </span>
                 </button>
 
                 <!-- Rail 2: Card / Fiat Gateway -->
-                <button type="button" class="btn-rail btn-wompi" id="btn-pay-wompi">
-                    <span class="rail-text">Pay with Card</span>
-                    <span class="rail-icons" aria-hidden="true">
-                        <!-- Apple Pay mark (monochrome black 16px) -->
-                        <svg viewBox="0 0 24 24" title="Apple Pay">
-                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83zM15.96 6.33c.67-.81 1.12-1.94 1-3.08-.96.04-2.13.64-2.82 1.45-.61.7-.15 1.86-1.01 2.98 1.08.08 2.16-.54 2.83-1.35z"/>
-                        </svg>
-                        <!-- Mastercard overlapping circles (monochrome black 16px) -->
-                        <svg viewBox="0 0 24 24" title="Mastercard">
-                            <path d="M9 6a6 6 0 1 0 0 12 5.98 5.98 0 0 0 3-.81A5.98 5.98 0 0 0 15 18a6 6 0 1 0 0-12 5.98 5.98 0 0 0-3 .81A5.98 5.98 0 0 0 9 6zm3 2.31a4.48 4.48 0 0 1 0 7.38 4.48 4.48 0 0 1 0-7.38z"/>
-                        </svg>
-                        <!-- Credit Card (monochrome black 16px) -->
-                        <svg viewBox="0 0 24 24" title="Card">
-                            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
-                        </svg>
+                <button type="button" class="pay-btn pay-card" id="btn-pay-wompi">
+                    Pay with Card
+                    <span class="icons-inside">
+                        <img src="/icons/apple-pay.svg" onerror="this.onerror=null;this.src='icons/apple-pay.svg'" alt="Apple Pay" class="pay-icon">
+                        <img src="/icons/visa.svg" onerror="this.onerror=null;this.src='icons/visa.svg'" alt="Visa" class="pay-icon">
+                        <img src="/icons/mastercard.svg" onerror="this.onerror=null;this.src='icons/mastercard.svg'" alt="Mastercard" class="pay-icon">
                     </span>
                 </button>
             </div>
