@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AP PAYMENTS - SELECT PROTECTION TIER OR PROTOCOL // SHIELD AP</title>
-    <meta name="description" content="SHIELD AP Encrypted Settlement Terminal: Activate Anti-Agent IP Protection, Leak Deletion, or Protocol Escrow via BTCPay (Bitcoin / Lightning) or Wompi.">
+    <meta name="description" content="SHIELD AP Encrypted Settlement Terminal: Activate Anti-Agent IP Protection, Leak Deletion, or Protocol Escrow via BTCPay (Bitcoin / Lightning) or SHIELD AP instant checkout.">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -257,19 +257,19 @@
             transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease;
         }
 
-        /* Box 1: Instant Dispatch — Dark Navy Blue #0f172a + #38bdf8 glow */
+        /* Box 1: Instant Dispatch — Lighter Cyber Security Blue + #38bdf8 glow */
         .plan-option[data-plan-card="monthly"] {
-            background: #0f172a;
+            background: linear-gradient(145deg, #1a4b80 0%, #11355c 100%);
             border: 1.5px solid #38bdf8;
-            box-shadow: 0 0 16px rgba(56, 189, 248, 0.35), inset 0 0 18px rgba(56, 189, 248, 0.14), 0 6px 18px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.4), inset 0 0 18px rgba(56, 189, 248, 0.2), 0 6px 18px rgba(0, 0, 0, 0.55);
         }
 
         .plan-option[data-plan-card="monthly"]:hover,
         .plan-option[data-plan-card="monthly"].is-selected {
-            background: linear-gradient(145deg, #13203B 0%, #0f172a 100%);
-            border: 2px solid #38bdf8;
+            background: linear-gradient(145deg, #215b99 0%, #154272 100%);
+            border: 2px solid #7dd3fc;
             transform: translateY(-2px);
-            box-shadow: 0 0 26px rgba(56, 189, 248, 0.65), inset 0 0 22px rgba(56, 189, 248, 0.22), 0 8px 22px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 28px rgba(56, 189, 248, 0.7), inset 0 0 22px rgba(56, 189, 248, 0.28), 0 8px 22px rgba(0, 0, 0, 0.65);
         }
 
         /* Box 2: Sovereign Lock — Dark Teal #0f2a2a + #2dd4bf glow */
@@ -352,19 +352,19 @@
             height: 52px;
             padding: 0 16px;
             border-radius: 8px;
-            background: #0f172a;
-            border: 1px solid rgba(56, 189, 248, 0.55);
-            color: #f8fafc;
+            background: #143a66;
+            border: 1.5px solid rgba(56, 189, 248, 0.7);
+            color: #ffffff;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 15px;
             font-weight: 600;
             outline: none;
             cursor: pointer;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.18), inset 0 1px 2px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.22), inset 0 1px 2px rgba(0, 0, 0, 0.25);
         }
 
         .protocol-select option {
-            background: #0f172a;
+            background: #11355c;
             color: #FFFFFF;
             font-weight: 600;
         }
@@ -429,17 +429,17 @@
             opacity: 1;
         }
 
-        /* ---------- SUMMARY BAR ---------- */
+        /* ---------- SUMMARY BAR (LIGHTER CYBER SECURITY BLUE) ---------- */
         .order-summary {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 18px 20px;
             border-radius: 10px;
-            background: #0f172a;
-            border: 1px solid rgba(56, 189, 248, 0.5);
+            background: linear-gradient(145deg, #1b4d82 0%, #12365e 100%);
+            border: 1.5px solid #38bdf8;
             margin-bottom: 26px;
-            box-shadow: 0 0 14px rgba(56, 189, 248, 0.2), 0 4px 14px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.32), inset 0 0 16px rgba(56, 189, 248, 0.16), 0 4px 14px rgba(0, 0, 0, 0.45);
         }
 
         .summary-left {
@@ -450,25 +450,27 @@
 
         .summary-plan {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.04rem;
+            font-size: 1.06rem;
             font-weight: 800;
             color: #FFFFFF;
             letter-spacing: 0.5px;
             word-spacing: 2px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .summary-note {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 13px;
-            color: #f8fafc;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: #FFFFFF;
         }
 
         .summary-amount {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.75rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: #FFFFFF;
-            text-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+            text-shadow: 0 0 12px rgba(56, 189, 248, 0.85);
         }
 
         /* ---------- DUAL PAYMENT RAILS: HYBRID WHITE BUTTON + MATRIX BLUE NEON BORDER GLOW ---------- */
@@ -524,11 +526,11 @@
         }
 
         .pay-icon {
-            width: 24px;
-            height: 18px;
+            width: 36px;
+            height: 26px;
             object-fit: contain;
             display: block;
-            transition: filter 0.18s ease;
+            transition: filter 0.18s ease, transform 0.18s ease;
         }
 
         .security-foot {
@@ -776,7 +778,7 @@
             <h1 class="title-ap">AP</h1>
             <div class="subtitle">AP PAYMENTS // Anti-Agent Protocol</div>
             <div class="tagline-block">
-                <p>Deploy continuous IP protection, execute instant leak takedowns, or fund a live Protocol in escrow via zero-trace BTCPay or Wompi instant checkout.</p>
+                <p>Deploy continuous IP protection, execute instant leak takedowns, or fund a live Protocol in escrow via zero-trace BTCPay or SHIELD AP instant checkout.</p>
             </div>
         </header>
 
@@ -855,7 +857,6 @@
                 <button type="button" class="pay-btn pay-card" id="btn-pay-wompi">
                     Pay with Card
                     <span class="icons-inside">
-                        <img src="/icons/apple-pay.svg" onerror="this.onerror=null;this.src='icons/apple-pay.svg'" alt="Apple Pay" class="pay-icon">
                         <img src="/icons/visa.svg" onerror="this.onerror=null;this.src='icons/visa.svg'" alt="Visa" class="pay-icon">
                         <img src="/icons/mastercard.svg" onerror="this.onerror=null;this.src='icons/mastercard.svg'" alt="Mastercard" class="pay-icon">
                     </span>
