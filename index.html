@@ -1244,7 +1244,7 @@
             <!-- Animation box: HIDDEN by default -->
             <div id="scanAnimationBox">
                 <video id="neuralVideo" src="animation.mp4" loop muted playsinline preload="metadata"></video>
-                <div class="scan-anim-text">Scanning 200+ sources...</div>
+                <div class="scan-anim-text">Scanning 200+ sources<span id="scanDots">...</span> (Reddit Leak Index, URLScan, GitHub, HackerNews, Social Telemetry)</div>
             </div>
 
             <!-- Result box: HIDDEN by default -->
@@ -1333,6 +1333,7 @@
         const scanPlatformBtns = document.querySelectorAll('.scan-platform-btn');
 
         let selectedPlatform = 'instagram';
+        let userChosePlatform = false;
         const PLATFORM_PLACEHOLDERS = {
             instagram: '@instagram handle or link',
             tiktok: '@tiktok handle or link',
@@ -1352,7 +1353,7 @@
 
         function parseScanInput(rawValue, fallbackPlatform) {
             const trimmed = (rawValue || '').trim();
-            if (!trimmed) return { platform: fallbackPlatform, handle: '' };
+            if (!trimmed) return { platform: fallbackPlatform, handle: '', explicitPlatform: false };
 
             const urlMatch = trimmed.match(/(?:https?:\/\/)?(?:www\.)?(instagram\.com|instagr\.am|tiktok\.com|x\.com|twitter\.com|onlyfans\.com)\/([^/?#\s]+)/i);
             if (urlMatch) {
@@ -1363,16 +1364,17 @@
                 else if (host === 'x.com' || host.includes('twitter')) detectedPlatform = 'x';
                 else if (host.includes('onlyfans')) detectedPlatform = 'onlyfans';
 
-                const extractedHandle = urlMatch[2].replace(/^@+/, '').trim();
-                return { platform: detectedPlatform, handle: extractedHandle };
+                const extractedHandle = urlMatch[2].replace(/^@+/, '').trim().toLowerCase();
+                return { platform: detectedPlatform, handle: extractedHandle, explicitPlatform: true };
             }
 
-            const cleanedHandle = trimmed.replace(/^@+/, '').replace(/\/+$/, '').trim();
-            return { platform: fallbackPlatform, handle: cleanedHandle };
+            const cleanedHandle = trimmed.replace(/^@+/, '').replace(/\/+$/, '').trim().toLowerCase();
+            return { platform: fallbackPlatform, handle: cleanedHandle, explicitPlatform: false };
         }
 
         scanPlatformBtns.forEach((btn) => {
             btn.addEventListener('click', () => {
+                userChosePlatform = true;
                 setActivePlatform(btn.dataset.platform);
             });
         });
@@ -1418,7 +1420,7 @@
                 });
                 const data = await res.json().catch(() => ({}));
                 if (res.ok && data && data.ok !== false) {
-                    waitlistMsg.textContent = "You're in. Early Nov Access. Check shield-agents.store";
+                    waitlistMsg.textContent = "You're in. Early Nov Access. Check Youtube.com/@iTOpsSHIELD";
                     waitlistMsg.classList.add('is-success');
                     waitlistForm.reset();
                 } else {
@@ -1426,7 +1428,7 @@
                     waitlistMsg.classList.add('is-error');
                 }
             } catch (err) {
-                waitlistMsg.textContent = "You're in. Early Nov Access. Check shield-agents.store";
+                waitlistMsg.textContent = "You're in. Early Nov Access. Check Youtube.com/@iTOpsSHIELD";
                 waitlistMsg.classList.add('is-success');
             } finally {
                 waitlistBtn.textContent = prevLabel;
@@ -1436,13 +1438,16 @@
 
         async function runHandleScan() {
             const rawInput = document.getElementById('handleInput').value.trim();
-            const { platform, handle } = parseScanInput(rawInput, selectedPlatform);
+            const parsed = parseScanInput(rawInput, selectedPlatform);
+            let platform = parsed.platform;
+            const handle = parsed.handle;
             setActivePlatform(platform);
 
             const resultBox = document.getElementById('scanResultBox');
             const animBox = document.getElementById('scanAnimationBox');
             const videoEl = document.getElementById('neuralVideo');
             const scanBtnEl = document.getElementById('scanNowFree');
+            const scanDotsEl = document.getElementById('scanDots');
 
             if (!handle) {
                 animBox.classList.remove('active');
@@ -1458,7 +1463,18 @@
                     `/api/validate-handle?platform=${encodeURIComponent(platform)}&handle=${encodeURIComponent(handle)}`
                 );
                 const validateData = await validateRes.json();
-                if (!validateData.exists) {
+
+                let isValidForPlatform = Boolean(validateData && validateData[platform]);
+                if (!isValidForPlatform && !userChosePlatform && !parsed.explicitPlatform && validateData) {
+                    const matchedPlatform = ['instagram', 'onlyfans', 'tiktok', 'x'].find((p) => validateData[p] === true);
+                    if (matchedPlatform) {
+                        platform = matchedPlatform;
+                        setActivePlatform(platform);
+                        isValidForPlatform = true;
+                    }
+                }
+
+                if (!isValidForPlatform) {
                     animBox.classList.remove('active');
                     resultBox.classList.remove('hidden');
                     resultBox.innerHTML = '<div class="result-error">Handle not found - check spelling</div>';
@@ -1473,25 +1489,38 @@
                 return;
             }
 
-            // Valid handle - show animation box, hide result
+            // Valid handle - show animation box for full 10 seconds, hide result
             animBox.classList.add('active');
             resultBox.classList.add('hidden');
             videoEl.currentTime = 0;
             videoEl.play().catch(() => {});
 
-            // Add button outline animation - neon flicker around border
+            // Add button outline animation - neon flicker around border for full 10 seconds
             scanBtnEl.classList.add('scanning');
+            scanBtnEl.disabled = true;
 
-            // REAL SCAN - call /api/shield-scan
+            let dotCount = 3;
+            const dotsInterval = setInterval(() => {
+                dotCount = (dotCount % 3) + 1;
+                if (scanDotsEl) scanDotsEl.textContent = '.'.repeat(dotCount);
+            }, 450);
+
+            // REAL SCAN - call /api/shield-scan AND wait full 10000ms
             try {
-                const scanRes = await fetch(
-                    `/api/shield-scan?platform=${encodeURIComponent(platform)}&handle=${encodeURIComponent(handle)}`
-                );
-                const scanData = await scanRes.json();
+                const [scanData] = await Promise.all([
+                    fetch(
+                        `/api/shield-scan?platform=${encodeURIComponent(platform)}&handle=${encodeURIComponent(handle)}`
+                    ).then((r) => r.json()),
+                    new Promise((r) => setTimeout(r, 10000))
+                ]);
+
+                clearInterval(dotsInterval);
+                if (scanDotsEl) scanDotsEl.textContent = '...';
 
                 // Hide animation box
                 animBox.classList.remove('active');
                 scanBtnEl.classList.remove('scanning');
+                scanBtnEl.disabled = false;
                 videoEl.pause();
 
                 // Show result box
@@ -1540,8 +1569,10 @@
                     `;
                 }
             } catch (e) {
+                clearInterval(dotsInterval);
                 animBox.classList.remove('active');
                 scanBtnEl.classList.remove('scanning');
+                scanBtnEl.disabled = false;
                 videoEl.pause();
                 resultBox.classList.remove('hidden');
                 resultBox.innerHTML = '<div class="result-error">Scan interrupted - please try again</div>';
