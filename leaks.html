@@ -857,11 +857,13 @@
             background: linear-gradient(90deg, #C0C0C0, #a7e7ff);
             border: 3px solid var(--ice-blue);
             border-radius: 12px;
-            color: #000000;
-            font: inherit;
+            color: #060b14;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 2px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
             cursor: pointer;
             box-shadow: 0 0 28px rgba(167, 231, 255, 0.7);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
@@ -878,14 +880,28 @@
             flex-shrink: 0;
         }
 
-        /* Slightly bigger $ replacing S in Start */
+        /* Metallic silver shining $ replacing S in Start */
         .big-dollar {
             display: inline-block;
-            font-size: 1.28em;
-            font-weight: 900;
+            font-size: 1.38em;
+            font-weight: 800;
             line-height: 1;
-            vertical-align: -0.05em;
+            vertical-align: -0.06em;
             margin-right: 1px;
+            padding: 0 1px;
+            background: linear-gradient(110deg, #7a828c 0%, #e8eef5 22%, #ffffff 36%, #8d96a3 50%, #f5f8fc 66%, #ffffff 76%, #7a828c 100%);
+            background-size: 250% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: silverShine 2.6s linear infinite;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.78)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.85));
+        }
+
+        @keyframes silverShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 250% center; }
         }
 
         /* ---------- PWA HOME SCREEN + AUTH TOKEN MODAL ---------- */
@@ -1075,7 +1091,7 @@
         <!-- HEADER: CENTERED AP WITH METALLIC LUXURY SHINE -->
         <header>
             <h1 class="title-ap">AP</h1>
-            <div class="subtitle">CONTENT PROTECTION PROTOCOL</div>
+            <div class="subtitle">ANTI-AGENT PROTOCOL</div>
             <div class="tagline-block">
                 <p>Already leaked? Delete in 48h via federal law, not 14-day DMCA.</p>
             </div>
@@ -1244,17 +1260,17 @@
                 <a class="offer" href="payments.html?plan=status_tag">
                     <div class="offer-name">Status Tag</div>
                     <div class="offer-price">$169</div>
-                    <div class="offer-desc">AI photo with you, sell PPV</div>
+                    <div class="offer-desc">AI pic of you 'together' with fan</div>
                 </a>
                 <a class="offer" href="payments.html?plan=irl_status">
                     <div class="offer-name">IRL Status</div>
                     <div class="offer-price">$1.7k+</div>
-                    <div class="offer-desc">IRL perception shift</div>
+                    <div class="offer-desc">Elevate someone's Aura at event</div>
                 </a>
                 <a class="offer" href="payments.html?plan=aura_protocol">
                     <div class="offer-name">Aura Protocol</div>
                     <div class="offer-price">$3.7k+</div>
-                    <div class="offer-desc">Full ghost team</div>
+                    <div class="offer-desc">Print while Networking</div>
                 </a>
             </div>
 
@@ -1279,14 +1295,14 @@
             </p>
         </section>
 
-        <!-- BOTTOM WAITLIST + YOUTUBE ITOPS 650K CTA -->
+        <!-- BOTTOM WAITLIST + YOUTUBE CTA -->
         <section class="bottom-waitlist-cta" aria-label="Join Waitlist">
             <div class="bottom-waitlist-badge">
-                Early Nov Launch Access. follow <span class="yt-handle">@iTOpsSHIELD</span> on <span class="yt-red">YouTube</span> (ITOPS 650k)
+                Early Nov Launch Access. follow <span class="yt-handle">@iTOpsSHIELD</span> on <span class="yt-red">YouTube</span>.
             </div>
             <a class="btn-waitlist-silver" href="index.html#waitlist-section">Join Waitlist</a>
             <a class="yt-link-sub" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener noreferrer">
-                youtube.com/@iTOpsSHIELD &bull; ITOPS 650K Launch Stream &rarr;
+                youtube.com/@iTOpsSHIELD &rarr;
             </a>
         </section>
 
