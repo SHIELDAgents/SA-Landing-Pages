@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SHIELD AP // PrintFlow &middot; My IP Protected</title>
 <link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#00ff88">
+<meta name="theme-color" content="#00bf63">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Printflow">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
@@ -13,36 +13,304 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./app.css">
+<link rel="stylesheet" href="./brand.css">
+<style>
+  /* Mobile dashboard layout: the shell header is replaced by the greeting + right-side menu below */
+  body[data-page="myip"] .top { display: none; }
+  body[data-page="myip"] .wrap { max-width: 520px; }
+
+  .dash-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 2px 14px;
+    margin-bottom: 8px;
+  }
+
+  .dash-greet {
+    font: 600 13px 'Share Tech Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 1px;
+    opacity: 0.8;
+  }
+
+  .menu-btn {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--ice);
+    border-radius: 10px;
+    background: rgba(143, 216, 242, 0.08);
+    box-shadow: 0 0 12px rgba(143, 216, 242, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .menu-btn span {
+    width: 20px;
+    height: 2px;
+    background: var(--ice-blue);
+    box-shadow: 0 0 6px rgba(143, 216, 242, 0.6);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  body.menu-open .menu-btn span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  body.menu-open .menu-btn span:nth-child(2) { opacity: 0; }
+  body.menu-open .menu-btn span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 140;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  body.menu-open .scrim { opacity: 1; pointer-events: auto; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(78vw, 300px);
+    z-index: 150;
+    background: #030a05;
+    border-left: 1px solid var(--ice);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8), 0 0 28px rgba(143, 216, 242, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 76px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+  }
+
+  body.menu-open .drawer { transform: none; }
+
+  .drawer-title {
+    font: 800 11px 'JetBrains Mono', monospace;
+    letter-spacing: 2px;
+    color: var(--ice);
+    margin-bottom: 6px;
+  }
+
+  .drawer a,
+  .drawer button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font: 700 14px 'JetBrains Mono', monospace;
+    color: #fff;
+    background: rgba(0, 138, 214, 0.06);
+    border: 1px solid rgba(0, 138, 214, 0.35);
+    border-radius: 10px;
+    padding: 13px 14px;
+    text-decoration: none;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .drawer a small {
+    font: 11px 'Share Tech Mono', monospace;
+    color: var(--muted);
+  }
+
+  .drawer a.on { border-color: var(--neon); color: var(--neon); }
+  .drawer .drawer-sep { height: 1px; background: var(--line-ice); margin: 8px 0; opacity: 0.6; }
+  .drawer .drawer-upgrade { border-color: var(--red); color: var(--red); }
+
+  /* Hero: status pill with blinking green dot */
+  .hero { text-align: center; margin-bottom: 18px; }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font: 800 12px 'JetBrains Mono', monospace;
+    letter-spacing: 2px;
+    color: var(--neon-bright);
+    border: 1px solid rgba(0, 191, 99, 0.5);
+    background: rgba(0, 191, 99, 0.08);
+    border-radius: 999px;
+    padding: 6px 14px;
+  }
+
+  .status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--neon-bright);
+    box-shadow: 0 0 8px var(--neon-bright), 0 0 16px rgba(0, 191, 99, 0.6);
+    animation: dotBlink 2.6s ease-in-out infinite;
+  }
+
+  @keyframes dotBlink {
+    0%, 100% { opacity: 0.2; box-shadow: 0 0 2px rgba(0, 191, 99, 0.3); }
+    50% { opacity: 1; box-shadow: 0 0 8px var(--neon-bright), 0 0 16px rgba(0, 191, 99, 0.6); }
+  }
+
+  .hero-title {
+    font: 900 clamp(1.5rem, 6vw, 2rem) 'JetBrains Mono', monospace;
+    line-height: 1.15;
+    letter-spacing: 2px;
+    color: #fff;
+    margin: 16px 0 10px;
+  }
+
+  .hero-title span {
+    display: block;
+    color: var(--ice-blue);
+    font-size: 0.72em;
+    margin-top: 6px;
+    text-shadow: 0 0 12px rgba(143, 216, 242, 0.45);
+  }
+
+  .hero-sub {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .hero-meta {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .hero .aura-hud { text-align: left; }
+  .hero .aura-hud > div:last-child { color: var(--muted); }
+
+  /* Centered MY IP PROTECTED benefits */
+  .benefits {
+    text-align: center;
+    margin: 26px 0 22px;
+  }
+
+  .benefits-title {
+    font: 900 18px 'JetBrains Mono', monospace;
+    letter-spacing: 3px;
+    color: #fff;
+    text-shadow: 0 0 14px rgba(143, 216, 242, 0.45);
+  }
+
+  .benefits-sub {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 6px 0 16px;
+  }
+
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .benefit {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0, 138, 214, 0.35);
+    border-radius: 12px;
+    padding: 16px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 0 16px rgba(0, 138, 214, 0.12);
+  }
+
+  .benefit-ico {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    border: 1px solid rgba(143, 216, 242, 0.5);
+    background: rgba(143, 216, 242, 0.08);
+    font-size: 18px;
+  }
+
+  .benefit strong {
+    font: 800 12.5px 'JetBrains Mono', monospace;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+
+  .benefit small {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  .benefit .hover-tech .tech-reveal {
+    white-space: normal;
+    width: 220px;
+    text-align: center;
+  }
+
+  .benefits-foot {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 14px;
+  }
+
+  .benefits-foot strong { color: var(--ice-blue); }
+
+  .section-label {
+    text-align: center;
+    font: 800 12px 'JetBrains Mono', monospace;
+    letter-spacing: 2px;
+    color: var(--ice);
+    margin: 22px 0 12px;
+  }
+
+  @media (min-width: 560px) {
+    .benefit-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status-dot { animation: none; opacity: 1; }
+  }
+</style>
 </head>
 <body data-page="myip">
 <main class="wrap">
 
-  <!-- Flagship SHIELD AP Hero Banner -->
-  <section class="banner">
-    <div class="tetris-bar" style="margin-bottom:12px">
-      <div class="tetris-cell"></div><div class="tetris-cell"></div><div class="tetris-cell"></div>
-      <div class="tetris-cell"></div><div class="tetris-cell"></div><div class="tetris-cell"></div>
-      <div class="tetris-cell"></div><div class="tetris-cell"></div><div class="tetris-cell"></div>
-    </div>
-    <h1>
-      <span>SHIELD YOUR CONTENT.</span>
-      <span style="color:var(--neon)">GET PAID WHEN THEY TRY.</span>
-    </h1>
-    <p>
-      Value your peace. We shield it. Anti-aging is anti-drain &mdash; leaks, bot scraping, and tracking age you. Shield stops the drain, preserves your peace, and prints cash when scrapers crawl.
-    </p>
-    <div style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+  <!-- Dashboard top: greeting left, menu right -->
+  <header class="dash-top">
+    <div class="dash-greet">Hi, Creator 001</div>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Hero: content protected status + aura HUD -->
+  <section class="hero">
+    <div class="status-pill"><span class="status-dot" aria-hidden="true"></span>CONTENT PROTECTED</div>
+    <h1 class="hero-title">SHIELD YOUR CONTENT.<span>GET PAID WHEN THEY TRY.</span></h1>
+    <p class="hero-sub">Value your peace. We shield it. Anti-aging is anti-drain. Shield stops the drain, preserves your peace, and prints cash when scrapers crawl.</p>
+    <div class="hero-meta">
       <span class="tier" id="tier">FREE TIER</span>
-      <span class="ghost-badge"><span>👻</span> GHOST PROTOCOL: LEVEL 1 ACTIVE</span>
+      <span class="ghost-badge"><span>👻</span> GHOST PROTOCOL: LEVEL 1</span>
       <span class="muted">Licensed for <strong id="h" style="color:#fff">@handle</strong></span>
     </div>
 
     <!-- Aura / Peace Preservation Meter HUD -->
     <div class="aura-hud">
       <div class="aura-header">
-        <span class="aura-title">
-          <span>🛡️</span> AURA ELEVATION &middot; PEACE PRESERVATION
-        </span>
+        <span class="aura-title"><span>🛡️</span> AURA ELEVATION &middot; PEACE</span>
         <span class="aura-xp" id="auraXp">94% UNTOUCHED</span>
       </div>
       <div class="aura-track">
@@ -55,32 +323,47 @@
     </div>
   </section>
 
-  <!-- 3 Avenues Interlocking Stack Overview -->
-  <section class="card" style="padding:16px 20px">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-      <h2 style="margin:0"><span style="color:var(--ice)">THE 3 AVENUES &middot; ONE INTERLOCKING SHIELD</span></h2>
-      <span class="tag">Tetris Protocol Stack</span>
+  <!-- Centered MY IP PROTECTED benefits -->
+  <section class="benefits">
+    <h2 class="benefits-title">MY IP PROTECTED</h2>
+    <p class="benefits-sub">Everything your shield covers, in one place.</p>
+    <div class="benefit-grid">
+      <div class="benefit">
+        <div class="benefit-ico">⚡</div>
+        <strong><span class="hover-tech">Turn Scrapes Into Cash<span class="tech-reveal">Pay Per Crawl 402 + Cloudforce One Threat Feed</span></span></strong>
+        <small>Bots that crawl you pay a toll</small>
+      </div>
+      <div class="benefit">
+        <div class="benefit-ico">📡</div>
+        <strong><span class="hover-tech">Know Every Leak<span class="tech-reveal">Reddit Repost Index &middot; URLScan &middot; Scraper Feed &middot; Social Telemetry</span></span></strong>
+        <small>5 threat feeds scanned for you</small>
+      </div>
+      <div class="benefit">
+        <div class="benefit-ico">🔐</div>
+        <strong><span class="hover-tech">Proof That Holds<span class="tech-reveal">Immutable R2 Vault &middot; TAKE IT DOWN Act 48h + $53k Filer Proof</span></span></strong>
+        <small>Your originals, locked and timestamped</small>
+      </div>
+      <div class="benefit">
+        <div class="benefit-ico">🧱</div>
+        <strong><span class="hover-tech">Pre-Block Before They Crawl<span class="tech-reveal">Autonomous Edge Worker Snapshot &amp; Botnet Pre-Block</span></span></strong>
+        <small>Shield Bolt snapshots every 3 days</small>
+      </div>
+      <div class="benefit">
+        <div class="benefit-ico">🏅</div>
+        <strong><span class="hover-tech">Shield Protected Badge<span class="tech-reveal">Dynamic SVG &middot; Real-Time Verified Proof</span></span></strong>
+        <small>Live achievement badge for your profile</small>
+      </div>
+      <div class="benefit">
+        <div class="benefit-ico">👻</div>
+        <strong><span class="hover-tech">Peace Preserved<span class="tech-reveal">Aura Elevation &middot; Ghost Protocol Level Up</span></span></strong>
+        <small>Less drain, more presence, more peace</small>
+      </div>
     </div>
-    <div class="avenues-grid">
-      <div class="avenue-box" style="border-color:var(--neon)">
-        <div class="avenue-tag" style="color:var(--neon)">Avenue 1 &middot; Virtual &middot; LIVE NOW</div>
-        <div class="avenue-name">PrintFlow Terminal <span style="color:var(--neon)">[Active]</span></div>
-        <div class="avenue-desc">Turn AI scrapers into cash. 5-source leak radar, 402 HTTP handshake, R2 proof vault, automated 70/30 split.</div>
-      </div>
-      <div class="avenue-box" style="border-color:rgba(167,231,255,0.4)">
-        <div class="avenue-tag">Avenue 2 &middot; Physical &middot; FED BY VIRTUAL</div>
-        <div class="avenue-name">Aura Elevation Presence</div>
-        <div class="avenue-desc">Women agents providing calm, hospitality, and elevated presence for travelers. Real trust, real aura peace.</div>
-      </div>
-      <div class="avenue-box" style="border-color:rgba(255,196,0,0.4)">
-        <div class="avenue-tag" style="color:var(--gold)">Avenue 3 &middot; Ultimate &middot; TOP SECRET</div>
-        <div class="avenue-name">Trillionaire Ghost Protocol</div>
-        <div class="avenue-desc">Open world game where legacy characters live forever. Elevate aura, level up status, protect family peace.</div>
-      </div>
-    </div>
+    <p class="benefits-foot">We only take our <strong>70/30 split</strong> when you PRINT. Zero upfront.</p>
   </section>
 
-  <!-- Card 1: Print Flow Counters & Free Intensive Scans -->
+  <!-- Live counters + scan -->
+  <p class="section-label">LIVE SHIELD FEED</p>
   <article class="card">
     <h2>
       <span>
@@ -89,11 +372,9 @@
       <span class="tag">5 Threat Feeds</span>
     </h2>
     <p class="muted">
-      Reddit Leak Repost Index &middot; URLScan Live Web Crawl &middot; Public Scraper Threat Feed &middot; HackerNews / MediaWiki &middot; Social Telemetry (IG, TikTok, X, YT).
       Free scan first. Free dashboard. <strong>We only take our 70/30 split when you PRINT cash. Zero upfront.</strong>
     </p>
 
-    <!-- Live Print Flow Counters -->
     <div class="grid">
       <div class="stat"><small>Last Scan</small><strong id="sLast" style="font-size:12px">never</strong></div>
       <div class="stat"><small>Scrapes Caught</small><strong id="sScr">0</strong></div>
@@ -107,11 +388,11 @@
       <button class="btn" id="btnScan">
         <span>⚡</span> Run Free Intensive Scan
       </button>
-      <span class="muted" style="align-self:center">Free every 3 days. Monthly $49 scans daily. Annual $399 scans every 6 hours.</span>
+      <span class="muted" style="align-self:center">Free every 3 days. Monthly scans daily. Annual every 6 hours.</span>
     </div>
   </article>
 
-  <!-- Card 2: Free Proof Vault -->
+  <!-- Proof Vault -->
   <article class="card">
     <h2>
       <span>
@@ -144,7 +425,7 @@
     </div>
   </article>
 
-  <!-- Card 3: Free Shield Bolt -->
+  <!-- Shield Bolt -->
   <article class="card">
     <h2>
       <span>
@@ -179,10 +460,34 @@
   </section>
 </main>
 
+<!-- Right-side menu drawer (outside .wrap so the bottom nav and scrim stack correctly) -->
+<div class="scrim" id="scrim"></div>
+<nav class="drawer" id="drawer" aria-label="Menu">
+  <div class="drawer-title">MENU // PRINTFLOW</div>
+  <a href="./myip.html" class="on">My IP <small>Virtual Avenue</small></a>
+  <a href="./myleaks.html">My Leaks <small>Takedown HUD</small></a>
+  <a href="./printflow.html">PrintFlow <small>Print Cash</small></a>
+  <a href="./behold.html">What's Next <small>Ghost Game</small></a>
+  <div class="drawer-sep"></div>
+  <button type="button" id="mLicense">Creator License <small>FREE</small></button>
+  <button type="button" id="mInstall">Add to Home Screen <small>&#9635;</small></button>
+  <a href="../paymentsap.html" class="drawer-upgrade">Upgrade Sovereign <small>$49.99/mo</small></a>
+</nav>
+
 <script src="./app.js"></script>
 <script>
 const $ = PF.$, DAY = 864e5;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+// Right-side menu drawer
+function setMenu(open) {
+  document.body.classList.toggle('menu-open', open);
+  $('#menuBtn').setAttribute('aria-expanded', String(open));
+}
+$('#menuBtn').onclick = () => setMenu(!document.body.classList.contains('menu-open'));
+$('#scrim').onclick = () => setMenu(false);
+$('#mLicense').onclick = () => { setMenu(false); PF.openModal(); };
+$('#mInstall').onclick = () => { setMenu(false); PF.openPwaModal(true); };
 
 function render() {
   const u = PF.store.user;
@@ -196,7 +501,7 @@ function render() {
     $('#sLeak').textContent = s.leaks || 0;
     $('#sOwed').textContent = '$' + (s.owed || '0.00');
     $('#btnScan').textContent = 'Run Intensive Scan Again';
-    
+
     // Dynamically adjust aura meter based on leaks
     const leaks = Number(s.leaks) || 0;
     const aura = Math.max(35, 100 - (leaks * 5));

@@ -1,0 +1,173 @@
+/* SHIELD AP brand layer for the PrintFlow app pages.
+   Palette and look from pflow.html. Loaded after app.css, so it overrides the shell theme. */
+
+:root {
+  --neon: #00bf63;            /* SHIELD green */
+  --neon-bright: #00d970;
+  --ice: #8fd8f2;
+  --ice-blue: #a7e7ff;
+  --blue: #008ad6;
+  --blue-bright: #2f86d6;
+  --aura: #F4B8E4;            /* AURA pastel */
+  --silver: #C0C0C0;
+  --muted: #B0B8C0;
+  --line: rgba(0, 138, 214, 0.38);
+  --line-ice: rgba(143, 216, 242, 0.35);
+  --card: rgba(4, 12, 22, 0.86);
+}
+
+/* Banner: division-style glow card with metallic luxury title */
+.banner {
+  border: 1px solid rgba(0, 138, 214, 0.45);
+  border-left: 4px solid var(--blue);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(0, 138, 214, 0.16) 0%, rgba(143, 216, 242, 0.05) 50%, rgba(0, 0, 0, 0.88) 100%);
+  box-shadow: 0 0 28px rgba(0, 138, 214, 0.22), inset 0 0 18px rgba(0, 138, 214, 0.08);
+}
+
+.banner h1 > span:first-child {
+  background: linear-gradient(135deg, #8E9BA8 0%, #FFFFFF 18%, #5D6C7C 36%, #E8EFF5 52%, #505F6E 68%, #FFFFFF 84%, #8E9BA8 100%);
+  background-size: 240% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 12px rgba(143, 216, 242, 0.7));
+  animation: brandShine 3.4s linear infinite;
+  letter-spacing: 3px;
+}
+
+@keyframes brandShine {
+  0% { background-position: 0% center; }
+  100% { background-position: 240% center; }
+}
+
+/* Cards: glow border, uppercase headers, tetris block ring on hover */
+.card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 0 22px rgba(0, 138, 214, 0.18), 0 4px 20px rgba(0, 0, 0, 0.45);
+}
+
+.card h2 {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 17px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  background:
+    repeating-linear-gradient(90deg, rgba(167, 231, 255, 0.92) 0px, rgba(167, 231, 255, 0.92) 16px, transparent 16px, transparent 22px),
+    repeating-linear-gradient(0deg, rgba(47, 134, 214, 0.92) 0px, rgba(47, 134, 214, 0.92) 16px, transparent 16px, transparent 22px);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 3px;
+  box-shadow: 0 0 18px rgba(167, 231, 255, 0.45);
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.card.lock {
+  border-color: rgba(255, 59, 71, 0.5);
+}
+
+/* Buttons: SHIELD green by default, silver-ice print button */
+.btn {
+  background: rgba(0, 191, 99, 0.14);
+  border-color: var(--neon);
+  box-shadow: 0 0 12px rgba(0, 191, 99, 0.25);
+}
+
+.btn:hover {
+  background: rgba(0, 191, 99, 0.28);
+  box-shadow: 0 0 18px rgba(0, 191, 99, 0.5);
+}
+
+.btn.print {
+  height: 56px;
+  background: linear-gradient(90deg, #C0C0C0, #a7e7ff);
+  border: 2px solid var(--ice-blue);
+  color: #060b14;
+  font-weight: 800;
+  font-size: 15px;
+  box-shadow: 0 0 24px rgba(167, 231, 255, 0.6);
+}
+
+.btn.print:hover {
+  background: linear-gradient(90deg, #d8d8d8, #c7f0ff);
+  box-shadow: 0 0 32px rgba(167, 231, 255, 0.85);
+}
+
+/* Shell install pop-up (app.js): 10s auto-open, package benefits list, scrolls on small screens */
+#pwaModal .pwa-modal-box {
+  border-color: var(--ice);
+  box-shadow: 0 0 40px rgba(143, 216, 242, 0.4), inset 0 0 18px rgba(143, 216, 242, 0.06);
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+.pwa-pack {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 16px;
+}
+
+.pwa-pack-row {
+  border: 1px solid rgba(0, 138, 214, 0.35);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: rgba(0, 138, 214, 0.08);
+}
+
+.pwa-pack-row.hot {
+  border-color: rgba(255, 59, 71, 0.5);
+  background: rgba(255, 59, 71, 0.07);
+}
+
+.pwa-pack-name {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font: 800 12.5px 'JetBrains Mono', monospace;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.pwa-pack-name span {
+  color: var(--ice);
+  white-space: nowrap;
+}
+
+.pwa-pack-row.hot .pwa-pack-name span {
+  color: var(--red);
+}
+
+.pwa-pack ul {
+  list-style: none;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #c8d0d8;
+  line-height: 1.6;
+}
+
+.pwa-pack li::before {
+  content: '> ';
+  color: var(--ice-blue);
+  font-weight: 900;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner h1 > span:first-child {
+    animation: none;
+  }
+}

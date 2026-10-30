@@ -1,4 +1,4 @@
-/* PrintFlow PWA shared shell: header, nav, token pop-up, 7s PWA install prompt, matrix rain, helpers. */
+/* PrintFlow PWA shared shell: header, nav, token pop-up, 10s PWA install prompt, matrix rain, helpers. */
 const PF = (() => {
   const KEY = 'shield_token', USER = 'shield_user';
   const $ = (s, r = document) => r.querySelector(s);
@@ -148,13 +148,18 @@ const PF = (() => {
     }
     const modal = $('#pwaModal');
     if (modal) modal.classList.add('open');
-    if (!isManual) sessionStorage.setItem('pwa_prompt_shown', '1');
+    if (!isManual) sessionStorage.setItem(pwaShownKey(), '1');
   }
 
   function closePwaModal() {
     const modal = $('#pwaModal');
     if (modal) modal.classList.remove('open');
-    sessionStorage.setItem('pwa_prompt_shown', '1');
+    sessionStorage.setItem(pwaShownKey(), '1');
+  }
+
+  // Auto pop-up is shown once per page per session, so every app page gets its own 10s prompt.
+  function pwaShownKey() {
+    return 'pwa_prompt_shown_' + (document.body.dataset.page || 'page');
   }
 
   function rain() {
@@ -231,6 +236,24 @@ const PF = (() => {
         '</div>' +
         '<h3 class="pwa-title">FOR FULL PROTECTION: ADD TO HOME SCREEN</h3>' +
         '<p class="pwa-subtitle">Run PrintFlow with instant access, offline vault sync, and zero browser chrome lag.</p>' +
+        '<div class="pwa-pack">' +
+          '<div class="pwa-pack-row"><div class="pwa-pack-name">FREE CREATOR <span>$0</span></div><ul>' +
+            '<li>Free intensive scan every 3 days (5 threat feeds)</li>' +
+            '<li>Scrape counter + owed cash preview</li>' +
+            '<li>Shield Bolt snapshot every 3 days + Proof Vault</li>' +
+            '<li>Shield Protected badge</li></ul></div>' +
+          '<div class="pwa-pack-row"><div class="pwa-pack-name">MONTHLY SHIELD <span>$49.99/mo</span></div><ul>' +
+            '<li>Daily leak scans</li>' +
+            '<li>Unlimited takedown filings</li>' +
+            '<li>AI labyrinth bot block + owned Vault</li></ul></div>' +
+          '<div class="pwa-pack-row"><div class="pwa-pack-name">ANNUAL SHIELD <span>$399/yr</span></div><ul>' +
+            '<li>Scans every 6 hours, 12 months continuous</li>' +
+            '<li>Priority 24/7 takedown queue</li>' +
+            '<li>Voice / face clone shield + permanent Vault</li></ul></div>' +
+          '<div class="pwa-pack-row hot"><div class="pwa-pack-name">SOVEREIGN <span>$49.99/mo</span></div><ul>' +
+            '<li>Pay Per Crawl 402 toll (Dec 1st), 70% prints to your wallet</li>' +
+            '<li>48h TAKE IT DOWN Act filing + one-click claim all leaks</li></ul></div>' +
+        '</div>' +
         '<div class="pwa-browser-pill" id="pwaBrowserName">DETECTED: BROWSER</div>' +
         '<div class="pwa-step-list" id="pwaStepList"></div>' +
         '<div class="pwa-actions">' +
@@ -255,12 +278,14 @@ const PF = (() => {
 
     rain();
 
-    // 7-Second Automatic PWA Trigger
+    // 10-Second Automatic PWA Trigger (skipped once installed; waits if the license modal is open)
     const browser = detectBrowser();
-    if (!browser.isStandalone && !sessionStorage.getItem('pwa_prompt_shown')) {
-      setTimeout(() => {
+    if (!browser.isStandalone && !sessionStorage.getItem(pwaShownKey())) {
+      const autoPwa = () => {
+        if ($('#modal').classList.contains('open')) return setTimeout(autoPwa, 2000);
         openPwaModal(false);
-      }, 7000);
+      };
+      setTimeout(autoPwa, 10000);
     }
 
     // Auto-identify: saved token wins; otherwise offer clipboard paste, then the license pop-up.
