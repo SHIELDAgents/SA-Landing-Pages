@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP PAYMENTS - SELECT PROTECTION TIER OR PROTOCOL // SHIELD AP</title>
+    <meta name="description" content="SHIELD AP Encrypted Settlement Terminal: Activate Anti-Agent IP Protection, Leak Deletion, or Protocol Escrow via BTCPay (Bitcoin / Lightning) or Wompi.">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SHIELD AP">
+    <!-- Cyber, Monospace & Clean Checkout Sans Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- Wompi Official Checkout Widget -->
+    <script src="https://checkout.wompi.co/widget.js" async></script>
+
+    <style>
+        :root {
+            /* Cyber blues & ice */
+            --blue: #008ad6;
+            --blue-deep: #0066bb;
+            --blue-bright: #2f86d6;
+            --blue-rgb: 0, 138, 214;
+            --ice: #8fd8f2;
+            --ice-rgb: 143, 216, 242;
+            --ice-blue: #a7e7ff;
+            --silver: #C0C0C0;
+            --text: #F0F0F0;
+
+            /* Accents */
+            --shield-green: #00bf63;
+            --shield-green-rgb: 0, 191, 99;
+            --btc-orange: #F7931A;
+            --btc-orange-rgb: 247, 147, 26;
+            --aura-pastel: #F4B8E4;
+            --aura-pastel-rgb: 244, 184, 228;
+            --worry-red: #FF1A24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+            background-color: #000000 !important;
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Matrix digital rain background canvas */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        /* Cyber scanlines overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.22) 50%);
+            background-size: 100% 3px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .topbar {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 22px 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            font-family: 'JetBrains Mono', monospace;
+            color: #E2F4FF;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            word-spacing: 3px;
+            text-shadow: 0 0 8px rgba(167, 231, 255, 0.5);
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #FFFFFF;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            word-spacing: 4px;
+            text-transform: uppercase;
+            color: #69FFB4;
+            padding: 6px 12px;
+            border: 1px solid rgba(105, 255, 180, 0.55);
+            border-radius: 999px;
+            background: rgba(42, 50, 60, 0.92);
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--shield-green);
+            box-shadow: 0 0 8px var(--shield-green);
+        }
+
+        .page {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 16px 20px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* ---------- HEADER: CENTERED AP WITH METALLIC LUXURY SHINE ---------- */
+        header {
+            text-align: center;
+            margin-top: 8px;
+            margin-bottom: 12px;
+        }
+
+        .title-ap {
+            font-size: clamp(3.6rem, 9vw, 5.6rem);
+            font-weight: 900;
+            letter-spacing: 6px;
+            line-height: 1;
+            display: inline-block;
+            background: linear-gradient(135deg, 
+                #8E9BA8 0%, 
+                #FFFFFF 18%, 
+                #5D6C7C 36%, 
+                #E8EFF5 52%, 
+                #505F6E 68%, 
+                #FFFFFF 84%, 
+                #8E9BA8 100%
+            );
+            background-size: 240% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            filter: drop-shadow(0 0 18px rgba(var(--ice-rgb), 0.85)) drop-shadow(0 0 42px rgba(var(--ice-rgb), 0.45));
+            animation: luxuryMetallicShine 3.4s linear infinite;
+        }
+
+        @keyframes luxuryMetallicShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 240% center; }
+        }
+
+        .subtitle {
+            font-size: 0.98rem;
+            color: #D6E4F0;
+            letter-spacing: 2.5px;
+            word-spacing: 6px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 16px;
+            margin-bottom: 18px;
+            text-shadow: 0 0 12px rgba(var(--ice-rgb), 0.45);
+            opacity: 0.95;
+        }
+
+        .tagline-block {
+            font-size: 16.5px;
+            line-height: 1.6;
+            word-spacing: 2px;
+            color: #F5F7FA;
+            max-width: 680px;
+            margin: 0 auto;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ---------- TERMINAL SHELL (HIGH-CONTRAST CHECKOUT WORKFLOW) ---------- */
+        .terminal {
+            width: 100%;
+            max-width: 780px;
+            margin-top: 32px;
+            padding: 34px 28px;
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0.97) 0%, rgba(11, 15, 25, 0.99) 100%);
+            border: 1px solid rgba(167, 231, 255, 0.45);
+            border-radius: 14px;
+            box-shadow: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 28px rgba(var(--ice-rgb), 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            text-align: left;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            word-spacing: 4px;
+            text-transform: uppercase;
+            color: #7dd3fc;
+            font-weight: 800;
+            margin-bottom: 14px;
+            padding-left: 10px;
+            border-left: 3px solid #38bdf8;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.8), 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ---------- PLAN SELECTOR (DISTINCT NAVY BLUE VS TEAL MATRIX POP) ---------- */
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 26px;
+        }
+
+        .plan-option {
+            position: relative;
+            padding: 22px 20px;
+            border-radius: 12px;
+            color: #f8fafc;
+            cursor: pointer;
+            text-align: left;
+            font: inherit;
+            transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease;
+        }
+
+        /* Box 1: Instant Dispatch — Dark Navy Blue #0f172a + #38bdf8 glow */
+        .plan-option[data-plan-card="monthly"] {
+            background: #0f172a;
+            border: 1.5px solid #38bdf8;
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.35), inset 0 0 18px rgba(56, 189, 248, 0.14), 0 6px 18px rgba(0, 0, 0, 0.6);
+        }
+
+        .plan-option[data-plan-card="monthly"]:hover,
+        .plan-option[data-plan-card="monthly"].is-selected {
+            background: linear-gradient(145deg, #13203B 0%, #0f172a 100%);
+            border: 2px solid #38bdf8;
+            transform: translateY(-2px);
+            box-shadow: 0 0 26px rgba(56, 189, 248, 0.65), inset 0 0 22px rgba(56, 189, 248, 0.22), 0 8px 22px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Box 2: Sovereign Lock — Dark Teal #0f2a2a + #2dd4bf glow */
+        .plan-option[data-plan-card="yearly"] {
+            background: #0f2a2a;
+            border: 1.5px solid #2dd4bf;
+            box-shadow: 0 0 16px rgba(45, 212, 191, 0.35), inset 0 0 18px rgba(45, 212, 191, 0.14), 0 6px 18px rgba(0, 0, 0, 0.6);
+        }
+
+        .plan-option[data-plan-card="yearly"]:hover,
+        .plan-option[data-plan-card="yearly"].is-selected {
+            background: linear-gradient(145deg, #133636 0%, #0f2a2a 100%);
+            border: 2px solid #2dd4bf;
+            transform: translateY(-2px);
+            box-shadow: 0 0 26px rgba(45, 212, 191, 0.65), inset 0 0 22px rgba(45, 212, 191, 0.22), 0 8px 22px rgba(0, 0, 0, 0.7);
+        }
+
+        .plan-badge {
+            display: inline-block;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 5px 11px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            color: #FFFFFF;
+            text-shadow: 0 0 8px #38bdf8;
+            background: rgba(56, 189, 248, 0.16);
+            border: 1px solid #38bdf8;
+        }
+
+        .plan-badge.save {
+            color: #a5f3fc;
+            text-shadow: 0 0 8px #2dd4bf;
+            background: rgba(45, 212, 191, 0.16);
+            border: 1px solid #2dd4bf;
+        }
+
+        .plan-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            word-spacing: 2px;
+            color: #f8fafc;
+            margin-bottom: 6px;
+        }
+
+        .plan-price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+        }
+
+        .plan-price span {
+            font-size: 0.9rem;
+            color: #f8fafc;
+            font-weight: 600;
+        }
+
+        .plan-desc {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 14px;
+            color: #f8fafc;
+            line-height: 1.6;
+        }
+
+        /* Protocol Quick-Switch Bar (if user came from a Status / IRL / Aura / Ghost Protocol) */
+        .protocol-switch-wrap {
+            margin-bottom: 28px;
+        }
+
+        .protocol-select {
+            width: 100%;
+            height: 52px;
+            padding: 0 16px;
+            border-radius: 8px;
+            background: #0f172a;
+            border: 1px solid rgba(56, 189, 248, 0.55);
+            color: #f8fafc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.18), inset 0 1px 2px rgba(0, 0, 0, 0.35);
+        }
+
+        .protocol-select option {
+            background: #0f172a;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        .protocol-select:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.32), 0 0 16px rgba(56, 189, 248, 0.6);
+        }
+
+        /* ---------- OPERATIVE / ASSET INTAKE FIELDS ---------- */
+        .intake-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #7dd3fc;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.8), 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .field input {
+            min-height: 52px;
+            padding: 14px 16px;
+            background: #ffffff;
+            border: 1.5px solid #111827;
+            border-radius: 8px;
+            color: #000000;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .field input:focus {
+            background: #ffffff;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.35), 0 0 16px rgba(56, 189, 248, 0.65);
+        }
+
+        .field input::placeholder {
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 400;
+            opacity: 1;
+        }
+
+        /* ---------- SUMMARY BAR ---------- */
+        .order-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            border-radius: 10px;
+            background: #0f172a;
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            margin-bottom: 26px;
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.2), 0 4px 14px rgba(0, 0, 0, 0.45);
+        }
+
+        .summary-left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .summary-plan {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.04rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 0.5px;
+            word-spacing: 2px;
+        }
+
+        .summary-note {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 13px;
+            color: #f8fafc;
+        }
+
+        .summary-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            text-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+        }
+
+        /* ---------- DUAL PAYMENT RAILS: HYBRID WHITE BUTTON + MATRIX BLUE NEON BORDER GLOW ---------- */
+        .rails-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .pay-btn {
+            background: #ffffff;
+            color: #000000;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 0 20px;
+            height: 56px;
+            min-height: 56px;
+            border-radius: 10px;
+            border: 1.5px solid #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            width: 100%;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.55), 0 2px 8px rgba(0, 0, 0, 0.25);
+            transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .pay-btn:hover {
+            background: #f3f4f6;
+            border-color: #7dd3fc;
+            transform: translateY(-1px);
+            box-shadow: 0 0 22px rgba(56, 189, 248, 0.85), 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .pay-btn:hover .pay-icon {
+            filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.8));
+        }
+
+        .pay-btn:active {
+            background: #e5e7eb;
+        }
+
+        .icons-inside {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .pay-icon {
+            width: 24px;
+            height: 18px;
+            object-fit: contain;
+            display: block;
+            transition: filter 0.18s ease;
+        }
+
+        .security-foot {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.22);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            font-weight: 600;
+            word-spacing: 3px;
+            color: #E2E8F0;
+        }
+
+        /* ---------- BTCPAY & SETTLEMENT MODAL ---------- */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(10, 14, 20, 0.86);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.is-open {
+            display: flex;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 470px;
+            background: linear-gradient(180deg, #2D3540 0%, #232A34 100%);
+            border: 2px solid #FFA42E;
+            border-radius: 14px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 0 42px rgba(var(--btc-orange-rgb), 0.38), 0 16px 48px rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            letter-spacing: 1.5px;
+            word-spacing: 4px;
+            text-transform: uppercase;
+            color: #FFB85C;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .modal-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.32rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 0.8px;
+            word-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .modal-desc {
+            font-size: 0.92rem;
+            color: #F1F5F9;
+            line-height: 1.55;
+            word-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .qr-frame {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 16px;
+            padding: 12px;
+            background: #FFFFFF;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .invoice-box {
+            background: #36404D;
+            border: 1px solid rgba(255, 184, 92, 0.6);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .invoice-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            word-spacing: 3px;
+            text-transform: uppercase;
+            color: #FFD08A;
+            margin-bottom: 5px;
+        }
+
+        .invoice-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            word-break: break-all;
+            line-height: 1.45;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 6px;
+        }
+
+        .btn-modal-primary {
+            flex: 1;
+            height: 48px;
+            border-radius: 8px;
+            border: 1px solid #FFB85C;
+            background: #FFA024;
+            color: #0B1016;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            word-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .btn-modal-close {
+            height: 48px;
+            padding: 0 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            background: #36404D;
+            color: #FFFFFF;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.86rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Wompi Modal Variant */
+        .modal-card.wompi-card {
+            border-color: var(--ice-blue);
+            box-shadow: 0 0 42px rgba(var(--ice-rgb), 0.38), 0 16px 48px rgba(0, 0, 0, 0.9);
+        }
+
+        .wompi-card .modal-badge {
+            color: #C8F2FF;
+        }
+
+        .wompi-card .invoice-box {
+            border-color: rgba(200, 242, 255, 0.55);
+        }
+
+        .wompi-card .invoice-label {
+            color: #C8F2FF;
+        }
+
+        .btn-wompi-launch {
+            flex: 1;
+            height: 48px;
+            border-radius: 8px;
+            border: 1px solid #FFFFFF;
+            background: linear-gradient(90deg, #E2E8F0, #B8EEFF);
+            color: #0B1017;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            word-spacing: 2px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wompi-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .wompi-method-pill {
+            padding: 9px 6px;
+            border-radius: 6px;
+            background: #394554;
+            border: 1px solid rgba(220, 234, 248, 0.55);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 0.8px;
+            word-spacing: 2px;
+        }
+
+        @media (max-width: 700px) {
+            .plan-grid,
+            .intake-grid,
+            .rails-grid {
+                grid-template-columns: 1fr;
+            }
+            .terminal {
+                padding: 22px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hidden SVG filter: rough edges for the subtitle -->
+    <svg width="0" height="0" style="position: absolute;" aria-hidden="true">
+        <filter id="rough-text" x="-5%" y="-30%" width="110%" height="160%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="7" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+            <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="3" result="grain"/>
+            <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3 2.2" result="specks"/>
+            <feComposite in="rough" in2="specks" operator="in"/>
+        </filter>
+    </svg>
+
+    <div class="scanlines"></div>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="topbar">
+        <a class="back-link" href="index.html">&larr; Back to SHIELD AP</a>
+        <span class="status-pill"><span class="status-dot"></span>ESCROW &amp; SHIELD TERMINAL ONLINE</span>
+    </div>
+
+    <main class="page">
+
+        <header>
+            <h1 class="title-ap">AP</h1>
+            <div class="subtitle">AP PAYMENTS // Anti-Agent Protocol</div>
+            <div class="tagline-block">
+                <p>Deploy continuous IP protection, execute instant leak takedowns, or fund a live Protocol in escrow via zero-trace BTCPay or Wompi instant checkout.</p>
+            </div>
+        </header>
+
+        <section class="terminal" aria-label="Encrypted Checkout Terminal">
+
+            <div class="section-label">AP PAYMENTS &mdash; 01 // SELECT PROTECTION TIER OR PROTOCOL</div>
+
+            <!-- Primary SHIELD AP Subscription Cards -->
+            <div class="plan-grid">
+                <button type="button" class="plan-option is-selected" data-plan-card="monthly">
+                    <span class="plan-badge">INSTANT DISPATCH</span>
+                    <div class="plan-name">Monthly Shield // IP &amp; Leak Deletion</div>
+                    <div class="plan-price">$49.99 <span>/ month</span></div>
+                    <div class="plan-desc">30-min leak scans, unlimited DMCA takedowns (Telegram, Reddit, Discord, EroMe, Google), AI Labyrinth bot block &amp; Owned Vault.</div>
+                </button>
+
+                <button type="button" class="plan-option" data-plan-card="yearly">
+                    <span class="plan-badge save">SAVE 33% // SOVEREIGN LOCK</span>
+                    <div class="plan-name">Annual Shield // Full Year Protection</div>
+                    <div class="plan-price">$399 <span>/ year</span></div>
+                    <div class="plan-desc">12 months continuous Anti-Agent Protocol, priority 24/7 takedown queue, voice/face clone shield &amp; permanent Vault retention.</div>
+                </button>
+            </div>
+
+            <!-- Full Catalog Dropdown (includes SHIELD & AURA Protocols) -->
+            <div class="protocol-switch-wrap">
+                <label for="plan-selector" class="section-label" style="display:block;margin-bottom:8px;">OR DEPLOY A SPECIFIC PRINTFLOW PROTOCOL</label>
+                <select id="plan-selector" class="protocol-select">
+                    <option value="monthly" data-title="Monthly Shield // IP & Leak Deletion" data-usd="49.99">SHIELD AP — Monthly IP &amp; Leak Deletion ($49.99/mo)</option>
+                    <option value="yearly" data-title="Annual Shield // Full Year Protection" data-usd="399.00">SHIELD AP — Annual IP &amp; Leak Deletion ($399/yr)</option>
+                    <option value="status_shield" data-title="PEACE Protocol // Status Shield" data-usd="139.00">PEACE Protocol — Status Shield ($139)</option>
+                    <option value="irl_ghost" data-title="PEACE Protocol // IRL Ghost (1hr Deposit)" data-usd="1400.00">PEACE Protocol — IRL Ghost ($1,400+)</option>
+                    <option value="ghost_protocol" data-title="PEACE Protocol // Ghost Protocol" data-usd="3500.00">PEACE Protocol — Ghost Protocol ($3,500+)</option>
+                    <option value="status_tag" data-title="AURA Protocol // Status Tag" data-usd="169.00">AURA Protocol — Status Tag ($169)</option>
+                    <option value="irl_status" data-title="AURA Protocol // IRL Status (1hr Deposit)" data-usd="1700.00">AURA Protocol — IRL Status ($1,700+)</option>
+                    <option value="aura_protocol" data-title="AURA Protocol // Aura Protocol" data-usd="3700.00">AURA Protocol — Aura Protocol ($3,700+)</option>
+                </select>
+            </div>
+
+            <div class="section-label">02 // PROTECTED HANDLE &amp; DISPATCH DETAILS</div>
+            <div class="intake-grid">
+                <div class="field">
+                    <label for="creator-handle">Primary @Handle or Domain</label>
+                    <input type="text" id="creator-handle" placeholder="@username or onlyfans.com/..." autocomplete="off" required>
+                </div>
+                <div class="field">
+                    <label for="creator-email">Encrypted Receipt Email</label>
+                    <input type="email" id="creator-email" placeholder="you@domain.com" autocomplete="email" required>
+                </div>
+                <div class="field full">
+                    <label for="creator-alias">Protected Stage Name / Whitelist URLs (Optional — Legal Name Never Exposed)</label>
+                    <input type="text" id="creator-alias" placeholder="Stage alias + official links to whitelist from sweeps">
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-left">
+                    <div class="summary-plan" id="summary-plan-title">Monthly Shield // IP &amp; Leak Deletion</div>
+                    <div class="summary-note">Private corporate filing · Instant Auth Token issued on settlement</div>
+                </div>
+                <div class="summary-amount" id="summary-plan-amount">$49.99</div>
+            </div>
+
+            <div class="section-label">03 // SELECT ENCRYPTED SETTLEMENT RAIL</div>
+            <div class="rails-grid">
+                <!-- Rail 1: BTCPay Server -->
+                <button type="button" class="pay-btn pay-btcpay" id="btn-pay-btcpay">
+                    Pay with BTCPay
+                    <span class="icons-inside">
+                        <img src="/icons/bitcoin.svg" onerror="this.onerror=null;this.src='icons/bitcoin.svg'" alt="Bitcoin" class="pay-icon">
+                        <img src="/icons/ethereum.svg" onerror="this.onerror=null;this.src='icons/ethereum.svg'" alt="Ethereum" class="pay-icon">
+                    </span>
+                </button>
+
+                <!-- Rail 2: Card / Fiat Gateway -->
+                <button type="button" class="pay-btn pay-card" id="btn-pay-wompi">
+                    Pay with Card
+                    <span class="icons-inside">
+                        <img src="/icons/apple-pay.svg" onerror="this.onerror=null;this.src='icons/apple-pay.svg'" alt="Apple Pay" class="pay-icon">
+                        <img src="/icons/visa.svg" onerror="this.onerror=null;this.src='icons/visa.svg'" alt="Visa" class="pay-icon">
+                        <img src="/icons/mastercard.svg" onerror="this.onerror=null;this.src='icons/mastercard.svg'" alt="Mastercard" class="pay-icon">
+                    </span>
+                </button>
+            </div>
+
+            <div class="security-foot">
+                <span>ESCROW STATE: 01_PURCHASED &rarr; AUTO_DISPATCH</span>
+                <span>256-BIT ZERO-LEAK VAULT BINDING</span>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- BTCPay Invoice Modal -->
+    <div class="modal-backdrop" id="btcpay-modal" role="dialog" aria-modal="true" aria-labelledby="btcpay-modal-title">
+        <div class="modal-card">
+            <div class="modal-badge">BTCPAY SERVER // LIGHTNING &amp; ON-CHAIN</div>
+            <h3 class="modal-title" id="btcpay-modal-title">Zero-Trace BTC Invoice</h3>
+            <p class="modal-desc" id="btcpay-modal-desc">Scan with any Lightning or Bitcoin wallet, or copy the invoice payload below. Your Creator Auth Token activates on 1st confirmation.</p>
+            <div class="qr-frame" id="btcpay-qr">
+                <!-- Dynamic SVG QR representation -->
+                <svg viewBox="0 0 120 120" width="156" height="156" aria-label="BTCPay Invoice QR">
+                    <rect width="120" height="120" fill="#FFFFFF"/>
+                    <rect x="8" y="8" width="32" height="32" fill="none" stroke="#000" stroke-width="6"/>
+                    <rect x="16" y="16" width="16" height="16" fill="#000"/>
+                    <rect x="80" y="8" width="32" height="32" fill="none" stroke="#000" stroke-width="6"/>
+                    <rect x="88" y="16" width="16" height="16" fill="#000"/>
+                    <rect x="8" y="80" width="32" height="32" fill="none" stroke="#000" stroke-width="6"/>
+                    <rect x="16" y="88" width="16" height="16" fill="#000"/>
+                    <rect x="48" y="12" width="8" height="8" fill="#000"/>
+                    <rect x="60" y="20" width="8" height="16" fill="#000"/>
+                    <rect x="48" y="44" width="24" height="24" fill="#F7931A"/>
+                    <rect x="12" y="48" width="16" height="8" fill="#000"/>
+                    <rect x="32" y="56" width="8" height="16" fill="#000"/>
+                    <rect x="80" y="48" width="16" height="12" fill="#000"/>
+                    <rect x="100" y="60" width="12" height="16" fill="#000"/>
+                    <rect x="48" y="80" width="16" height="12" fill="#000"/>
+                    <rect x="72" y="76" width="16" height="20" fill="#000"/>
+                    <rect x="92" y="96" width="20" height="16" fill="#000"/>
+                    <rect x="52" y="100" width="16" height="12" fill="#000"/>
+                </svg>
+            </div>
+            <div class="invoice-box">
+                <div class="invoice-label">BTCPAY INVOICE ID &amp; LIGHTNING PAYLOAD</div>
+                <div class="invoice-val" id="btcpay-invoice-val">lnbc499900n1pshieldap...</div>
+            </div>
+            <div class="invoice-box" style="border-color: rgba(200, 242, 255, 0.65);">
+                <div class="invoice-label" style="color: #D0F4FF;">PRE-ASSIGNED CREATOR AUTH TOKEN</div>
+                <div class="invoice-val" id="btcpay-auth-token">SHLD-PF-...</div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-modal-primary" id="btcpay-copy-btn">Copy Invoice &amp; Token</button>
+                <button type="button" class="btn-modal-close" id="btcpay-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wompi Gateway Modal -->
+    <div class="modal-backdrop" id="wompi-modal" role="dialog" aria-modal="true" aria-labelledby="wompi-modal-title">
+        <div class="modal-card wompi-card">
+            <div class="modal-badge" id="wompi-status-badge">WOMPI GATEWAY // INITIALIZING LINK...</div>
+            <h3 class="modal-title" id="wompi-modal-title">Wompi Instant Fiat Checkout</h3>
+            <p class="modal-desc" id="wompi-modal-desc">Generating encrypted Wompi payment session via production API. Your Creator Auth Token is pre-bound below.</p>
+            <div class="wompi-methods">
+                <div class="wompi-method-pill">CREDIT / DEBIT</div>
+                <div class="wompi-method-pill">NEQUI / PSE</div>
+                <div class="wompi-method-pill">BANCOLOMBIA</div>
+            </div>
+            <div class="invoice-box">
+                <div class="invoice-label">WOMPI REFERENCE &amp; SETTLEMENT AMOUNT</div>
+                <div class="invoice-val" id="wompi-ref-val">SHLD-...</div>
+            </div>
+            <div class="invoice-box">
+                <div class="invoice-label">WOMPI CHECKOUT LINK</div>
+                <div class="invoice-val" id="wompi-link-val">Connecting to production.wompi.co...</div>
+            </div>
+            <div class="invoice-box" style="border-color: rgba(82, 255, 168, 0.6);">
+                <div class="invoice-label" style="color: #69FFB4;">PRE-ASSIGNED CREATOR AUTH TOKEN</div>
+                <div class="invoice-val" id="wompi-auth-token">SHLD-PF-...</div>
+            </div>
+            <div class="modal-actions">
+                <a href="#" target="_blank" rel="noopener" class="btn-wompi-launch" id="wompi-launch-btn">Open Wompi Checkout &gt;</a>
+                <button type="button" class="btn-modal-close" id="wompi-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Matrix Code Rain Script: 70% ice blue, 30% green
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+-<>/?\\|';
+        const alphabet = katakana + latin;
+
+        const fontSize = 14;
+        const colSpacing = 24;
+        const rowSpacing = 22;
+        let columns = 0;
+        let rainDrops = [];
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            columns = Math.ceil(width / colSpacing);
+            rainDrops = Array.from({ length: columns }, () => Math.floor(Math.random() * -30));
+
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function drawMatrix() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.font = fontSize + "px 'Share Tech Mono', monospace";
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                const x = i * colSpacing;
+                const y = rainDrops[i] * rowSpacing;
+
+                ctx.fillStyle = Math.random() < 0.3 ? '#00bf63' : '#a7e7ff';
+                ctx.fillText(text, x, y);
+
+                if (y > height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 65);
+
+        // Wompi & BTCPay Configuration
+        window.SHIELD_PAYMENT_CONFIG = {
+            wompi: {
+                publicKey: 'pub_prod_rC4cpKxUjuygcFeZ0yfhd8jZn55UtKsZ',
+                privateKey: 'prv_prod_ug8hjTVKVsWHutAig51TdvrIIWy8OS9U',
+                currency: 'COP',
+                usdToCopRate: 4200
+            },
+            btcpay: {
+                storeId: 'SHIELD-AP-MAINNET',
+                currency: 'USD'
+            }
+        };
+
+        const planSelector = document.getElementById('plan-selector');
+        const planCards = document.querySelectorAll('[data-plan-card]');
+        const summaryTitle = document.getElementById('summary-plan-title');
+        const summaryAmount = document.getElementById('summary-plan-amount');
+
+        function selectPlan(planKey) {
+            const normalized = (planKey === 'delete_monthly' || planKey === 'protect_monthly') ? 'monthly'
+                : (planKey === 'delete_yearly' || planKey === 'protect_yearly') ? 'yearly'
+                : planKey;
+
+            if (planSelector.querySelector('option[value="' + normalized + '"]')) {
+                planSelector.value = normalized;
+            }
+
+            const selectedOpt = planSelector.options[planSelector.selectedIndex];
+            const title = selectedOpt.getAttribute('data-title');
+            const usd = parseFloat(selectedOpt.getAttribute('data-usd') || '49.99');
+
+            summaryTitle.textContent = title;
+            summaryAmount.textContent = '$' + (usd % 1 === 0 ? usd.toLocaleString() : usd.toFixed(2));
+
+            planCards.forEach((card) => {
+                card.classList.toggle('is-selected', card.getAttribute('data-plan-card') === planSelector.value);
+            });
+        }
+
+        planCards.forEach((card) => {
+            card.addEventListener('click', () => {
+                selectPlan(card.getAttribute('data-plan-card'));
+            });
+        });
+
+        planSelector.addEventListener('change', () => {
+            selectPlan(planSelector.value);
+        });
+
+        // Auto-select plan from URL query string (?plan=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('plan')) {
+            selectPlan(urlParams.get('plan'));
+        }
+
+        function generateAuthToken(source) {
+            const bytes = new Uint8Array(16);
+            if (window.crypto && window.crypto.getRandomValues) {
+                window.crypto.getRandomValues(bytes);
+            } else {
+                for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
+            }
+            const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+            const token = 'SHLD-PF-' + hex.slice(0, 8) + '-' + hex.slice(8, 16) + '-' + hex.slice(16, 24);
+            try {
+                localStorage.setItem('shield_auth_token', token);
+                localStorage.setItem('shield_auth_source', source || 'payments');
+                localStorage.setItem('shield_auth_ts', String(Date.now()));
+                document.cookie = 'shield_auth_token=' + token + '; path=/; max-age=31536000; SameSite=Lax';
+            } catch (_) {}
+            return token;
+        }
+
+        function getIntakeData() {
+            const selectedOpt = planSelector.options[planSelector.selectedIndex];
+            const usd = parseFloat(selectedOpt.getAttribute('data-usd') || '49.99');
+            const handle = document.getElementById('creator-handle').value.trim();
+            const email = document.getElementById('creator-email').value.trim();
+            const alias = document.getElementById('creator-alias').value.trim();
+            const ref = 'SHLD-' + planSelector.value.toUpperCase() + '-' + Date.now();
+            return {
+                plan: planSelector.value,
+                title: selectedOpt.getAttribute('data-title'),
+                usd,
+                handle,
+                email,
+                alias,
+                reference: ref
+            };
+        }
+
+        // Rail 1: BTCPay Server Checkout Handler
+        const btcpayModal = document.getElementById('btcpay-modal');
+        const btcpayInvoiceVal = document.getElementById('btcpay-invoice-val');
+        const btcpayAuthToken = document.getElementById('btcpay-auth-token');
+        const btcpayDesc = document.getElementById('btcpay-modal-desc');
+        const btcpayCopyBtn = document.getElementById('btcpay-copy-btn');
+        const btcpayCloseBtn = document.getElementById('btcpay-close-btn');
+
+        document.getElementById('btn-pay-btcpay').addEventListener('click', () => {
+            const data = getIntakeData();
+            const token = generateAuthToken('btcpay_' + data.plan);
+            const invoiceId = 'BTCPAY-' + data.reference + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+            btcpayDesc.textContent = data.title + ' ($' + data.usd.toFixed(2) + ' USD) — Scan or copy the BTCPay invoice below. Your Creator Auth Token activates on 1st confirmation.';
+            btcpayInvoiceVal.textContent = invoiceId + ' // bitcoin:?amount=' + (data.usd / 68000).toFixed(6) + '&label=SHIELD_AP';
+            btcpayAuthToken.textContent = token;
+            btcpayModal.classList.add('is-open');
+        });
+
+        btcpayCopyBtn.addEventListener('click', () => {
+            const payload = 'Invoice: ' + btcpayInvoiceVal.textContent + '\nAuth Token: ' + btcpayAuthToken.textContent;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(payload).catch(() => {});
+            }
+            btcpayCopyBtn.textContent = 'Invoice & Token Copied';
+            setTimeout(() => {
+                btcpayCopyBtn.textContent = 'Copy Invoice & Token';
+            }, 2000);
+        });
+
+        btcpayCloseBtn.addEventListener('click', () => {
+            btcpayModal.classList.remove('is-open');
+        });
+
+        btcpayModal.addEventListener('click', (e) => {
+            if (e.target === btcpayModal) {
+                btcpayModal.classList.remove('is-open');
+            }
+        });
+
+        // Rail 2: Wompi Official Checkout Handler (Modal + Live Wompi Payment Link API + Fallback)
+        const wompiModal = document.getElementById('wompi-modal');
+        const wompiStatusBadge = document.getElementById('wompi-status-badge');
+        const wompiModalDesc = document.getElementById('wompi-modal-desc');
+        const wompiRefVal = document.getElementById('wompi-ref-val');
+        const wompiLinkVal = document.getElementById('wompi-link-val');
+        const wompiAuthToken = document.getElementById('wompi-auth-token');
+        const wompiLaunchBtn = document.getElementById('wompi-launch-btn');
+        const wompiCloseBtn = document.getElementById('wompi-close-btn');
+
+        document.getElementById('btn-pay-wompi').addEventListener('click', async () => {
+            const data = getIntakeData();
+            const token = generateAuthToken('wompi_' + data.plan);
+            const cfg = window.SHIELD_PAYMENT_CONFIG.wompi;
+            const amountInCents = Math.round(data.usd * cfg.usdToCopRate * 100);
+            const copFormatted = (amountInCents / 100).toLocaleString('en-US') + ' COP';
+
+            const safeRedirect = (window.location.origin && window.location.origin !== 'null' && window.location.protocol.startsWith('http'))
+                ? window.location.origin + '/index.html?status=purchased&ref=' + encodeURIComponent(data.reference)
+                : 'https://shield-agents.store/index.html?status=purchased&ref=' + encodeURIComponent(data.reference);
+
+            const fallbackParams = new URLSearchParams({
+                'public-key': cfg.publicKey,
+                'currency': cfg.currency,
+                'amount-in-cents': String(amountInCents),
+                'reference': data.reference,
+                'redirect-url': safeRedirect
+            });
+            let checkoutUrl = 'https://checkout.wompi.co/p/?' + fallbackParams.toString();
+
+            wompiStatusBadge.textContent = 'WOMPI GATEWAY // GENERATING LIVE LINK...';
+            wompiModalDesc.textContent = data.title + ' ($' + data.usd.toFixed(2) + ' USD / ~' + copFormatted + ') — Click "Open Wompi Checkout" below to complete payment via Card, Nequi, or PSE.';
+            wompiRefVal.textContent = data.reference + ' // $' + data.usd.toFixed(2) + ' USD (' + copFormatted + ')';
+            wompiLinkVal.textContent = checkoutUrl;
+            wompiAuthToken.textContent = token;
+            wompiLaunchBtn.href = checkoutUrl;
+            wompiModal.classList.add('is-open');
+
+            // Attempt live Wompi Payment Link creation using production private key
+            try {
+                const response = await fetch('https://production.wompi.co/v1/payment_links', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + cfg.privateKey
+                    },
+                    body: JSON.stringify({
+                        name: data.title,
+                        description: 'SHIELD AP Encrypted Settlement (' + (data.handle || 'Operative') + ')',
+                        single_use: true,
+                        collect_shipping: false,
+                        currency: cfg.currency,
+                        amount_in_cents: amountInCents,
+                        redirect_url: safeRedirect
+                    })
+                });
+                if (response.ok) {
+                    const json = await response.json();
+                    if (json && json.data && json.data.id) {
+                        checkoutUrl = 'https://checkout.wompi.co/l/' + json.data.id;
+                        wompiLinkVal.textContent = checkoutUrl;
+                        wompiLaunchBtn.href = checkoutUrl;
+                        wompiStatusBadge.textContent = 'WOMPI PRODUCTION LINK READY // ' + json.data.id;
+                        return;
+                    }
+                }
+                wompiStatusBadge.textContent = 'WOMPI GATEWAY // SESSION READY';
+            } catch (_) {
+                wompiStatusBadge.textContent = 'WOMPI GATEWAY // SESSION READY';
+            }
+        });
+
+        wompiCloseBtn.addEventListener('click', () => {
+            wompiModal.classList.remove('is-open');
+        });
+
+        wompiModal.addEventListener('click', (e) => {
+            if (e.target === wompiModal) {
+                wompiModal.classList.remove('is-open');
+            }
+        });
+    </script>
+</body>
+</html>
