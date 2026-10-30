@@ -1,46 +1,103 @@
 const PLATFORM_CONFIG = {
     instagram: {
-        buildUrl: (handle) => `https://www.instagram.com/${encodeURIComponent(handle)}/`,
         validPattern: /^(?!.*\.\.)(?!\.)[a-zA-Z0-9._]{1,30}(?<!\.)$/,
         reserved: new Set([
             'explore', 'accounts', 'p', 'reel', 'reels', 'stories',
-            'direct', 'about', 'legal', 'developer', ' tv', 'session'
+            'direct', 'about', 'legal', 'developer', 'tv', 'session'
         ]),
-        isSoft404: (html) => {
-            return /Sorry, this page isn't available|Page Not Found|The link you followed may be broken/i.test(html);
+        checkExists: async (handle) => {
+            const res = await fetch(`https://www.instagram.com/${encodeURIComponent(handle)}/`, {
+                method: 'GET',
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.9'
+                },
+                redirect: 'follow',
+                signal: AbortSignal.timeout(4500)
+            });
+            if (res.status !== 200) return false;
+            const html = await res.text();
+            const hasOgTitle = /property=["']og:title["']/i.test(html);
+            const isNotFound = /Sorry, this page isn't available|Page Not Found|<title>\s*Instagram\s*<\/title>/i.test(html);
+            return hasOgTitle && !isNotFound;
         }
     },
     tiktok: {
-        buildUrl: (handle) => `https://www.tiktok.com/@${encodeURIComponent(handle)}`,
         validPattern: /^[a-zA-Z0-9._]{2,24}(?<!\.)$/,
         reserved: new Set([
             'explore', 'following', 'foryou', 'live', 'messages',
             'upload', 'about', 'legal', 'login', 'signup', 'search'
         ]),
-        isSoft404: (html) => {
-            return /Visit TikTok to discover profiles!|"statusCode"\s*:\s*102(02|21)|Couldn't find this account/i.test(html);
+        checkExists: async (handle) => {
+            const res = await fetch(`https://www.tiktok.com/@${encodeURIComponent(handle)}`, {
+                method: 'GET',
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.9'
+                },
+                redirect: 'follow',
+                signal: AbortSignal.timeout(4500)
+            });
+            if (res.status !== 200) return false;
+            const html = await res.text();
+            const hasOgTitle = /property=["']og:title["']/i.test(html);
+            const isSoft404 = /Visit TikTok to discover profiles!|"statusCode"\s*:\s*102(02|21)|Couldn't find this account/i.test(html);
+            return hasOgTitle && !isSoft404;
         }
     },
     x: {
-        buildUrl: (handle) => `https://x.com/${encodeURIComponent(handle)}`,
         validPattern: /^[a-zA-Z0-9_]{1,15}$/,
         reserved: new Set([
             'home', 'explore', 'notifications', 'messages', 'settings',
-            'i', 'search', 'login', 'signup', 'tos', 'privacy', ' compose'
+            'i', 'search', 'login', 'signup', 'tos', 'privacy', 'compose'
         ]),
-        isSoft404: (html) => {
-            return /User Profile Not Found|404 Error|This account doesn't exist/i.test(html);
+        checkExists: async (handle) => {
+            const oembedUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(`https://twitter.com/${handle}`)}`;
+            const res = await fetch(oembedUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                redirect: 'follow',
+                signal: AbortSignal.timeout(4500)
+            });
+            if (res.status !== 200) return false;
+            const data = await res.json().catch(() => null);
+            return Boolean(data && (data.author_name || data.url || data.html));
         }
     },
     onlyfans: {
-        buildUrl: (handle) => `https://onlyfans.com/${encodeURIComponent(handle)}`,
         validPattern: /^[a-zA-Z0-9._-]{3,40}$/,
         reserved: new Set([
             'posts', 'chats', 'notifications', 'my', 'bookmarks',
             'lists', 'settings', 'terms', 'privacy', 'help', 'login', 'signup'
         ]),
-        isSoft404: (html) => {
-            return /Page Not Found|Sorry, this page is not available/i.test(html);
+        checkExists: async (handle) => {
+            // OnlyFans serves an identical SPA shell for all paths, so verify creator footprint
+            // across Reddit leak/mention index, URLScan crawl index, or cross-platform handle presence
+            const [redditRes, urlscanRes, igExists, xExists] = await Promise.allSettled([
+                fetch(`https://api.pullpush.io/reddit/search/submission/?q=${encodeURIComponent(`"${handle}"`)}&size=5`, {
+                    signal: AbortSignal.timeout(4000)
+                }).then((r) => r.json()),
+                fetch(`https://urlscan.io/api/v1/search/?q=page.title:${encodeURIComponent(handle)}&size=5`, {
+                    signal: AbortSignal.timeout(4000)
+                }).then((r) => r.json()),
+                PLATFORM_CONFIG.instagram.validPattern.test(handle)
+                    ? PLATFORM_CONFIG.instagram.checkExists(handle)
+                    : Promise.resolve(false),
+                PLATFORM_CONFIG.x.validPattern.test(handle)
+                    ? PLATFORM_CONFIG.x.checkExists(handle)
+                    : Promise.resolve(false)
+            ]);
+
+            const hasReddit = redditRes.status === 'fulfilled' && Array.isArray(redditRes.value?.data) && redditRes.value.data.length > 0;
+            const hasUrlscan = urlscanRes.status === 'fulfilled' && Number(urlscanRes.value?.total) > 0;
+            const hasIg = igExists.status === 'fulfilled' && igExists.value === true;
+            const hasX = xExists.status === 'fulfilled' && xExists.value === true;
+
+            return hasReddit || hasUrlscan || hasIg || hasX;
         }
     }
 };
@@ -57,7 +114,6 @@ function normalizePlatform(raw) {
 function cleanHandle(raw) {
     if (!raw) return '';
     let value = raw.trim();
-    // Strip URL prefix if a full or partial URL was passed in the handle parameter
     value = value.replace(/^(?:https?:\/\/)?(?:www\.)?(?:instagram\.com|instagr\.am|tiktok\.com|x\.com|twitter\.com|onlyfans\.com)\//i, '');
     value = value.split(/[/?#]/)[0].trim();
     value = value.replace(/^@+/, '').trim();
@@ -97,44 +153,15 @@ async function handleValidateRequest(request) {
 
     const config = PLATFORM_CONFIG[platform];
     const lowerHandle = handle.toLowerCase();
-    if (
-        !config.validPattern.test(handle) ||
-        config.reserved.has(lowerHandle) ||
-        /^(?:notfound|nonexistent|doesnotexist|fakehandle|invalidhandle|404error|no_such_user)/i.test(lowerHandle) ||
-        /^[bcdfghjklmnpqrstvwxz]{10,}$/i.test(lowerHandle)
-    ) {
+    if (!config.validPattern.test(handle) || config.reserved.has(lowerHandle)) {
         return jsonResponse({ exists: false });
     }
 
-    const targetUrl = config.buildUrl(handle);
-
     try {
-        const response = await fetch(targetUrl, {
-            method: 'GET',
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.9'
-            },
-            redirect: 'follow'
-        });
-
-        if (response.status === 404) {
-            return jsonResponse({ exists: false });
-        }
-
-        if (response.status === 200) {
-            const html = await response.text();
-            if (config.isSoft404 && config.isSoft404(html)) {
-                return jsonResponse({ exists: false });
-            }
-            return jsonResponse({ exists: true });
-        }
-
-        // Social platforms frequently return 302/403/429 login redirects or rate limits to datacenter IPs
-        return jsonResponse({ exists: true });
+        const exists = await config.checkExists(handle);
+        return jsonResponse({ exists: Boolean(exists), platform, handle });
     } catch (err) {
-        return jsonResponse({ exists: true });
+        return jsonResponse({ exists: false, platform, handle });
     }
 }
 

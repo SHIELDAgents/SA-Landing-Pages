@@ -1497,15 +1497,32 @@
                 // Show result box
                 resultBox.classList.remove('hidden');
 
+                if (scanData.exists === false) {
+                    resultBox.innerHTML = '<div class="result-error">Handle not found - check spelling</div>';
+                    handleInput.classList.add('is-error');
+                    return;
+                }
+
                 if (waitlistHandle && !waitlistHandle.value) {
                     waitlistHandle.value = '@' + handle;
                 }
 
                 if (scanData.found && scanData.scrapes_today > 0) {
+                    const profileLine = scanData.profile_summary
+                        ? `<p>Profile telemetry: ${scanData.profile_summary}</p>`
+                        : '';
+                    const crawlLeakLine = `<p>Web crawls &amp; reposts: ${scanData.crawls_found ?? 0} | Leak / NSFW threads: ${scanData.leaks_found ?? 0}</p>`;
+                    const locationsLine = Array.isArray(scanData.detected_locations) && scanData.detected_locations.length > 0
+                        ? `<p>Detected on: ${scanData.detected_locations.join(', ')}</p>`
+                        : '';
+
                     // Found leaks/scrapes
                     resultBox.innerHTML = `
                       <div class="result-found">
                         <h3>Scrapes today: ${scanData.scrapes_today}</h3>
+                        ${profileLine}
+                        ${crawlLeakLine}
+                        ${locationsLine}
                         <p>Estimated owed: $${scanData.estimated_owed}</p>
                         <p>Badge: ${scanData.badge_status}</p>
                         <button type="button" onclick="window.location.href='#waitlist'">Join Waitlist to collect</button>
