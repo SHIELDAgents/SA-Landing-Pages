@@ -4,62 +4,171 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PrintFlow // Print With Protocols</title>
-<link rel="manifest" href="/app/manifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#00ff88">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Printflow">
-<link rel="apple-touch-icon" href="/app/icons/icon-192.png">
+<meta name="apple-mobile-web-app-title" content="PrintFlow">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/app/app.css">
+<link rel="stylesheet" href="./app.css">
 </head>
 <body data-page="printflow">
 <main class="wrap">
 
-  <section class="banner">
-    <h1>PrintFlow</h1>
-    <p>Pick the services you sell, set your own prices and availability. Jobs only reach you for what you check.</p>
+  <!-- Header Banner -->
+  <section class="banner" style="border-left-color:var(--gold)">
+    <div class="tetris-bar" style="margin-bottom:12px">
+      <div class="tetris-cell" style="background:var(--gold);box-shadow:0 0 4px var(--gold)"></div>
+      <div class="tetris-cell" style="background:var(--gold);box-shadow:0 0 4px var(--gold)"></div>
+      <div class="tetris-cell"></div>
+      <div class="tetris-cell" style="background:var(--ice)"></div>
+      <div class="tetris-cell"></div>
+    </div>
+    <h1>
+      <span>PRINTFLOW // </span>
+      <span style="color:var(--gold)">TURN YOUR PROTOCOLS INTO CASH</span>
+    </h1>
+    <p>
+      Pick the protocols you run, set your pricing, and calibrate your presence. When scrapers or clients interact, you print cash directly to your sovereign payout channels.
+    </p>
+    <div style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span class="tag" style="border-color:var(--gold);color:var(--gold)">70% WORKER SPRINT</span>
+      <span class="tag">30% PROTOCOL RUNNER</span>
+      <span class="ghost-badge"><span>👻</span> SOVEREIGN PRINT FLOW</span>
+    </div>
   </section>
 
+  <!-- 70/30 Split Engine -->
   <section class="card" style="border-color:var(--gold)">
-    <h2><span style="color:var(--gold)">70% YOU / 30% SHIELD</span><span class="tag" style="border-color:var(--gold);color:var(--gold)">Auto split</span></h2>
-    <p class="muted">A customer buys a $100 status tag: $70 goes to you, $30 to Shield, no human involved. Paid to your BTC address or fiat account.</p>
-  </section>
-
-  <section class="card">
-    <h2><span>Virtual Protocols</span><span class="tag">You set the price</span></h2>
-    <div class="proto"><label><input type="checkbox" id="c_status" checked>Status Protocols: status tag</label>
-      <span>$<input type="number" id="p_status" value="100" min="1"></span></div>
-    <div class="proto"><label><input type="checkbox" id="c_ai" checked>AI picture with fan</label>
-      <span>$<input type="number" id="p_ai" value="50" min="1"></span></div>
-    <div class="proto"><label><input type="checkbox" id="c_peace" checked>Peace Protocols</label>
-      <span>$<input type="number" id="p_peace" value="139" min="1"></span></div>
-    <div class="proto"><label><input type="checkbox" id="c_ppc">Pay Per Crawl Protocol (Dec 1st)</label><span class="muted">Auto toll</span></div>
-    <label class="muted" style="text-transform:none;display:flex;gap:8px;margin-top:10px;color:var(--muted)">
-      <input type="checkbox" id="onlyTwo" style="width:16px;height:16px;accent-color:var(--neon)">I only do status tags and peace protocols</label>
-  </section>
-
-  <section class="card">
-    <h2><span>IRL Availability</span><span class="tag">Dates and times matter</span></h2>
-    <div class="row">
-      <div><label>IRL</label><select id="irl"><option value="0">Virtual only</option><option value="1">IRL available</option></select></div>
-      <div><label>City</label><input id="city" placeholder="City"></div>
-      <div><label>Dates / times</label><input id="dates" placeholder="e.g. Fri-Sun evenings"></div>
-      <div><label>IRL price (USD)</label><input id="p_irl" type="number" min="1" placeholder="Your rate"></div>
+    <h2>
+      <span>
+        <span class="hover-tech">70% YOU / 30% SHIELD PROTOCOL SPLIT<span class="tech-reveal">Autonomous Atomic Settlement &middot; D1 Registry Transaction</span></span>
+      </span>
+      <span class="tag" style="border-color:var(--gold);color:var(--gold)">Instant Split</span>
+    </h2>
+    <p class="muted">
+      A client buys your protocol: <strong style="color:var(--gold)">70% transfers straight to your wallet or bank account</strong>, 30% funds the Shield autonomous network. Zero human approval, zero payout delays.
+    </p>
+    <div style="margin-top:14px;background:#0d1813;border:1px solid var(--border);border-left:3px solid var(--gold);padding:14px;border-radius:4px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff" id="split">Calculating split...</div>
     </div>
   </section>
 
+  <!-- Avenue 1: Virtual Protocols -->
   <section class="card">
-    <h2><span>Your 70% Payout</span></h2>
-    <div class="row">
-      <div><label>BTC address</label><input id="btc" placeholder="bc1..."></div>
-      <div><label>Fiat account / Wompi</label><input id="fiat" placeholder="Account or Wompi ID"></div>
+    <h2>
+      <span>
+        <span class="hover-tech">Avenue 1 &middot; Virtual Protocols<span class="tech-reveal">Pay Per Crawl 402 &middot; Status Verification &middot; Ephemeral Vault</span></span>
+      </span>
+      <span class="tag">You Set The Rate</span>
+    </h2>
+    <p class="muted" style="margin-bottom:14px">
+      Activate the autonomous virtual shields you offer to fans, clients, and web bots:
+    </p>
+
+    <div class="proto">
+      <label>
+        <input type="checkbox" id="c_status" checked>
+        <span class="hover-tech">Status Protocols: Dynamic Verification Tag<span class="tech-reveal">Live SVG badge + custom cryptographic handle claim</span></span>
+      </label>
+      <span>$<input type="number" id="p_status" value="100" min="1"></span>
     </div>
-    <div class="row" style="margin-top:14px"><button class="btn" id="save">Save</button></div>
-    <p class="muted" id="split" style="margin-top:10px"></p>
+
+    <div class="proto">
+      <label>
+        <input type="checkbox" id="c_ai" checked>
+        <span class="hover-tech">AI Picture With Fan<span class="tech-reveal">Ephemeral R2 storage &middot; Auto-delete after verified delivery</span></span>
+      </label>
+      <span>$<input type="number" id="p_ai" value="50" min="1"></span>
+    </div>
+
+    <div class="proto">
+      <label>
+        <input type="checkbox" id="c_peace" checked>
+        <span class="hover-tech">Peace Protocols (Anti-Drain Shield)<span class="tech-reveal">Scraper pre-block + automated botnet neutralization</span></span>
+      </label>
+      <span>$<input type="number" id="p_peace" value="139" min="1"></span>
+    </div>
+
+    <div class="proto">
+      <label>
+        <input type="checkbox" id="c_ppc">
+        <span class="hover-tech">Pay Per Crawl Protocol (Dec 1st)<span class="tech-reveal">HTTP 402 micropaywall handshake &middot; Cloudforce One bot threat feed</span></span>
+      </label>
+      <span class="muted" style="color:var(--neon)">Auto Toll Active</span>
+    </div>
+
+    <label class="muted" style="text-transform:none;display:flex;gap:8px;margin-top:14px;color:var(--muted);cursor:pointer">
+      <input type="checkbox" id="onlyTwo" style="width:16px;height:16px;accent-color:var(--neon)">
+      <span><strong>Pure Protocol Focus:</strong> I only run Status Tags and Peace Protocols</span>
+    </label>
   </section>
+
+  <!-- Avenue 2: Physical Presence & Elevation -->
+  <section class="card" style="border-left:3px solid var(--ice)">
+    <h2>
+      <span>
+        <span class="hover-tech">Avenue 2 &middot; Physical Presence &amp; Elevation<span class="tech-reveal">Hospitality &amp; Security &middot; Safe Premium Travel Presence &middot; Real Operations</span></span>
+      </span>
+      <span class="tag ice">IRL Protocol</span>
+    </h2>
+    <p class="muted" style="margin-bottom:14px">
+      Women agents providing presence and elevation for travelers. Not macho guards, but safe, premium presence that elevates aura and protects peace. Real operations, real people.
+    </p>
+    <div class="row">
+      <div>
+        <label>Presence Mode</label>
+        <select id="irl">
+          <option value="0">Virtual Only (Ghost)</option>
+          <option value="1">IRL Available (Physical Presence)</option>
+        </select>
+      </div>
+      <div>
+        <label>Operational City</label>
+        <input id="city" placeholder="e.g. Dubai, Miami, Tokyo">
+      </div>
+      <div>
+        <label>Active Presence Window</label>
+        <input id="dates" placeholder="e.g. Fri-Sun evenings / On Call">
+      </div>
+      <div>
+        <label>Mission Rate (USD)</label>
+        <input id="p_irl" type="number" min="1" placeholder="Your rate per booking">
+      </div>
+    </div>
+  </section>
+
+  <!-- Sovereign Payout Channels -->
+  <section class="card">
+    <h2>
+      <span>
+        <span class="hover-tech">Your 70% Sovereign Payout Channels<span class="tech-reveal">Direct Ledger Payout &middot; Registry Logged &middot; No Held Funds</span></span>
+      </span>
+      <span class="tag" style="border-color:var(--gold);color:var(--gold)">Auto Payout</span>
+    </h2>
+    <p class="muted" style="margin-bottom:12px">
+      Split is automatic at purchase. 70% routes straight to your crypto wallet or bank account. If both are empty, the payout is flagged in the registry instead of sending.
+    </p>
+    <div class="row">
+      <div>
+        <label>Crypto Wallet Address</label>
+        <input id="btc" placeholder="BTC, ETH, SOL, or EVM address">
+      </div>
+      <div>
+        <label>Bank Account / Fiat Wire</label>
+        <input id="fiat" placeholder="IBAN, Routing / Account, or Wompi ID">
+      </div>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <button class="btn" id="save" style="background:var(--neon);color:#050706;font-weight:800">
+        PRINT &amp; LOCK PROTOCOLS
+      </button>
+    </div>
+  </section>
+
 </main>
 
-<script src="/app/app.js"></script>
+<script src="./app.js"></script>
 <script>
 const $ = PF.$;
 const IDS = ['c_status', 'c_ai', 'c_peace', 'c_ppc', 'onlyTwo', 'p_status', 'p_ai', 'p_peace', 'irl', 'city', 'dates', 'p_irl', 'btc', 'fiat'];
@@ -73,13 +182,15 @@ function fill() {
   if (sv.pay_per_crawl) set('c_ppc', sv.pay_per_crawl.on);
   set('onlyTwo', sv.only_status_and_peace);
   set('irl', av.irl ? '1' : '0'); set('dates', av.dates); set('p_irl', av.price_irl);
-  set('city', u.location_city); set('btc', u.payout_btc); set('fiat', u.payout_fiat);
+  set('city', u.location_city); set('btc', u.wallet || u.payout_btc); set('fiat', u.bank_account || u.payout_fiat);
   split();
 }
 
 function split() {
   const p = Number($('#p_status').value) || 0;
-  $('#split').textContent = 'Status tag at $' + p.toFixed(2) + ': you $' + (p * .7).toFixed(2) + ' / Shield $' + (p * .3).toFixed(2);
+  const workerPart = (p * 0.70).toFixed(2);
+  const shieldPart = (p * 0.30).toFixed(2);
+  $('#split').innerHTML = `<strong>Live Protocol Split ($${p.toFixed(2)} tag):</strong> <span style="color:var(--gold);font-weight:800">$${workerPart}</span> to your sovereign payout (70%) &middot; <span style="color:var(--muted)">$${shieldPart}</span> to Shield network (30%)`;
 }
 
 $('#onlyTwo').onchange = (e) => {
@@ -93,10 +204,10 @@ $('#save').onclick = async () => {
   const body = {};
   IDS.forEach((id) => { const el = $('#' + id); body[id] = el.type === 'checkbox' ? el.checked : el.value; });
   const r = await PF.api('/api/printflow', { method: 'POST', body });
-  if (!r.ok) return PF.toast(r.error || 'Could not save');
+  if (!r.ok) return PF.toast(r.error || 'Could not save protocols');
   const v = await PF.api('/api/verify-token');
   if (v.user) localStorage.setItem('shield_user', JSON.stringify(v.user));
-  PF.toast('Saved. Jobs match what you checked.');
+  PF.toast('Protocols saved. PrintFlow calibrated.');
 };
 document.addEventListener('pf:ready', fill);
 document.addEventListener('DOMContentLoaded', split);

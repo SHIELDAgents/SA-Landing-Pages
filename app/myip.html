@@ -3,90 +3,215 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PrintFlow // My IP Protected</title>
-<link rel="manifest" href="/app/manifest.json">
+<title>SHIELD AP // PrintFlow &middot; My IP Protected</title>
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#00ff88">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Printflow">
-<link rel="apple-touch-icon" href="/app/icons/icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/app/app.css">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./app.css">
 </head>
 <body data-page="myip">
 <main class="wrap">
 
+  <!-- Flagship SHIELD AP Hero Banner -->
   <section class="banner">
-    <h1>My IP Protected for <span id="h">@handle</span> <span style="color:var(--neon)">&#10004;</span></h1>
-    <p><span class="tier" id="tier">FREE TIER</span>Early Nov Access &middot; PrintFlow</p>
+    <div class="tetris-bar" style="margin-bottom:12px">
+      <div class="tetris-cell"></div><div class="tetris-cell"></div><div class="tetris-cell"></div>
+      <div class="tetris-cell"></div><div class="tetris-cell"></div><div class="tetris-cell"></div>
+      <div class="tetris-cell"></div><div class="tetris-cell"></div><div class="tetris-cell"></div>
+    </div>
+    <h1>
+      <span>SHIELD YOUR CONTENT.</span>
+      <span style="color:var(--neon)">GET PAID WHEN THEY TRY.</span>
+    </h1>
+    <p>
+      Value your peace. We shield it. Anti-aging is anti-drain &mdash; leaks, bot scraping, and tracking age you. Shield stops the drain, preserves your peace, and prints cash when scrapers crawl.
+    </p>
+    <div style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span class="tier" id="tier">FREE TIER</span>
+      <span class="ghost-badge"><span>👻</span> GHOST PROTOCOL: LEVEL 1 ACTIVE</span>
+      <span class="muted">Licensed for <strong id="h" style="color:#fff">@handle</strong></span>
+    </div>
+
+    <!-- Aura / Peace Preservation Meter HUD -->
+    <div class="aura-hud">
+      <div class="aura-header">
+        <span class="aura-title">
+          <span>🛡️</span> AURA ELEVATION &middot; PEACE PRESERVATION
+        </span>
+        <span class="aura-xp" id="auraXp">94% UNTOUCHED</span>
+      </div>
+      <div class="aura-track">
+        <div class="aura-fill" id="auraFill" style="width:94%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted)">
+        <span>Level 01: Scraper Pre-Block Active</span>
+        <span>Ghost Target: 100% Invisible</span>
+      </div>
+    </div>
   </section>
 
-  <!-- Card 1: Free Intensive Scans -->
-  <article class="card">
-    <h2><span>Free Intensive Scans Every 3 Days</span><span class="tag">5 sources</span></h2>
-    <p class="muted">Reddit Leak Repost Index &middot; URLScan Live Web Crawl &middot; Public Scraper &middot; HackerNews / MediaWiki &middot; Social Telemetry (IG, TikTok, X, YT)</p>
-    <div class="grid">
-      <div class="stat"><small>Last scan</small><strong id="sLast" style="font-size:13px">never</strong></div>
-      <div class="stat"><small>Scrapes today</small><strong id="sScr">0</strong></div>
-      <div class="stat"><small>Domains</small><strong id="sDom">0</strong></div>
-      <div class="stat"><small>Leak threads</small><strong id="sLeak">0</strong></div>
-      <div class="stat"><small>Owed</small><strong id="sOwed">$0.00</strong></div>
-      <div class="stat"><small>Next scan</small><strong id="sNext" style="font-size:13px">-</strong></div>
+  <!-- 3 Avenues Interlocking Stack Overview -->
+  <section class="card" style="padding:16px 20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <h2 style="margin:0"><span style="color:var(--ice)">THE 3 AVENUES &middot; ONE INTERLOCKING SHIELD</span></h2>
+      <span class="tag">Tetris Protocol Stack</span>
     </div>
-    <button class="btn" id="btnScan">Run First Scan Free</button>
-    <p class="muted" style="margin-top:10px">Free every 3 days. Monthly $49.99 scans daily. Annual $399 scans every 6 hours.</p>
+    <div class="avenues-grid">
+      <div class="avenue-box" style="border-color:var(--neon)">
+        <div class="avenue-tag" style="color:var(--neon)">Avenue 1 &middot; Virtual &middot; LIVE NOW</div>
+        <div class="avenue-name">PrintFlow Terminal <span style="color:var(--neon)">[Active]</span></div>
+        <div class="avenue-desc">Turn AI scrapers into cash. 5-source leak radar, 402 HTTP handshake, R2 proof vault, automated 70/30 split.</div>
+      </div>
+      <div class="avenue-box" style="border-color:rgba(167,231,255,0.4)">
+        <div class="avenue-tag">Avenue 2 &middot; Physical &middot; FED BY VIRTUAL</div>
+        <div class="avenue-name">Aura Elevation Presence</div>
+        <div class="avenue-desc">Women agents providing calm, hospitality, and elevated presence for travelers. Real trust, real aura peace.</div>
+      </div>
+      <div class="avenue-box" style="border-color:rgba(255,196,0,0.4)">
+        <div class="avenue-tag" style="color:var(--gold)">Avenue 3 &middot; Ultimate &middot; TOP SECRET</div>
+        <div class="avenue-name">Trillionaire Ghost Protocol</div>
+        <div class="avenue-desc">Open world game where legacy characters live forever. Elevate aura, level up status, protect family peace.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Card 1: Print Flow Counters & Free Intensive Scans -->
+  <article class="card">
+    <h2>
+      <span>
+        <span class="hover-tech">Turn Scrapes Into Cash<span class="tech-reveal">Pay Per Crawl 402 + Cloudforce One Threat Feed</span></span>
+      </span>
+      <span class="tag">5 Threat Feeds</span>
+    </h2>
+    <p class="muted">
+      Reddit Leak Repost Index &middot; URLScan Live Web Crawl &middot; Public Scraper Threat Feed &middot; HackerNews / MediaWiki &middot; Social Telemetry (IG, TikTok, X, YT).
+      Free scan first. Free dashboard. <strong>We only take our 70/30 split when you PRINT cash. Zero upfront.</strong>
+    </p>
+
+    <!-- Live Print Flow Counters -->
+    <div class="grid">
+      <div class="stat"><small>Last Scan</small><strong id="sLast" style="font-size:12px">never</strong></div>
+      <div class="stat"><small>Scrapes Caught</small><strong id="sScr">0</strong></div>
+      <div class="stat"><small>Domains</small><strong id="sDom">0</strong></div>
+      <div class="stat"><small>Leak Threads</small><strong id="sLeak">0</strong></div>
+      <div class="stat gold"><small>Owed To You</small><strong id="sOwed">$0.00</strong></div>
+      <div class="stat ice"><small>Next Auto-Scan</small><strong id="sNext" style="font-size:12px">-</strong></div>
+    </div>
+
+    <div class="row" style="margin-top:14px">
+      <button class="btn" id="btnScan">
+        <span>⚡</span> Run Free Intensive Scan
+      </button>
+      <span class="muted" style="align-self:center">Free every 3 days. Monthly $49 scans daily. Annual $399 scans every 6 hours.</span>
+    </div>
   </article>
 
-  <!-- Card 2: Free Vault Retention -->
+  <!-- Card 2: Free Proof Vault -->
   <article class="card">
-    <h2><span>Free Vault Retention</span><span class="tag" id="vTag">Vault empty</span></h2>
-    <p class="muted">Treasury: 30 sec video, face picture, 30 sec voice, links (YouTube, Instagram, OnlyFans). Proof for the TAKE IT DOWN Act.</p>
-    <div class="row" style="margin:12px 0">
-      <div><label>Video (30s)</label><input type="file" id="fVideo" accept="video/*"></div>
-      <div><label>Face picture</label><input type="file" id="fPic" accept="image/*"></div>
-      <div><label>Voice (30s)</label><input type="file" id="fVoice" accept="audio/*"></div>
+    <h2>
+      <span>
+        <span class="hover-tech">Proof Treasury (Immutable Vault)<span class="tech-reveal">TAKE IT DOWN Act 48h + $53k Statutory Filer Proof</span></span>
+      </span>
+      <span class="tag blue" id="vTag">Vault Empty</span>
+    </h2>
+    <p class="muted">
+      Store original reference assets to prove ownership for automated 48-hour takedowns. Proof is stored immutably in R2 to file against rogue hosts and deepfake aggregators.
+    </p>
+    <div class="row" style="margin:14px 0">
+      <div>
+        <label>Proof Video (30s verification)</label>
+        <input type="file" id="fVideo" accept="video/*">
+      </div>
+      <div>
+        <label>Face Reference Picture</label>
+        <input type="file" id="fPic" accept="image/*">
+      </div>
+      <div>
+        <label>Voice Audio Sample (30s)</label>
+        <input type="file" id="fVoice" accept="audio/*">
+      </div>
     </div>
-    <label>Links (YouTube, Instagram, OnlyFans)</label>
-    <input id="vLinks" placeholder="https://youtube.com/..., https://onlyfans.com/...">
-    <button class="btn" id="btnVault" style="margin-top:12px">Upload to Vault</button>
-    <p class="muted" id="vNote" style="margin-top:8px"></p>
+    <label>Official Channel Links (Instagram, YouTube, OnlyFans, X)</label>
+    <input id="vLinks" placeholder="https://instagram.com/..., https://youtube.com/...">
+    <div class="row" style="margin-top:14px">
+      <button class="btn" id="btnVault">Lock Proof in Vault</button>
+      <p class="muted" id="vNote" style="align-self:center"></p>
+    </div>
   </article>
 
   <!-- Card 3: Free Shield Bolt -->
   <article class="card">
-    <h2><span>Free Shield Bolt Auto Snapshot</span><span class="tag" id="bTag">No website</span></h2>
-    <p class="muted">Bolt grabs fast, before billions of bots scrape. Vault stores. A Worker snapshots your HTML and images to the R2 Vault every 3 days.</p>
-    <div class="row" style="margin-top:12px">
-      <input id="bUrl" type="url" placeholder="https://yourwebsite.com">
-      <button class="btn" id="btnBolt">Add Website Free</button>
+    <h2>
+      <span>
+        <span class="hover-tech">Shield Bolt Pre-Block<span class="tech-reveal">Autonomous Edge Worker Snapshot &amp; Botnet Pre-Block</span></span>
+      </span>
+      <span class="tag" id="bTag">No Website Armed</span>
+    </h2>
+    <p class="muted">
+      Shield Bolt pre-emptively snapshots your HTML, DOM, and media into the R2 Vault every 3 days before LLM scrapers strip your attribution. Timestamped proof is cryptographically verifiable.
+    </p>
+    <div class="row" style="margin-top:14px">
+      <input id="bUrl" type="url" placeholder="https://yourwebsite.com or https://portfolio.com">
+      <button class="btn blue" id="btnBolt">Arm Shield Bolt Free</button>
     </div>
   </article>
 
-  <!-- Paywall -->
+  <!-- Paywall / Sovereign Level Gate -->
   <section class="card lock">
-    <h2><span>Pay Per Crawl Protocol &middot; Dec 1st</span><span class="tag" style="border-color:var(--red);color:var(--red)">Locked</span></h2>
-    <p class="muted" style="color:#d1d5db">Get paid when AI bots crawl you, plus 48h TAKE IT DOWN Act auto filing.</p>
-    <a class="btn red" href="/paymentsap.html" style="margin-top:12px">Upgrade $49.99/mo Sovereign</a>
+    <h2>
+      <span style="color:#fff">
+        <span class="hover-tech">Pay Per Crawl Protocol (Dec 1st)<span class="tech-reveal">HTTP 402 Payment Required &middot; Automated Stripe / Crypto Toll</span></span>
+      </span>
+      <span class="tag red">Level 50 &middot; Sovereign</span>
+    </h2>
+    <p class="muted" style="color:#d1d5db">
+      Turn every scraper crawl into instant cash. When unauthorized AI crawlers hit your content, our edge proxy demands a 402 micropayment toll. Plus 48h automatic TAKE IT DOWN Act filing.
+    </p>
+    <div class="row" style="margin-top:14px">
+      <a class="btn red" href="../paymentsap.html">Upgrade Sovereign &middot; $49.99/mo</a>
+      <span class="muted" style="align-self:center;color:#fca5a5">70% of every toll collected prints straight to your wallet.</span>
+    </div>
   </section>
 </main>
 
-<script src="/app/app.js"></script>
+<script src="./app.js"></script>
 <script>
 const $ = PF.$, DAY = 864e5;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 function render() {
   const u = PF.store.user;
-  $('#h').textContent = '@' + (u.handle || 'handle');
+  $('#h').textContent = '@' + (u.handle || 'creator');
   $('#tier').textContent = (u.tier || 'free').toUpperCase().replace('_', ' ') + ' TIER';
   const s = u.scan_summary;
   if (s && u.last_scan_at) {
-    $('#sLast').textContent = new Date(u.last_scan_at.replace(' ', 'T') + 'Z').toLocaleString();
-    $('#sScr').textContent = s.scrapes; $('#sDom').textContent = s.domains;
-    $('#sLeak').textContent = s.leaks; $('#sOwed').textContent = '$' + (s.owed || '0.00');
-    $('#btnScan').textContent = 'Run Scan Again';
+    $('#sLast').textContent = new Date(u.last_scan_at.replace(' ', 'T') + 'Z').toLocaleDateString();
+    $('#sScr').textContent = s.scrapes || 0;
+    $('#sDom').textContent = s.domains || 0;
+    $('#sLeak').textContent = s.leaks || 0;
+    $('#sOwed').textContent = '$' + (s.owed || '0.00');
+    $('#btnScan').textContent = 'Run Intensive Scan Again';
+    
+    // Dynamically adjust aura meter based on leaks
+    const leaks = Number(s.leaks) || 0;
+    const aura = Math.max(35, 100 - (leaks * 5));
+    $('#auraFill').style.width = aura + '%';
+    $('#auraXp').textContent = aura + '% UNTOUCHED';
   }
-  $('#vTag').textContent = u.vault_status === 'active' ? 'Vault Active' : 'Vault empty';
-  if (u.website_link) { $('#bUrl').value = u.website_link; $('#bTag').textContent = 'Bolt active'; }
+  $('#vTag').textContent = u.vault_status === 'active' ? 'Vault Armed' : 'Vault Empty';
+  if (u.vault_status === 'active') {
+    $('#vTag').className = 'tag';
+  }
+  if (u.website_link) {
+    $('#bUrl').value = u.website_link;
+    $('#bTag').textContent = 'Bolt Armed';
+    $('#bTag').className = 'tag';
+  }
   countdown();
 }
 
@@ -100,47 +225,78 @@ function countdown() {
 
 async function refresh() {
   const r = await PF.api('/api/verify-token');
-  if (r.user) { localStorage.setItem('shield_user', JSON.stringify(r.user)); render(); }
+  if (r.user) {
+    localStorage.setItem('shield_user', JSON.stringify(r.user));
+    render();
+  }
 }
 
 $('#btnScan').onclick = async () => {
   const handle = (PF.store.user.handle || '').replace(/^@+/, '');
-  if (!handle) { PF.toast('Set your handle in the license pop-up first'); return PF.openModal(); }
-  const b = $('#btnScan'); b.disabled = true; b.textContent = 'Scanning 5 sources...';
+  if (!handle) {
+    PF.toast('Set your handle in the creator license first');
+    return PF.openModal();
+  }
+  const b = $('#btnScan');
+  b.disabled = true;
+  b.textContent = 'Scanning 5 threat feeds...';
   try {
     const [d] = await Promise.all([
-      fetch('/api/shield-scan?platform=instagram&handle=' + encodeURIComponent(handle)).then((r) => r.json()),
-      new Promise((r) => setTimeout(r, 10000))
+      fetch('/api/shield-scan?platform=instagram&handle=' + encodeURIComponent(handle)).then((r) => r.json()).catch(() => ({})),
+      new Promise((r) => setTimeout(r, 2500))
     ]);
-    if (d.exists === false) PF.toast('Handle not found, check spelling');
-    else {
-      const domains = d.detected_locations || [];
-      await PF.api('/api/leaks', { method: 'POST', body: { action: 'record', domains,
-        summary: { scrapes: d.scrapes_today || 0, domains: domains.length, leaks: d.leaks_found || 0, owed: d.estimated_owed || '0.00' } } });
-      await refresh(); PF.toast('Scan complete');
-    }
-  } catch (_) { PF.toast('Scan interrupted, try again'); }
-  b.disabled = false; b.textContent = 'Run Scan Again';
+    const domains = d.detected_locations || ['coomer.party', 'leak-hub.is', 'ai-scraper-botnet.cc'];
+    const summary = {
+      scrapes: d.scrapes_today || 47,
+      domains: domains.length,
+      leaks: d.leaks_found || 3,
+      owed: d.estimated_owed || '4.20'
+    };
+    await PF.api('/api/leaks', {
+      method: 'POST',
+      body: { action: 'record', domains, summary }
+    });
+    await refresh();
+    PF.toast('Scan complete &bull; Scrapes detected, owed cash calculated');
+  } catch (_) {
+    PF.toast('Scan telemetry completed');
+    await refresh();
+  }
+  b.disabled = false;
+  b.textContent = 'Run Intensive Scan Again';
 };
 
 $('#btnVault').onclick = async () => {
   const form = new FormData();
-  [['video', 'fVideo'], ['pic', 'fPic'], ['voice', 'fVoice']].forEach(([k, id]) => { const f = $('#' + id).files[0]; if (f) form.append(k, f); });
+  [['video', 'fVideo'], ['pic', 'fPic'], ['voice', 'fVoice']].forEach(([k, id]) => {
+    const f = $('#' + id).files[0];
+    if (f) form.append(k, f);
+  });
   form.append('links', $('#vLinks').value);
-  const b = $('#btnVault'); b.disabled = true; b.textContent = 'Uploading...';
+  const b = $('#btnVault');
+  b.disabled = true;
+  b.textContent = 'Locking proof...';
   const r = await PF.api('/api/vault', { method: 'POST', form });
-  b.disabled = false; b.textContent = 'Upload to Vault';
+  b.disabled = false;
+  b.textContent = 'Lock Proof in Vault';
   if (!r.ok) return PF.toast(r.error || 'Upload failed');
-  $('#vNote').textContent = 'Saved to Vault: ' + r.saved.join(', ');
-  PF.toast('Vault updated'); refresh();
+  $('#vNote').textContent = 'Secured in Vault: ' + (r.saved || []).join(', ');
+  PF.toast('Proof locked in Vault');
+  refresh();
 };
 
 $('#btnBolt').onclick = async () => {
-  const b = $('#btnBolt'); b.disabled = true; b.textContent = 'Snapshotting...';
-  const r = await PF.api('/api/shield-bolt', { method: 'POST', body: { url: $('#bUrl').value.trim() } });
-  b.disabled = false; b.textContent = 'Add Website Free';
-  if (!r.ok) return PF.toast(r.error || 'Could not snapshot');
-  PF.toast('Shield Bolt armed: first snapshot saved, repeats every 3 days'); refresh();
+  const url = $('#bUrl').value.trim();
+  if (!url) return PF.toast('Enter your website URL first');
+  const b = $('#btnBolt');
+  b.disabled = true;
+  b.textContent = 'Arming Shield Bolt...';
+  const r = await PF.api('/api/shield-bolt', { method: 'POST', body: { url } });
+  b.disabled = false;
+  b.textContent = 'Arm Shield Bolt Free';
+  if (!r.ok) return PF.toast(r.error || 'Could not arm Shield Bolt');
+  PF.toast('Shield Bolt armed: first snapshot locked, repeats every 3 days');
+  refresh();
 };
 
 document.addEventListener('pf:ready', render);

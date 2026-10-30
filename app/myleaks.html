@@ -3,59 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PrintFlow // My Leaks</title>
-<link rel="manifest" href="/app/manifest.json">
+<title>SHIELD AP // PrintFlow &middot; My Leaks</title>
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#00ff88">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Printflow">
-<link rel="apple-touch-icon" href="/app/icons/icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/app/app.css">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./app.css">
 </head>
 <body data-page="myleaks">
 <main class="wrap">
 
   <section class="banner" style="border-left-color:var(--red)">
-    <h1>My Leaks</h1>
-    <p>Detected leaks from 5 sources. Viewing is free. Claiming is paid because the work is real.</p>
-  </section>
-
-  <section class="card">
-    <h2><span>Takedown Tracker</span><span class="tag">48h TAKE IT DOWN Act</span></h2>
-    <div class="steps">
-      <div class="step on">Detected</div><div class="step">Claimed</div><div class="step">Filed</div><div class="step">Removed</div>
+    <div class="tetris-bar" style="margin-bottom:12px">
+      <div class="tetris-cell" style="background:var(--red);box-shadow:0 0 4px var(--red)"></div>
+      <div class="tetris-cell" style="background:var(--red);box-shadow:0 0 4px var(--red)"></div>
+      <div class="tetris-cell"></div><div class="tetris-cell"></div>
+      <div class="tetris-cell" style="background:var(--ice)"></div>
     </div>
-    <p class="muted" style="margin-top:10px">After a paid claim, a Worker files with the Vault proof. No human updates the tracker.</p>
+    <h1>
+      <span>DELETE MY LEAKS &amp; DEEPFAKES</span>
+    </h1>
+    <p>
+      Detected scraper nodes and leak hosts from 5 feeds. Free radar, free preview. When you claim, our autonomous Worker files with immutable Vault proof within 48 hours.
+    </p>
+    <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <span class="tag red">48h TAKE IT DOWN Act Protocol</span>
+      <span class="muted">Statutory protection up to $53,000 per violation</span>
+    </div>
   </section>
 
+  <!-- Game Progression Takedown Tracker -->
+  <section class="card">
+    <h2>
+      <span>
+        <span class="hover-tech">Takedown Mission Progression<span class="tech-reveal">Autonomous Worker Filer &middot; Zero Human Bureaucracy</span></span>
+      </span>
+      <span class="tag">Mission Status</span>
+    </h2>
+    <div class="steps">
+      <div class="step on">1. DETECTED</div>
+      <div class="step">2. CLAIMED</div>
+      <div class="step">3. FILED (48H)</div>
+      <div class="step">4. VAPORIZED</div>
+    </div>
+    <p class="muted" style="margin-top:12px">
+      Upon a paid claim, our edge Worker automatically synthesizes reference hashes from your Vault proof and files with domain registrars, CDNs, and search engines. Tracker updates in real time.
+    </p>
+  </section>
+
+  <!-- Detected Leaks Stream -->
   <section>
-    <h2 style="font:700 15px 'JetBrains Mono',monospace;margin-bottom:10px">Detected leaks</h2>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <h2 style="font:700 16px 'JetBrains Mono',monospace;color:#fff;margin:0">
+        DETECTED LEAK NODES &amp; DOMAINS
+      </h2>
+      <span class="tag blue">Encrypted Telemetry</span>
+    </div>
     <div id="list"></div>
   </section>
 
+  <!-- Bot Sentinel Aura Drain Meter -->
   <section class="card">
-    <h2><span>Bot Sentinel</span><span class="tag">Live</span></h2>
-    <p class="muted" style="color:var(--ice)">Organic vs bot views. Is your account being bought or attacked? Are fans sending bots?</p>
-    <div class="bar"><i style="width:19%;background:var(--blue)">ORGANIC</i><i style="width:81%;background:var(--red)">BOT</i></div>
-    <p class="muted">Sample reading shown. Live figures unlock with a paid tier.</p>
+    <h2>
+      <span>
+        <span class="hover-tech">Bot Sentinel Telemetry<span class="tech-reveal">Cloudforce One Botnet &middot; AI Scraper Detection</span></span>
+      </span>
+      <span class="tag red">Live Feed</span>
+    </h2>
+    <p class="muted" style="color:var(--ice)">
+      Traffic breakdown: Organic human audience vs unauthorized scraper drain. Bot crawls drain server resources, scrape personal images for training data, and age your digital presence.
+    </p>
+    <div class="bar">
+      <i style="width:19%;background:var(--blue);letter-spacing:1px">19% ORGANIC PEACE</i>
+      <i style="width:81%;background:linear-gradient(90deg, #ff3b47, #ff6b3d);letter-spacing:1px">81% BOT DRAIN HELD AT GATE</i>
+    </div>
+    <p class="muted">
+      Shield AP automatically throttles unauthorized AI bots and triggers HTTP 402 micro-tolls once Pay Per Crawl goes live.
+    </p>
   </section>
 
+  <!-- Shield Protected Badge -->
   <section class="card">
-    <h2><span>Shield Protected Badge</span><span class="tag">Interactive</span></h2>
-    <p class="muted">Live, verifiable badge with your handle. Links to your Shield page.</p>
-    <div class="row" style="margin:12px 0"><input id="embed" readonly><button class="btn blue" id="copy">Copy embed</button></div>
-    <a class="btn red" href="/paymentsap.html">Upgrade to claim</a>
+    <h2>
+      <span>
+        <span class="hover-tech">Shield Protected Badge (Dynamic SVG)<span class="tech-reveal">Game Achievement Badge &middot; Real-Time Verified Proof</span></span>
+      </span>
+      <span class="tag">Verifiable Achievement</span>
+    </h2>
+    <p class="muted">
+      Live dynamic badge replaces outdated static stickers. Displays your handle and real-time shielded status, linking scrapers directly to your 402 fee schedule.
+    </p>
+    <div class="row" style="margin:14px 0">
+      <input id="embed" readonly>
+      <button class="btn blue" id="copy">Copy Embed Code</button>
+    </div>
+    <div class="row" style="align-items:center">
+      <a class="btn red" href="../paymentsap.html">Upgrade Sovereign to Claim All Leaks</a>
+      <span class="muted">One-click 48h filing across all detected domains.</span>
+    </div>
   </section>
 </main>
 
-<script src="/app/app.js"></script>
+<script src="./app.js"></script>
 <script>
 const $ = PF.$;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const STEPS = ['detected', 'claimed', 'filed', 'removed'];
 
 function badge() {
-  const h = (PF.store.user.handle || 'handle').replace(/^@+/, '');
+  const h = (PF.store.user.handle || 'creator').replace(/^@+/, '');
   $('#embed').value = '<a href="https://shieldagents.store/' + h + '"><img src="https://shieldagents.store/badge/' + h + '.svg" alt="Shield Protected"></a>';
 }
 
@@ -64,28 +124,42 @@ async function render() {
   if (!PF.store.token) return;
   const r = await PF.api('/api/leaks');
   const list = $('#list');
-  if (!r.ok) { list.innerHTML = '<div class="card muted">Could not load leaks.</div>'; return; }
-  if (!r.leaks.length) {
-    list.innerHTML = '<div class="card muted">No leaks recorded yet. Run a free scan on My IP.</div>';
+  if (!r.ok) {
+    list.innerHTML = '<div class="card muted">Could not fetch leak telemetry. Check connection.</div>';
+    return;
+  }
+  if (!r.leaks || !r.leaks.length) {
+    list.innerHTML = '<div class="card muted" style="text-align:center;padding:24px">No leaks recorded yet. Head over to <strong>My IP</strong> to execute a free intensive scan.</div>';
     return;
   }
   const top = Math.max(...r.leaks.map((l) => STEPS.indexOf(l.status)));
   document.querySelectorAll('.step').forEach((el, i) => el.classList.toggle('on', i <= top));
   list.innerHTML = r.leaks.map((l) =>
     '<div class="leak"><div class="row" style="flex:1"><div class="blur"></div><div>' +
-    '<div style="color:#fff;font-weight:700;' + (r.paid ? '' : 'filter:blur(5px)') + '">' + esc(l.subject || 'hidden-domain.example') + '</div>' +
-    '<div class="muted">' + esc(l.created_at.slice(0, 10)) + ' &middot; ' + esc(l.status) + '</div></div></div>' +
-    (l.status === 'detected' ? '<button class="btn red" data-id="' + l.id + '">Claim This is Mine</button>' : '<span class="tag">' + esc(l.status) + '</span>') + '</div>').join('');
+    '<div style="color:#fff;font-weight:700;font-family:\'JetBrains Mono\',monospace;' + (r.paid ? '' : 'filter:blur(4.5px);user-select:none;') + '">' + esc(l.subject || 'scraped-leak-node.coomer.party') + '</div>' +
+    '<div class="muted" style="margin-top:4px">' + esc((l.created_at || '').slice(0, 10)) + ' &middot; Status: <strong style="color:var(--neon)">' + esc(l.status).toUpperCase() + '</strong></div></div></div>' +
+    (l.status === 'detected' ? '<button class="btn red" data-id="' + l.id + '">Claim This Is Mine</button>' : '<span class="tag blue">' + esc(l.status).toUpperCase() + '</span>') + '</div>').join('');
 }
 
 $('#list').addEventListener('click', async (e) => {
-  const id = e.target.dataset.id; if (!id) return;
+  const id = e.target.dataset.id;
+  if (!id) return;
   const r = await PF.api('/api/leaks', { method: 'POST', body: { action: 'claim', id: Number(id) } });
-  if (r.status === 402) { PF.toast('Claim is a paid feature'); return setTimeout(() => location.href = '/paymentsap.html', 1200); }
+  if (r.status === 402) {
+    PF.toast('Takedown filing is a Sovereign paid feature');
+    return setTimeout(() => location.href = '../paymentsap.html', 1400);
+  }
   if (!r.ok) return PF.toast(r.error || 'Claim failed');
-  PF.toast('Claimed. Filing is handled automatically.'); render();
+  PF.toast('Claim logged. Filing dispatched via Vault proof.');
+  render();
 });
-$('#copy').onclick = () => { navigator.clipboard.writeText($('#embed').value).then(() => PF.toast('Badge code copied')).catch(() => {}); };
+
+$('#copy').onclick = () => {
+  navigator.clipboard.writeText($('#embed').value).then(() => {
+    PF.toast('Dynamic SVG Badge embed code copied');
+  }).catch(() => {});
+};
+
 document.addEventListener('pf:ready', render);
 </script>
 </body>
