@@ -63,7 +63,11 @@ async function createBtcpayInvoice(env, order, redirectUrl) {
     });
     const data = await res.json().catch(() => null);
     if (!res.ok || !data || !data.checkoutLink) {
-        throw new Error('BTCPay invoice failed: ' + res.status + ' ' + (data && (data.message || JSON.stringify(data)) || ''));
+        const msg = (data && (data.message || data.error || JSON.stringify(data))) || '';
+        if (msg.toLowerCase().includes('full node not available') || msg.toLowerCase().includes('node')) {
+            throw new Error('BTCPay Bitcoin node is currently syncing blocks with the blockchain. Please allow time for synchronization to finish, or pay with Card.');
+        }
+        throw new Error('BTCPay invoice creation failed: ' + (msg || res.status));
     }
     return data.checkoutLink;
 }
@@ -129,7 +133,7 @@ export async function onRequestPost({ request, env }) {
         return json({ url, reference: order.reference });
     } catch (err) {
         console.error('[checkout]', rail, err && err.message);
-        return json({ error: 'Checkout unavailable. Please try again or use the other payment rail.' }, 502);
+        return json({ error: (err && err.message) || 'Checkout unavailable. Please try again or use the other payment rail.' }, 502);
     }
 }
 

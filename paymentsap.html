@@ -872,50 +872,6 @@
 
     </main>
 
-    <!-- BTCPay Invoice Modal -->
-    <div class="modal-backdrop" id="btcpay-modal" role="dialog" aria-modal="true" aria-labelledby="btcpay-modal-title">
-        <div class="modal-card">
-            <div class="modal-badge">BTCPAY SERVER // LIGHTNING &amp; ON-CHAIN</div>
-            <h3 class="modal-title" id="btcpay-modal-title">Zero-Trace BTC Invoice</h3>
-            <p class="modal-desc" id="btcpay-modal-desc">Scan with any Lightning or Bitcoin wallet, or copy the invoice payload below. Your Creator Auth Token activates on 1st confirmation.</p>
-            <div class="qr-frame" id="btcpay-qr">
-                <!-- Dynamic SVG QR representation -->
-                <svg viewBox="0 0 120 120" width="156" height="156" aria-label="BTCPay Invoice QR">
-                    <rect width="120" height="120" fill="#FFFFFF"/>
-                    <rect x="8" y="8" width="32" height="32" fill="none" stroke="#000" stroke-width="6"/>
-                    <rect x="16" y="16" width="16" height="16" fill="#000"/>
-                    <rect x="80" y="8" width="32" height="32" fill="none" stroke="#000" stroke-width="6"/>
-                    <rect x="88" y="16" width="16" height="16" fill="#000"/>
-                    <rect x="8" y="80" width="32" height="32" fill="none" stroke="#000" stroke-width="6"/>
-                    <rect x="16" y="88" width="16" height="16" fill="#000"/>
-                    <rect x="48" y="12" width="8" height="8" fill="#000"/>
-                    <rect x="60" y="20" width="8" height="16" fill="#000"/>
-                    <rect x="48" y="44" width="24" height="24" fill="#F7931A"/>
-                    <rect x="12" y="48" width="16" height="8" fill="#000"/>
-                    <rect x="32" y="56" width="8" height="16" fill="#000"/>
-                    <rect x="80" y="48" width="16" height="12" fill="#000"/>
-                    <rect x="100" y="60" width="12" height="16" fill="#000"/>
-                    <rect x="48" y="80" width="16" height="12" fill="#000"/>
-                    <rect x="72" y="76" width="16" height="20" fill="#000"/>
-                    <rect x="92" y="96" width="20" height="16" fill="#000"/>
-                    <rect x="52" y="100" width="16" height="12" fill="#000"/>
-                </svg>
-            </div>
-            <div class="invoice-box">
-                <div class="invoice-label">BTCPAY INVOICE ID &amp; LIGHTNING PAYLOAD</div>
-                <div class="invoice-val" id="btcpay-invoice-val">lnbc499900n1pshieldap...</div>
-            </div>
-            <div class="invoice-box" style="border-color: rgba(200, 242, 255, 0.65);">
-                <div class="invoice-label" style="color: #D0F4FF;">PRE-ASSIGNED CREATOR AUTH TOKEN</div>
-                <div class="invoice-val" id="btcpay-auth-token">SHLD-PF-...</div>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="btn-modal-primary" id="btcpay-copy-btn">Copy Invoice &amp; Token</button>
-                <button type="button" class="btn-modal-close" id="btcpay-close-btn">Close</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // Matrix Code Rain Script: 70% ice blue, 30% green
         const canvas = document.getElementById('matrix-canvas');
@@ -1055,43 +1011,45 @@
             };
         }
 
-        // Rail 1: BTCPay Server Modal Handler (Original setup preserved)
-        const btcpayModal = document.getElementById('btcpay-modal');
-        const btcpayInvoiceVal = document.getElementById('btcpay-invoice-val');
-        const btcpayAuthToken = document.getElementById('btcpay-auth-token');
-        const btcpayDesc = document.getElementById('btcpay-modal-desc');
-        const btcpayCopyBtn = document.getElementById('btcpay-copy-btn');
-        const btcpayCloseBtn = document.getElementById('btcpay-close-btn');
-
-        document.getElementById('btn-pay-btcpay').addEventListener('click', () => {
+        // Rail 1: BTCPay Server Direct Checkout (links straight to processor; no popup modal)
+        const btnBtcpay = document.getElementById('btn-pay-btcpay');
+        btnBtcpay.addEventListener('click', async () => {
+            if (btnBtcpay.disabled) return;
             const data = getIntakeData();
-            const token = generateAuthToken('btcpay_' + data.plan);
-            const invoiceId = 'BTCPAY-' + data.reference + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-
-            btcpayDesc.textContent = data.title + ' ($' + data.usd.toFixed(2) + ' USD) — Scan or copy the BTCPay invoice below. Your Creator Auth Token activates on 1st confirmation.';
-            btcpayInvoiceVal.textContent = invoiceId + ' // bitcoin:?amount=' + (data.usd / 68000).toFixed(6) + '&label=SHIELD_AP';
-            btcpayAuthToken.textContent = token;
-            btcpayModal.classList.add('is-open');
-        });
-
-        btcpayCopyBtn.addEventListener('click', () => {
-            const payload = 'Invoice: ' + btcpayInvoiceVal.textContent + '\nAuth Token: ' + btcpayAuthToken.textContent;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(payload).catch(() => {});
+            const emailInput = document.getElementById('creator-email');
+            if (data.email && !emailInput.checkValidity()) {
+                emailInput.reportValidity();
+                return;
             }
-            btcpayCopyBtn.textContent = 'Invoice & Token Copied';
-            setTimeout(() => {
-                btcpayCopyBtn.textContent = 'Copy Invoice & Token';
-            }, 2000);
-        });
+            generateAuthToken('btcpay_' + data.plan);
 
-        btcpayCloseBtn.addEventListener('click', () => {
-            btcpayModal.classList.remove('is-open');
-        });
+            const originalHtml = btnBtcpay.innerHTML;
+            btnBtcpay.disabled = true;
+            btnBtcpay.innerHTML = 'Connecting to BTCPay...';
 
-        btcpayModal.addEventListener('click', (e) => {
-            if (e.target === btcpayModal) {
-                btcpayModal.classList.remove('is-open');
+            try {
+                const res = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        rail: 'btcpay',
+                        plan: data.plan,
+                        handle: data.handle,
+                        email: data.email,
+                        alias: data.alias
+                    })
+                });
+                const json = await res.json().catch(() => ({}));
+                if (res.ok && json.url) {
+                    try { localStorage.setItem('shield_last_ref', json.reference || ''); } catch (_) {}
+                    window.location.href = json.url;
+                    return;
+                }
+                throw new Error(json.error || 'BTCPay checkout unavailable. Please try again.');
+            } catch (err) {
+                alert((err && err.message) || 'BTCPay checkout unavailable. Please try again.');
+                btnBtcpay.innerHTML = originalHtml;
+                btnBtcpay.disabled = false;
             }
         });
 
