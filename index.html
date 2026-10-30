@@ -1021,14 +1021,15 @@
         }
 
         .scan-stage {
-            display: none;
+            display: block;
             position: relative;
-            min-height: 220px;
+            min-height: 240px;
             margin-top: 18px;
             border: 1px solid rgba(167, 231, 255, 0.35);
             border-radius: 10px;
             background: #000000;
             overflow: hidden;
+            box-shadow: 0 0 22px rgba(61, 155, 255, 0.18);
         }
 
         .scan-stage.is-visible {
@@ -1045,7 +1046,7 @@
         }
 
         .scan-stage video {
-            display: none;
+            display: block;
             z-index: 1;
         }
 
@@ -1296,7 +1297,7 @@
                     <div class="btn-oneline">Turn every scrape, leak, bot into cash. Stack protocols like Tetris, print your shielded self.</div>
                     <div class="btn-hover-reveal">
                         <span class="tetris-blocks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></span>
-                        <span>Print Flow OS + Shield Protected badge (live verifiable) + Gaia vacation protocol + Ghost Protocol legacy (30-50 BTC)</span>
+                        <span>PrintFlow OS + Shield Protected badge (live verifiable) + Gaia vacation protocol + Ghost Protocol legacy (30-50 BTC)</span>
                     </div>
                 </div>
                 <div class="btn-arrow">&gt;</div>
@@ -1346,11 +1347,10 @@
             </form>
             <div class="scan-error" id="scan-error" role="alert" aria-live="polite">Handle not found, check spelling</div>
 
-            <div class="scan-stage" id="scan-stage">
-                <video id="scan-video" muted loop playsinline preload="none">
+            <div class="scan-stage is-visible" id="scan-stage">
+                <video id="scan-video" class="is-playing" src="animation.mp4" autoplay muted loop playsinline preload="auto">
+                    <source src="animation.mp4" type="video/mp4">
                     <source src="/animation.mp4" type="video/mp4">
-                    <source src="/assets/animation.mp4" type="video/mp4">
-                    <source src="/public/animation.mp4" type="video/mp4">
                 </video>
                 <canvas id="scan-canvas"></canvas>
                 <div class="scan-overlay-status" id="scan-overlay-status">
@@ -1807,10 +1807,6 @@
             }
 
             stopSwarm();
-            if (scanVideo) {
-                scanVideo.pause();
-                scanVideo.classList.remove('is-playing');
-            }
             scanOverlayStatus.classList.remove('is-visible');
             scanResultMain.textContent = `Scrapes today: ${scanData.scrapes_today} | Estimated owed: ${scanData.estimated_owed} | Badge: ${scanData.badge_status || 'Not Protected'}`;
             scanResult.classList.add('is-visible');
