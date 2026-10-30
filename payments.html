@@ -10,10 +10,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SHIELD AP">
-    <!-- Cyber & Monospace Fonts -->
+    <!-- Cyber, Monospace & Clean Checkout Sans Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <!-- Wompi Official Checkout Widget -->
     <script src="https://checkout.wompi.co/widget.js" async></script>
 
@@ -457,7 +457,7 @@
             text-shadow: 0 0 12px rgba(var(--ice-rgb), 0.55);
         }
 
-        /* ---------- DUAL PAYMENT RAILS: BTCPAY & WOMPI ---------- */
+        /* ---------- DUAL PAYMENT RAILS: CHECKOUT-FRIENDLY HIGH-TRUST BUTTONS ---------- */
         .rails-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -466,79 +466,67 @@
 
         .btn-rail {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            justify-content: center;
-            gap: 6px;
+            justify-content: space-between;
+            gap: 12px;
             width: 100%;
-            min-height: 80px;
-            padding: 16px 18px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
+            min-height: 56px;
+            padding: 14px 20px;
+            border-radius: 8px;
+            background: #FFFFFF;
+            border: 1px solid #D1D5DB;
+            color: #111827;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
             cursor: pointer;
             text-decoration: none;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), 0 1px 2px rgba(0, 0, 0, 0.08);
+            transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Rail 1: BTCPay Server (Bitcoin / Lightning) */
-        .btn-btcpay {
-            background: linear-gradient(135deg, #443729 0%, #333B46 100%);
-            border: 2px solid #FFA42E;
-            color: #FFFFFF;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 18px rgba(var(--btc-orange-rgb), 0.32);
+        .btn-rail:hover {
+            background: #F3F4F6;
+            border-color: #9CA3AF;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
         }
 
-        .btn-btcpay:hover {
-            transform: translateY(-3px);
-            background: linear-gradient(135deg, #52412F 0%, #3B4552 100%);
-            box-shadow: 0 8px 26px rgba(var(--btc-orange-rgb), 0.55);
+        .btn-rail:active {
+            background: #E5E7EB;
         }
 
-        /* Rail 2: Wompi (Card / Fiat / Instant Gateway) */
-        .btn-wompi {
-            background: linear-gradient(90deg, #E2E8F0, #B8EEFF);
-            border: 2px solid #FFFFFF;
-            color: #0B1017;
-            box-shadow: 0 6px 22px rgba(var(--ice-rgb), 0.5);
+        .rail-text {
+            color: #111827;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: left;
+            white-space: nowrap;
         }
 
-        .btn-wompi:hover {
-            transform: translateY(-3px);
-            background: linear-gradient(90deg, #F1F5F9, #D1F4FF);
-            box-shadow: 0 8px 30px rgba(var(--ice-rgb), 0.8);
-        }
-
-        .rail-top {
-            display: flex;
+        .rail-icons {
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            font-size: 1.02rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            word-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .rail-top svg {
-            width: 22px;
-            height: 22px;
+            gap: 8px;
+            color: #111827;
             flex-shrink: 0;
         }
 
-        .rail-sub {
-            font-size: 0.82rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            word-spacing: 2px;
-            opacity: 0.96;
+        .rail-icons svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            color: #111827;
+            flex-shrink: 0;
+            display: block;
         }
 
-        .btn-btcpay .rail-sub {
-            color: #FDE6C4;
-        }
-
-        .btn-wompi .rail-sub {
-            color: #1A2430;
+        .rail-icons svg.icon-wide {
+            width: auto;
+            height: 16px;
         }
 
         .security-foot {
@@ -817,9 +805,9 @@
                 <select id="plan-selector" class="protocol-select">
                     <option value="monthly" data-title="Monthly Shield // IP & Leak Deletion" data-usd="49.99">SHIELD AP — Monthly IP &amp; Leak Deletion ($49.99/mo)</option>
                     <option value="yearly" data-title="Annual Shield // Full Year Protection" data-usd="399.00">SHIELD AP — Annual IP &amp; Leak Deletion ($399/yr)</option>
-                    <option value="status_shield" data-title="SHIELD Protocol // Status Shield" data-usd="139.00">SHIELD Protocol — Status Shield ($139)</option>
-                    <option value="irl_ghost" data-title="SHIELD Protocol // IRL Ghost (1hr Deposit)" data-usd="1400.00">SHIELD Protocol — IRL Ghost ($1,400+)</option>
-                    <option value="ghost_protocol" data-title="SHIELD Protocol // Ghost Protocol" data-usd="3500.00">SHIELD Protocol — Ghost Protocol ($3,500+)</option>
+                    <option value="status_shield" data-title="PEACE Protocol // Status Shield" data-usd="139.00">PEACE Protocol — Status Shield ($139)</option>
+                    <option value="irl_ghost" data-title="PEACE Protocol // IRL Ghost (1hr Deposit)" data-usd="1400.00">PEACE Protocol — IRL Ghost ($1,400+)</option>
+                    <option value="ghost_protocol" data-title="PEACE Protocol // Ghost Protocol" data-usd="3500.00">PEACE Protocol — Ghost Protocol ($3,500+)</option>
                     <option value="status_tag" data-title="AURA Protocol // Status Tag" data-usd="169.00">AURA Protocol — Status Tag ($169)</option>
                     <option value="irl_status" data-title="AURA Protocol // IRL Status (1hr Deposit)" data-usd="1700.00">AURA Protocol — IRL Status ($1,700+)</option>
                     <option value="aura_protocol" data-title="AURA Protocol // Aura Protocol" data-usd="3700.00">AURA Protocol — Aura Protocol ($3,700+)</option>
@@ -838,7 +826,7 @@
                 </div>
                 <div class="field full">
                     <label for="creator-alias">Protected Stage Name / Whitelist URLs (Optional — Legal Name Never Exposed)</label>
-                    <input type="text" id="creator-alias" placeholder="Stage alias + official links to whitelist from DMCA sweeps">
+                    <input type="text" id="creator-alias" placeholder="Stage alias + official links to whitelist from sweeps">
                 </div>
             </div>
 
@@ -854,25 +842,40 @@
             <div class="rails-grid">
                 <!-- Rail 1: BTCPay Server -->
                 <button type="button" class="btn-rail btn-btcpay" id="btn-pay-btcpay">
-                    <div class="rail-top">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    <span class="rail-text">Pay with BTCPay</span>
+                    <span class="rail-icons" aria-hidden="true">
+                        <!-- Bitcoin (monochrome black 16px) -->
+                        <svg viewBox="0 0 24 24" title="Bitcoin">
+                            <path d="M17.06 11.57c.59-.69.94-1.59.94-2.57 0-2.21-1.79-4-4-4V3h-2v2h-2V3H8v2H6v2h2v10H6v2h2v2h2v-2h2v2h2v-2c2.21 0 4-1.79 4-4 0-1.45-.78-2.73-1.94-3.43zM10 7h4c1.1 0 2 .9 2 2s-.9 2-2 2h-4V7zm4 10h-4v-4h4c1.1 0 2 .9 2 2s-.9 2-2 2z"/>
                         </svg>
-                        <span>Pay w/ BTCPay</span>
-                    </div>
-                    <div class="rail-sub">Bitcoin On-Chain &amp; Lightning Network</div>
+                        <!-- Lightning (monochrome black 16px) -->
+                        <svg viewBox="0 0 24 24" title="Lightning">
+                            <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
+                        </svg>
+                        <!-- Ethereum (monochrome black 16px) -->
+                        <svg viewBox="0 0 24 24" title="Ethereum">
+                            <path d="M12 1.75l-6.25 10.5L12 16l6.25-3.75L12 1.75zM5.75 13.5L12 22.25l6.25-8.75L12 17.25 5.75 13.5z"/>
+                        </svg>
+                    </span>
                 </button>
 
-                <!-- Rail 2: Wompi Gateway -->
+                <!-- Rail 2: Card / Fiat Gateway -->
                 <button type="button" class="btn-rail btn-wompi" id="btn-pay-wompi">
-                    <div class="rail-top">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <rect x="2" y="5" width="20" height="14" rx="2"/>
-                            <line x1="2" y1="10" x2="22" y2="10"/>
+                    <span class="rail-text">Pay with Card</span>
+                    <span class="rail-icons" aria-hidden="true">
+                        <!-- Apple Pay mark (monochrome black 16px) -->
+                        <svg viewBox="0 0 24 24" title="Apple Pay">
+                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83zM15.96 6.33c.67-.81 1.12-1.94 1-3.08-.96.04-2.13.64-2.82 1.45-.61.7-.15 1.86-1.01 2.98 1.08.08 2.16-.54 2.83-1.35z"/>
                         </svg>
-                        <span>Pay w/ Wompi &gt;</span>
-                    </div>
-                    <div class="rail-sub">Card · Apple/Google Pay · Instant Fiat</div>
+                        <!-- Mastercard overlapping circles (monochrome black 16px) -->
+                        <svg viewBox="0 0 24 24" title="Mastercard">
+                            <path d="M9 6a6 6 0 1 0 0 12 5.98 5.98 0 0 0 3-.81A5.98 5.98 0 0 0 15 18a6 6 0 1 0 0-12 5.98 5.98 0 0 0-3 .81A5.98 5.98 0 0 0 9 6zm3 2.31a4.48 4.48 0 0 1 0 7.38 4.48 4.48 0 0 1 0-7.38z"/>
+                        </svg>
+                        <!-- Credit Card (monochrome black 16px) -->
+                        <svg viewBox="0 0 24 24" title="Card">
+                            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                        </svg>
+                    </span>
                 </button>
             </div>
 
