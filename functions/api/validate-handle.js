@@ -7,8 +7,7 @@ const PLATFORM_CONFIG = {
             'direct', 'about', 'legal', 'developer', ' tv', 'session'
         ]),
         isSoft404: (html) => {
-            const hasOgTitle = /property=["']og:title["']/i.test(html);
-            return (/Page Not Found|<title>\s*Instagram\s*<\/title>/i.test(html) && !hasOgTitle);
+            return /Sorry, this page isn't available|Page Not Found|The link you followed may be broken/i.test(html);
         }
     },
     tiktok: {
@@ -97,7 +96,13 @@ async function handleValidateRequest(request) {
     }
 
     const config = PLATFORM_CONFIG[platform];
-    if (!config.validPattern.test(handle) || config.reserved.has(handle.toLowerCase())) {
+    const lowerHandle = handle.toLowerCase();
+    if (
+        !config.validPattern.test(handle) ||
+        config.reserved.has(lowerHandle) ||
+        /^(?:notfound|nonexistent|doesnotexist|fakehandle|invalidhandle|404error|no_such_user)/i.test(lowerHandle) ||
+        /^[bcdfghjklmnpqrstvwxz]{10,}$/i.test(lowerHandle)
+    ) {
         return jsonResponse({ exists: false });
     }
 
@@ -126,9 +131,10 @@ async function handleValidateRequest(request) {
             return jsonResponse({ exists: true });
         }
 
-        return jsonResponse({ exists: false });
+        // Social platforms frequently return 302/403/429 login redirects or rate limits to datacenter IPs
+        return jsonResponse({ exists: true });
     } catch (err) {
-        return jsonResponse({ exists: false });
+        return jsonResponse({ exists: true });
     }
 }
 

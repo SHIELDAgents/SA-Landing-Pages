@@ -900,8 +900,9 @@
             color: #6f6f6f;
         }
 
-        /* Scan button: 320x56, silver to ice-blue gradient, shield-scan icon */
-        .btn-scan {
+        /* Scan button: brand blue, says "Scan Now Free" */
+        .btn-scan,
+        #scanNowFree {
             position: relative;
             display: inline-flex;
             align-items: center;
@@ -912,224 +913,142 @@
             height: 56px;
             border: 2px solid #a7e7ff;
             border-radius: 10px;
-            background: linear-gradient(90deg, #C0C0C0, #a7e7ff);
-            color: #000000;
+            background: linear-gradient(90deg, #0073e6, #3d9bff);
+            color: #FFFFFF;
             font: inherit;
             font-size: 15px;
             font-weight: 900;
             letter-spacing: 1.5px;
             cursor: pointer;
-            box-shadow: 0 0 22px rgba(167, 231, 255, 0.6);
+            box-shadow: 0 0 22px rgba(61, 155, 255, 0.55);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.2s ease;
         }
 
-        .btn-scan:hover:not(:disabled) {
+        .btn-scan:hover:not(:disabled),
+        #scanNowFree:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 0 32px rgba(167, 231, 255, 0.95);
+            box-shadow: 0 0 32px rgba(61, 155, 255, 0.95);
         }
 
-        .btn-scan:disabled {
+        .btn-scan:disabled,
+        #scanNowFree:disabled {
             opacity: 0.75;
             cursor: wait;
         }
 
-        /* Active ONLY during scan: cyber-blue flicker + block-barrier shield field around button outline */
-        .btn-scan.is-scanning {
-            border-color: var(--ice-blue);
-            box-shadow: 0 0 18px rgba(61, 155, 255, 0.9), 0 0 34px rgba(167, 231, 255, 0.55), inset 0 0 14px rgba(61, 155, 255, 0.3);
-            animation: scanBtnFlicker 1.2s infinite;
+        /* Active ONLY during scan: neon flicker around border */
+        #scanNowFree.scanning,
+        .btn-scan.scanning {
+            box-shadow: 0 0 20px #00ff88;
+            border: 2px solid #00ff88;
+            animation: flicker 0.5s infinite;
         }
 
-        .btn-scan.is-scanning::after {
-            content: '';
-            position: absolute;
-            inset: -7px;
-            padding: 5px;
-            border-radius: 14px;
-            background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='18'><rect x='1' y='1' width='4' height='4' fill='%233d9bff'/><rect x='7' y='1' width='4' height='4' fill='%23a7e7ff'/><rect x='19' y='1' width='4' height='4' fill='%230073e6'/><rect x='25' y='1' width='4' height='4' fill='%23a7e7ff'/><rect x='31' y='1' width='4' height='4' fill='%233d9bff'/><rect x='1' y='7' width='4' height='4' fill='%23a7e7ff'/><rect x='13' y='7' width='4' height='4' fill='%233d9bff'/><rect x='25' y='7' width='4' height='4' fill='%23a7e7ff'/><rect x='7' y='13' width='4' height='4' fill='%230073e6'/><rect x='19' y='13' width='4' height='4' fill='%23a7e7ff'/><rect x='31' y='13' width='4' height='4' fill='%233d9bff'/></svg>") 0 0 / 36px 18px repeat;
-            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor;
-            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            mask-composite: exclude;
-            filter: drop-shadow(0 0 6px rgba(61, 155, 255, 0.95));
-            pointer-events: none;
-            animation: scanShieldField 0.9s steps(1, end) infinite;
+        @keyframes flicker {
+            0%, 100% { box-shadow: 0 0 20px #00ff88, 0 0 36px rgba(0, 255, 136, 0.55); border-color: #00ff88; }
+            50% { box-shadow: 0 0 6px rgba(0, 255, 136, 0.35); border-color: #a7e7ff; }
         }
 
-        @keyframes scanBtnFlicker {
-            0%, 100% { box-shadow: 0 0 18px rgba(61, 155, 255, 0.9), 0 0 34px rgba(167, 231, 255, 0.5); }
-            18% { box-shadow: 0 0 6px rgba(0, 115, 230, 0.35); }
-            22% { box-shadow: 0 0 26px rgba(61, 155, 255, 1), 0 0 44px rgba(167, 231, 255, 0.75); }
-            64% { box-shadow: 0 0 10px rgba(0, 115, 230, 0.45); }
-            68% { box-shadow: 0 0 22px rgba(61, 155, 255, 0.95); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes scanShieldField {
-            0%   { opacity: 0.95; background-position: 0 0; }
-            25%  { opacity: 0.25; background-position: 6px 0; }
-            40%  { opacity: 1; background-position: 12px 6px; }
-            70%  { opacity: 0.15; background-position: 18px 0; }
-            85%  { opacity: 0.95; background-position: 6px 12px; }
-            100% { opacity: 0.9; background-position: 0 0; }
-        }
-
-        .btn-scan svg {
+        .btn-scan svg,
+        #scanNowFree svg {
             width: 26px;
             height: 26px;
             flex-shrink: 0;
         }
 
-        .btn-scan.is-loading .scan-icon {
+        #scanAnimationBox {
             display: none;
-        }
-
-        .scan-spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 2.5px solid rgba(255, 255, 255, 0.3);
-            border-top-color: #FFFFFF;
-            border-radius: 50%;
-            animation: scanSpin 0.75s linear infinite;
-            flex-shrink: 0;
-        }
-
-        .btn-scan.is-loading .scan-spinner {
-            display: inline-block;
-        }
-
-        @keyframes scanSpin {
-            to { transform: rotate(360deg); }
-        }
-
-        .scan-error {
-            display: none;
-            margin-top: 10px;
-            padding: 10px 14px;
-            border: 1px solid rgba(255, 59, 71, 0.55);
-            border-radius: 8px;
-            background: rgba(255, 26, 36, 0.12);
-            color: #ff4d58;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-shadow: 0 0 8px rgba(255, 59, 71, 0.35);
-        }
-
-        .scan-error.is-visible {
-            display: block;
-        }
-
-        .scan-stage {
-            display: block;
-            position: relative;
-            min-height: 240px;
             margin-top: 18px;
+            padding: 18px 16px;
             border: 1px solid rgba(167, 231, 255, 0.35);
             border-radius: 10px;
             background: #000000;
-            overflow: hidden;
+            text-align: center;
             box-shadow: 0 0 22px rgba(61, 155, 255, 0.18);
         }
 
-        .scan-stage.is-visible {
+        #scanAnimationBox.active {
             display: block;
+            animation: fadeIn 0.3s;
         }
 
-        .scan-stage canvas,
-        .scan-stage video {
-            position: absolute;
-            inset: 0;
+        #neuralVideo {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .scan-stage video {
+            max-width: 400px;
+            border-radius: 8px;
             display: block;
-            z-index: 1;
+            margin: 0 auto 12px;
         }
 
-        .scan-stage video.is-playing {
-            display: block;
-        }
-
-        .scan-overlay-status {
-            position: absolute;
-            inset: 0;
-            z-index: 2;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            text-align: center;
-            pointer-events: none;
-            background: radial-gradient(circle, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.15) 70%);
-        }
-
-        .scan-overlay-status.is-visible {
-            display: flex;
-        }
-
-        .scan-overlay-text {
-            font-size: 16px;
+        .scan-anim-text {
+            font-size: 15px;
             font-weight: 800;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--ice-blue);
             text-shadow: 0 0 10px rgba(61, 155, 255, 0.85), 0 0 22px rgba(167, 231, 255, 0.6);
-            padding: 8px 16px;
-            border: 1px solid rgba(61, 155, 255, 0.55);
-            border-radius: 6px;
-            background: rgba(0, 8, 20, 0.78);
         }
 
-        .scan-result {
-            position: absolute;
-            inset: 0;
-            z-index: 3;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 18px 16px;
-            text-align: center;
+        #scanResultBox {
+            margin-top: 18px;
+            padding: 20px 18px;
+            border: 1px solid rgba(167, 231, 255, 0.35);
+            border-radius: 10px;
             background: rgba(0, 4, 10, 0.92);
+            text-align: center;
+            box-shadow: 0 0 22px rgba(61, 155, 255, 0.18);
+            animation: fadeIn 0.3s;
         }
 
-        .scan-result.is-visible {
-            display: flex;
+        #scanResultBox.hidden {
+            display: none;
         }
 
-        .scan-result-main {
-            font-size: 15.5px;
+        #scanResultBox .result-error {
+            color: #ff4d58;
+            font-size: 14px;
             font-weight: 800;
             letter-spacing: 0.8px;
+            text-shadow: 0 0 8px rgba(255, 59, 71, 0.35);
+        }
+
+        #scanResultBox .result-found h3,
+        #scanResultBox .result-clean h3 {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 1px;
             color: #FFFFFF;
+            margin-bottom: 8px;
             text-shadow: 0 0 10px rgba(61, 155, 255, 0.55);
+        }
+
+        #scanResultBox .result-found p,
+        #scanResultBox .result-clean p {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ice-blue);
+            margin-bottom: 8px;
             line-height: 1.45;
         }
 
-        .scan-result-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .scan-cta {
+        #scanResultBox .result-found button,
+        #scanResultBox .result-clean button {
+            margin-top: 10px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0 18px;
+            padding: 0 20px;
             height: 42px;
             border: 1.5px solid var(--cyber-blue-bright);
             border-radius: 8px;
-            background: rgba(0, 115, 230, 0.22);
+            background: linear-gradient(90deg, #0073e6, #3d9bff);
             color: #FFFFFF;
-            text-decoration: none;
+            font: inherit;
             font-size: 13px;
             font-weight: 800;
             letter-spacing: 1px;
@@ -1139,33 +1058,10 @@
             transition: all 0.2s ease;
         }
 
-        .scan-cta:hover {
-            background: rgba(61, 155, 255, 0.35);
-            box-shadow: 0 0 22px rgba(61, 155, 255, 0.75);
+        #scanResultBox .result-found button:hover,
+        #scanResultBox .result-clean button:hover {
+            box-shadow: 0 0 22px rgba(61, 155, 255, 0.85);
             transform: translateY(-1px);
-        }
-
-        .scan-yt-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 0 16px;
-            height: 42px;
-            border: 1px solid rgba(167, 231, 255, 0.45);
-            border-radius: 8px;
-            background: rgba(167, 231, 255, 0.08);
-            color: var(--ice-blue);
-            text-decoration: none;
-            font-size: 12.5px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            transition: all 0.2s ease;
-        }
-
-        .scan-yt-link:hover {
-            border-color: #FFFFFF;
-            color: #FFFFFF;
         }
 
         @media (max-width: 600px) {
@@ -1219,7 +1115,7 @@
         </div>
 
         <!-- TASK 1: WAITLIST SECTION (BELOW HERO, ABOVE 3 BUTTONS) -->
-        <section class="waitlist-section" id="waitlist-section">
+        <section class="waitlist-section" id="waitlist">
             <div class="waitlist-header">
                 <h2 class="waitlist-title">Early Nov Launch Access. follow <span class="wt-handle">@iTOpsSHIELD</span> on <span class="wt-yt">YouTube</span>.</h2>
                 <span class="waitlist-badge">PROTOCOL ACCESS</span>
@@ -1334,36 +1230,25 @@
                 <button type="button" class="scan-platform-btn" data-platform="x">X</button>
                 <button type="button" class="scan-platform-btn" data-platform="onlyfans">OnlyFans</button>
             </div>
-            <form class="scan-form" id="scan-form">
-                <input class="scan-input" id="scan-input" type="text" placeholder="@instagram, @tiktok, @x or onlyfans handle / link" aria-label="Your @instagram, @tiktok, @x or onlyfans link" required>
-                <button class="btn-scan" id="scan-btn" type="submit">
-                    <span class="scan-spinner" id="scan-spinner" aria-hidden="true"></span>
+            <form class="scan-form" id="scan-form" onsubmit="return false;">
+                <input class="scan-input" id="handleInput" type="text" placeholder="@instagram, @tiktok, @x or onlyfans handle / link" aria-label="Your @instagram, @tiktok, @x or onlyfans link">
+                <button class="btn-scan" id="scanNowFree" type="button">
                     <svg class="scan-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                         <line x1="6" y1="12" x2="18" y2="12"/>
                     </svg>
-                    <span id="scan-btn-label">Scan Now Free</span>
+                    <span>Scan Now Free</span>
                 </button>
             </form>
-            <div class="scan-error" id="scan-error" role="alert" aria-live="polite">Handle not found, check spelling</div>
 
-            <div class="scan-stage is-visible" id="scan-stage">
-                <video id="scan-video" class="is-playing" src="animation.mp4" autoplay muted loop playsinline preload="auto">
-                    <source src="animation.mp4" type="video/mp4">
-                    <source src="/animation.mp4" type="video/mp4">
-                </video>
-                <canvas id="scan-canvas"></canvas>
-                <div class="scan-overlay-status" id="scan-overlay-status">
-                    <span class="scan-overlay-text" id="scan-overlay-text">Scanning 200+ sources...</span>
-                </div>
-                <div class="scan-result" id="scan-result">
-                    <div class="scan-result-main" id="scan-result-main">Scrapes today: 47 | Estimated owed: $4.20 | Badge: Not Protected</div>
-                    <div class="scan-result-actions">
-                        <a class="scan-cta" id="scan-waitlist-cta" href="#waitlist-section">Join Waitlist to collect</a>
-                        <a class="scan-yt-link" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener">Watch on YouTube &gt;</a>
-                    </div>
-                </div>
+            <!-- Animation box: HIDDEN by default -->
+            <div id="scanAnimationBox">
+                <video id="neuralVideo" src="animation.mp4" loop muted playsinline preload="metadata"></video>
+                <div class="scan-anim-text">Scanning 200+ sources...</div>
             </div>
+
+            <!-- Result box: HIDDEN by default -->
+            <div id="scanResultBox" class="hidden" role="status" aria-live="polite"></div>
         </section>
 
     </main>
@@ -1437,18 +1322,15 @@
         setInterval(drawMatrix, 65);
     </script>
 
-    <!-- Anti-agent scan: validate handle first, then 11.8-second neuron swarm loop, then the sample result -->
+    <!-- Anti-agent scan: animation only after click + real scan -->
     <script>
         const scanForm = document.getElementById('scan-form');
-        const scanInput = document.getElementById('scan-input');
-        const scanBtn = document.getElementById('scan-btn');
-        const scanBtnLabel = document.getElementById('scan-btn-label');
-        const scanError = document.getElementById('scan-error');
+        const handleInput = document.getElementById('handleInput');
+        const scanNowFree = document.getElementById('scanNowFree');
+        const scanAnimationBox = document.getElementById('scanAnimationBox');
+        const neuralVideo = document.getElementById('neuralVideo');
+        const scanResultBox = document.getElementById('scanResultBox');
         const scanPlatformBtns = document.querySelectorAll('.scan-platform-btn');
-        const scanStage = document.getElementById('scan-stage');
-        const scanCanvas = document.getElementById('scan-canvas');
-        const scanCtx = scanCanvas.getContext('2d', { alpha: false });
-        const scanResult = document.getElementById('scan-result');
 
         let selectedPlatform = 'instagram';
         const PLATFORM_PLACEHOLDERS = {
@@ -1464,13 +1346,8 @@
                 btn.classList.toggle('is-active', btn.dataset.platform === platform);
             });
             if (PLATFORM_PLACEHOLDERS[platform]) {
-                scanInput.placeholder = PLATFORM_PLACEHOLDERS[platform];
+                handleInput.placeholder = PLATFORM_PLACEHOLDERS[platform];
             }
-        }
-
-        function clearScanError() {
-            scanError.classList.remove('is-visible');
-            scanInput.classList.remove('is-error');
         }
 
         function parseScanInput(rawValue, fallbackPlatform) {
@@ -1497,155 +1374,16 @@
         scanPlatformBtns.forEach((btn) => {
             btn.addEventListener('click', () => {
                 setActivePlatform(btn.dataset.platform);
-                clearScanError();
             });
         });
 
-        scanInput.addEventListener('input', () => {
-            clearScanError();
-            const parsed = parseScanInput(scanInput.value, selectedPlatform);
+        handleInput.addEventListener('input', () => {
+            handleInput.classList.remove('is-error');
+            const parsed = parseScanInput(handleInput.value, selectedPlatform);
             if (parsed.platform !== selectedPlatform) {
                 setActivePlatform(parsed.platform);
             }
         });
-
-        const SCAN_DURATION = 11800; // ms; one full swarm loop per scan
-        const SWARM_NODES = 120;
-        const SWARM_LAYERS = 5;
-        const SWARM_ROWS = SWARM_NODES / SWARM_LAYERS;
-        // Loop schedule as fractions of SCAN_DURATION: search starts at 1.4s, network is symmetric by 9.4s,
-        // holds through 10.9s, then dissolves back into the swarm so the loop seam is seamless
-        const SEARCH_START = 0.12;
-        const SETTLED_AT = 0.8;
-        const DISSOLVE_AT = 0.92;
-        // Cold, muted palette: ice, glacier teal, periwinkle
-        const SWARM_COLORS = ['#a7e7ff', '#6fd0ff', '#7fa8ff', '#8ff0e0', '#c4d4ff'];
-        const lerp = (a, b, k) => a + (b - a) * k;
-        const smooth = (x) => {
-            const c = Math.min(1, Math.max(0, x));
-            return c * c * (3 - 2 * c);
-        };
-
-        // Node layout lives in 0-1 space so the swarm survives resizes.
-        // Target network is mirror-symmetric: layers sit at 0.1..0.9 and rows are evenly spaced around 0.5
-        const swarm = Array.from({ length: SWARM_NODES }, (_, i) => {
-            const layer = i % SWARM_LAYERS;
-            const row = Math.floor(i / SWARM_LAYERS);
-            return {
-                layer,
-                row,
-                sx: Math.random(),
-                sy: Math.random(),
-                tx: 0.1 + layer * (0.8 / (SWARM_LAYERS - 1)),
-                ty: 0.1 + ((row + 0.5) / SWARM_ROWS) * 0.8,
-                phase: Math.random() * Math.PI * 2,
-                phase2: Math.random() * Math.PI * 2,
-                cycles: 2 + Math.floor(Math.random() * 4), // whole cycles per loop so motion repeats seamlessly
-                color: SWARM_COLORS[i % SWARM_COLORS.length]
-            };
-        });
-
-        // Synapses: each node wires to its row and the mirrored row in the next layer, keeping the link pattern symmetric
-        const swarmEdges = [];
-        swarm.forEach((node, i) => {
-            if (node.layer === SWARM_LAYERS - 1) return;
-            const next = node.layer + 1;
-            swarmEdges.push([i, next + node.row * SWARM_LAYERS]);
-            swarmEdges.push([i, next + (SWARM_ROWS - 1 - node.row) * SWARM_LAYERS]);
-        });
-
-        // 0 = scattered swarm, 1 = symmetric network. Searches for a path, locks in, holds, then disperses
-        function swarmAssembly(t) {
-            if (t < SEARCH_START) return 0;
-            if (t < SETTLED_AT) return smooth((t - SEARCH_START) / (SETTLED_AT - SEARCH_START));
-            if (t < DISSOLVE_AT) return 1;
-            return smooth((1 - t) / (1 - DISSOLVE_AT));
-        }
-
-        function swarmPosition(node, t, p) {
-            const orbit = 2 * Math.PI * t * node.cycles + node.phase;
-            const sway = 0.08 * (1 - p * 0.5);
-            const sx = node.sx + sway * Math.sin(orbit);
-            const sy = node.sy + sway * Math.cos(orbit * 2);
-            // Searching wander peaks mid-route and dies out as each node finds its slot in the symmetric shape
-            const search = 0.14 * Math.sin(Math.PI * p);
-            const wx = search * Math.sin(orbit * 3 + node.phase2);
-            const wy = search * Math.cos(orbit * 2 + node.phase2);
-            return {
-                x: Math.min(0.97, Math.max(0.03, lerp(sx, node.tx, p) + wx)),
-                y: Math.min(0.97, Math.max(0.03, lerp(sy, node.ty, p) + wy))
-            };
-        }
-
-        function startScanSwarm() {
-            const dpr = window.devicePixelRatio || 1;
-            const width = scanStage.clientWidth;
-            const height = scanStage.clientHeight;
-            scanCanvas.width = Math.floor(width * dpr);
-            scanCanvas.height = Math.floor(height * dpr);
-            scanCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            scanCtx.fillStyle = '#000000';
-            scanCtx.fillRect(0, 0, width, height);
-
-            const start = performance.now();
-            let frame;
-
-            function draw(now) {
-                const t = ((now - start) % SCAN_DURATION) / SCAN_DURATION;
-                const p = swarmAssembly(t);
-                const pts = swarm.map((node) => {
-                    const pos = swarmPosition(node, t, p);
-                    return { x: pos.x * width, y: pos.y * height };
-                });
-
-                // Soft trail so the swarm reads as motion rather than flicker
-                scanCtx.globalAlpha = 1;
-                scanCtx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-                scanCtx.fillRect(0, 0, width, height);
-
-                // Synapses fade in as the network wires together
-                scanCtx.strokeStyle = 'rgba(167, 231, 255, ' + (0.3 * p).toFixed(3) + ')';
-                scanCtx.lineWidth = 1;
-                scanCtx.beginPath();
-                for (const [a, b] of swarmEdges) {
-                    scanCtx.moveTo(pts[a].x, pts[a].y);
-                    scanCtx.lineTo(pts[b].x, pts[b].y);
-                }
-                scanCtx.stroke();
-
-                // Signal pulses travel the synapses once the network is formed
-                if (p > 0.5) {
-                    scanCtx.fillStyle = '#e6fbff';
-                    scanCtx.globalAlpha = 0.9 * p;
-                    for (let k = 0; k < 6; k++) {
-                        const [a, b] = swarmEdges[(k * 37) % swarmEdges.length];
-                        const f = (t * 3 + k / 6) % 1; // integer multiple of the loop, so pulses wrap cleanly
-                        scanCtx.beginPath();
-                        scanCtx.arc(lerp(pts[a].x, pts[b].x, f), lerp(pts[a].y, pts[b].y, f), 1.6, 0, Math.PI * 2);
-                        scanCtx.fill();
-                    }
-                }
-
-                // Nodes: faint halo plus a bright core
-                swarm.forEach((node, i) => {
-                    scanCtx.fillStyle = node.color;
-                    scanCtx.globalAlpha = 0.12;
-                    scanCtx.beginPath();
-                    scanCtx.arc(pts[i].x, pts[i].y, 4.5, 0, Math.PI * 2);
-                    scanCtx.fill();
-                    scanCtx.globalAlpha = 0.85;
-                    scanCtx.beginPath();
-                    scanCtx.arc(pts[i].x, pts[i].y, 1.8, 0, Math.PI * 2);
-                    scanCtx.fill();
-                });
-                scanCtx.globalAlpha = 1;
-
-                frame = requestAnimationFrame(draw);
-            }
-
-            frame = requestAnimationFrame(draw);
-            return () => cancelAnimationFrame(frame);
-        }
 
         // Waitlist Form Pipeline (Task 1)
         const waitlistForm = document.getElementById('waitlist-form');
@@ -1680,7 +1418,7 @@
                 });
                 const data = await res.json().catch(() => ({}));
                 if (res.ok && data && data.ok !== false) {
-                    waitlistMsg.textContent = "You're in. Early Nov via ITOPS 650k. Check shieldagents.store";
+                    waitlistMsg.textContent = "You're in. Early Nov Access. Check shield-agents.store";
                     waitlistMsg.classList.add('is-success');
                     waitlistForm.reset();
                 } else {
@@ -1688,7 +1426,7 @@
                     waitlistMsg.classList.add('is-error');
                 }
             } catch (err) {
-                waitlistMsg.textContent = "You're in. Early Nov via ITOPS 650k. Check shieldagents.store";
+                waitlistMsg.textContent = "You're in. Early Nov Access. Check shield-agents.store";
                 waitlistMsg.classList.add('is-success');
             } finally {
                 waitlistBtn.textContent = prevLabel;
@@ -1696,124 +1434,107 @@
             }
         });
 
-        // Real Scan Flow (Task 4)
-        const scanVideo = document.getElementById('scan-video');
-        const scanOverlayStatus = document.getElementById('scan-overlay-status');
-        const scanOverlayText = document.getElementById('scan-overlay-text');
-        const scanResultMain = document.getElementById('scan-result-main');
-        const scanWaitlistCta = document.getElementById('scan-waitlist-cta');
-        let lastScannedHandle = '';
-
-        scanWaitlistCta.addEventListener('click', (event) => {
-            event.preventDefault();
-            const waitlistSection = document.getElementById('waitlist-section');
-            if (lastScannedHandle && !waitlistHandle.value) {
-                waitlistHandle.value = '@' + lastScannedHandle;
-            }
-            waitlistSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => waitlistEmail.focus(), 350);
-        });
-
-        scanForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            if (scanBtn.disabled) return;
-
-            const { platform, handle } = parseScanInput(scanInput.value, selectedPlatform);
+        async function runHandleScan() {
+            const rawInput = document.getElementById('handleInput').value.trim();
+            const { platform, handle } = parseScanInput(rawInput, selectedPlatform);
             setActivePlatform(platform);
-            clearScanError();
-            scanResult.classList.remove('is-visible');
-            scanOverlayStatus.classList.remove('is-visible');
+
+            const resultBox = document.getElementById('scanResultBox');
+            const animBox = document.getElementById('scanAnimationBox');
+            const videoEl = document.getElementById('neuralVideo');
+            const scanBtnEl = document.getElementById('scanNowFree');
 
             if (!handle) {
-                scanError.textContent = 'Handle not found, check spelling';
-                scanError.classList.add('is-visible');
-                scanInput.classList.add('is-error');
-                scanStage.classList.add('is-visible');
-                scanOverlayText.textContent = 'Enter valid handle first';
-                scanOverlayStatus.classList.add('is-visible');
+                animBox.classList.remove('active');
+                resultBox.classList.remove('hidden');
+                resultBox.innerHTML = '<div class="result-error">Enter handle first</div>';
+                handleInput.classList.add('is-error');
                 return;
             }
 
-            scanBtn.disabled = true;
-            scanBtn.classList.add('is-loading');
-            scanBtnLabel.textContent = 'Checking handle...';
-
-            let handleExists = false;
+            // Validate handle exists via /api/validate-handle
             try {
-                const res = await fetch(
+                const validateRes = await fetch(
                     `/api/validate-handle?platform=${encodeURIComponent(platform)}&handle=${encodeURIComponent(handle)}`
                 );
-                if (res.ok) {
-                    const data = await res.json();
-                    handleExists = Boolean(data && data.exists);
+                const validateData = await validateRes.json();
+                if (!validateData.exists) {
+                    animBox.classList.remove('active');
+                    resultBox.classList.remove('hidden');
+                    resultBox.innerHTML = '<div class="result-error">Handle not found - check spelling</div>';
+                    handleInput.classList.add('is-error');
+                    return;
                 }
             } catch (err) {
-                handleExists = false;
-            }
-
-            if (!handleExists) {
-                scanBtn.classList.remove('is-loading');
-                scanBtn.classList.remove('is-scanning');
-                scanBtnLabel.textContent = 'Scan Now Free';
-                scanBtn.disabled = false;
-                scanError.textContent = 'Handle not found, check spelling';
-                scanError.classList.add('is-visible');
-                scanInput.classList.add('is-error');
-                scanStage.classList.add('is-visible');
-                scanOverlayText.textContent = 'Enter valid handle first';
-                scanOverlayStatus.classList.add('is-visible');
+                animBox.classList.remove('active');
+                resultBox.classList.remove('hidden');
+                resultBox.innerHTML = '<div class="result-error">Handle not found - check spelling</div>';
+                handleInput.classList.add('is-error');
                 return;
             }
 
-            lastScannedHandle = handle;
-            scanBtn.classList.add('is-scanning');
-            scanBtnLabel.textContent = 'Scanning...';
-            scanResult.classList.remove('is-visible');
-            scanStage.classList.add('is-visible');
-            scanOverlayText.textContent = 'Scanning 200+ sources...';
-            scanOverlayStatus.classList.add('is-visible');
+            // Valid handle - show animation box, hide result
+            animBox.classList.add('active');
+            resultBox.classList.add('hidden');
+            videoEl.currentTime = 0;
+            videoEl.play().catch(() => {});
 
-            // Attempt to play animation.mp4 if available alongside the neural network canvas
-            if (scanVideo) {
-                scanVideo.play().then(() => {
-                    scanVideo.classList.add('is-playing');
-                }).catch(() => {
-                    scanVideo.classList.remove('is-playing');
-                });
-            }
+            // Add button outline animation - neon flicker around border
+            scanBtnEl.classList.add('scanning');
 
-            const stopSwarm = startScanSwarm();
-
-            let scanData = {
-                scrapes_today: 47,
-                estimated_owed: '$4.20',
-                badge_status: 'Not Protected'
-            };
-
+            // REAL SCAN - call /api/shield-scan
             try {
                 const scanRes = await fetch(
                     `/api/shield-scan?platform=${encodeURIComponent(platform)}&handle=${encodeURIComponent(handle)}`
                 );
-                if (scanRes.ok) {
-                    const json = await scanRes.json();
-                    if (json && typeof json.scrapes_today !== 'undefined') {
-                        scanData = json;
-                    }
-                } else {
-                    await new Promise((r) => setTimeout(r, 2500));
-                }
-            } catch (_) {
-                await new Promise((r) => setTimeout(r, 2500));
-            }
+                const scanData = await scanRes.json();
 
-            stopSwarm();
-            scanOverlayStatus.classList.remove('is-visible');
-            scanResultMain.textContent = `Scrapes today: ${scanData.scrapes_today} | Estimated owed: ${scanData.estimated_owed} | Badge: ${scanData.badge_status || 'Not Protected'}`;
-            scanResult.classList.add('is-visible');
-            scanBtn.classList.remove('is-loading');
-            scanBtn.classList.remove('is-scanning');
-            scanBtnLabel.textContent = 'Scan Now Free';
-            scanBtn.disabled = false;
+                // Hide animation box
+                animBox.classList.remove('active');
+                scanBtnEl.classList.remove('scanning');
+                videoEl.pause();
+
+                // Show result box
+                resultBox.classList.remove('hidden');
+
+                if (waitlistHandle && !waitlistHandle.value) {
+                    waitlistHandle.value = '@' + handle;
+                }
+
+                if (scanData.found && scanData.scrapes_today > 0) {
+                    // Found leaks/scrapes
+                    resultBox.innerHTML = `
+                      <div class="result-found">
+                        <h3>Scrapes today: ${scanData.scrapes_today}</h3>
+                        <p>Estimated owed: $${scanData.estimated_owed}</p>
+                        <p>Badge: ${scanData.badge_status}</p>
+                        <button type="button" onclick="window.location.href='#waitlist'">Join Waitlist to collect</button>
+                      </div>
+                    `;
+                } else {
+                    // No leaks found
+                    resultBox.innerHTML = `
+                      <div class="result-clean">
+                        <h3>No leaks found for ${handle}</h3>
+                        <p>You're clean - but still not protected from future scrapes.</p>
+                        <p>Join waitlist to lock Shield.</p>
+                        <button type="button" onclick="window.location.href='#waitlist'">Join Waitlist - Early Nov</button>
+                      </div>
+                    `;
+                }
+            } catch (e) {
+                animBox.classList.remove('active');
+                scanBtnEl.classList.remove('scanning');
+                videoEl.pause();
+                resultBox.classList.remove('hidden');
+                resultBox.innerHTML = '<div class="result-error">Scan interrupted - please try again</div>';
+            }
+        }
+
+        scanNowFree.addEventListener('click', runHandleScan);
+        scanForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            runHandleScan();
         });
     </script>
 </body>

@@ -53,23 +53,36 @@ async function handleShieldScan(request) {
     }
 
     handle = handle.replace(/^@+/, '').trim();
+    const lowerHandle = handle.toLowerCase();
 
     // 2.5-second scan delay checking 5 sources
     await new Promise((resolve) => setTimeout(resolve, 2500));
 
+    // For demo: if handle = test or clean, return found: false
+    if (!handle || lowerHandle === 'test' || lowerHandle === 'clean') {
+        return jsonResponse({
+            found: false,
+            handle,
+            platform,
+            scrapes_today: 0,
+            estimated_owed: '0.00',
+            badge_status: 'Not Protected',
+            sources_checked: SOURCES.length,
+            sources: SOURCES
+        });
+    }
+
     const dayKey = new Date().toISOString().slice(0, 10);
-    const seed = handle
-        ? hashSeed(`${platform}:${handle.toLowerCase()}:${dayKey}`)
-        : Math.floor(Math.random() * 100000);
+    const seed = hashSeed(`${platform}:${lowerHandle}:${dayKey}`);
 
     // scrapes_today between 12 and 89
     const scrapesToday = 12 + (seed % 78);
 
-    // estimated_owed between $0.60 and $8.40
-    const rawOwed = 0.60 + ((scrapesToday - 12) / 77) * (8.40 - 0.60);
-    const estimatedOwed = `$${rawOwed.toFixed(2)}`;
+    // estimated_owed = scrapes * 0.08
+    const estimatedOwed = (scrapesToday * 0.08).toFixed(2);
 
     return jsonResponse({
+        found: true,
         handle,
         platform,
         scrapes_today: scrapesToday,
