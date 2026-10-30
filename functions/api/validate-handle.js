@@ -25,49 +25,47 @@ function randomHex(byteLength = 20) {
     return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function fetchOnlyFansRules() {
-    try {
-        const res = await fetch('https://raw.githubusercontent.com/DATAHOARDERS/dynamic-rules/main/onlyfans.json', {
-            signal: AbortSignal.timeout(2500)
-        });
-        if (res.ok) {
-            const json = await res.json();
-            if (json && json.static_param && json.format && Array.isArray(json.checksum_indexes)) {
-                return json;
-            }
-        }
-    } catch (_) {
-        // Fall back to cached rules
-    }
-    return DEFAULT_OF_RULES;
+async function callOnlyFansUserEndpoint(cleanHandle, rules) {
+    const path = `/api2/v2/users/${encodeURIComponent(cleanHandle)}`;
+    const time = Date.now().toString();
+    const msg = [rules.static_param, time, path, '0'].join('\n');
+    const sha = await sha1Hex(msg);
+    const checksum =
+        rules.checksum_indexes.reduce((acc, idx) => acc + sha.charCodeAt(idx), 0) +
+        Number(rules.checksum_constant || 0);
+    const sign = String(rules.format)
+        .replace('{}', sha)
+        .replace('{:x}', Math.abs(checksum).toString(16));
+
+    return fetch(`https://onlyfans.com${path}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'app-token': rules.app_token || '33d57ade8c02dbc5a333db99ff9ae26a',
+            'x-bc': randomHex(20),
+            'sign': sign,
+            'time': time,
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+        },
+        signal: AbortSignal.timeout(4500)
+    });
 }
 
 async function checkOnlyFansApi(cleanHandle) {
     try {
-        const rules = await fetchOnlyFansRules();
-        const path = `/api2/v2/users/${encodeURIComponent(cleanHandle)}`;
-        const time = Date.now().toString();
-        const msg = [rules.static_param, time, path, '0'].join('\n');
-        const sha = await sha1Hex(msg);
-        const checksum =
-            rules.checksum_indexes.reduce((acc, idx) => acc + sha.charCodeAt(idx), 0) +
-            Number(rules.checksum_constant || 0);
-        const sign = String(rules.format)
-            .replace('{}', sha)
-            .replace('{:x}', Math.abs(checksum).toString(16));
-
-        const res = await fetch(`https://onlyfans.com${path}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'app-token': rules.app_token || '33d57ade8c02dbc5a333db99ff9ae26a',
-                'x-bc': randomHex(20),
-                'sign': sign,
-                'time': time,
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
-            },
-            signal: AbortSignal.timeout(4500)
-        });
+        let res = await callOnlyFansUserEndpoint(cleanHandle, DEFAULT_OF_RULES);
+        if (res.status === 400) {
+            // Dynamic rules rotated; fetch latest rules and retry once
+            const rulesRes = await fetch('https://raw.githubusercontent.com/DATAHOARDERS/dynamic-rules/main/onlyfans.json', {
+                signal: AbortSignal.timeout(2500)
+            });
+            if (rulesRes.ok) {
+                const freshRules = await rulesRes.json();
+                if (freshRules && freshRules.static_param && freshRules.format) {
+                    res = await callOnlyFansUserEndpoint(cleanHandle, freshRules);
+                }
+            }
+        }
 
         if (res.status === 200) {
             const data = await res.json().catch(() => null);
@@ -92,42 +90,29 @@ async function checkOnlyFansSources(handle) {
     ]);
     if (reserved.has(clean)) return false;
 
-    // 1. Check OnlyFans official APIv2 with dynamic signature + OnlyFans-specific web indices (WITHOUT @)
-    const [ofApiResult, urlscanRes, ppSubRes, ppComRes, ccRes] = await Promise.allSettled([
-        checkOnlyFansApi(clean),
-        fetch(`https://urlscan.io/api/v1/search/?q=${encodeURIComponent(`"onlyfans.com/${clean}"`)}&size=5`, {
-            signal: AbortSignal.timeout(4000)
+    // 1. Primary OnlyFans check (1 outbound connection)
+    const apiResult = await checkOnlyFansApi(clean);
+    if (apiResult === true) return true;
+    if (apiResult === false) return false;
+
+    // 2. Fallback OnlyFans-specific web indices (URLScan + PullPush for onlyfans.com/${clean} without @)
+    const [urlscanRes, ppSubRes, ppComRes] = await Promise.allSettled([
+        fetch(`https://urlscan.io/api/v1/search/?q=${encodeURIComponent(`page.domain:onlyfans.com AND "${clean}"`)}&size=5`, {
+            signal: AbortSignal.timeout(3500)
         }).then((r) => r.json()),
         fetch(`https://api.pullpush.io/reddit/search/submission/?q=${encodeURIComponent(`"onlyfans.com/${clean}"`)}&size=5`, {
-            signal: AbortSignal.timeout(4000)
+            signal: AbortSignal.timeout(3500)
         }).then((r) => r.json()),
         fetch(`https://api.pullpush.io/reddit/search/comment/?q=${encodeURIComponent(`"onlyfans.com/${clean}"`)}&size=5`, {
-            signal: AbortSignal.timeout(4000)
-        }).then((r) => r.json()),
-        fetch(`https://index.commoncrawl.org/CC-MAIN-2024-38-index?url=${encodeURIComponent(`onlyfans.com/${clean}*`)}&output=json&limit=5`, {
             signal: AbortSignal.timeout(3500)
-        }).then((r) => r.text())
+        }).then((r) => r.json())
     ]);
-
-    if (ofApiResult.status === 'fulfilled' && ofApiResult.value === true) {
-        return true;
-    }
 
     const hasUrlscan = urlscanRes.status === 'fulfilled' && Number(urlscanRes.value?.total) > 0;
     const hasPpSub = ppSubRes.status === 'fulfilled' && Array.isArray(ppSubRes.value?.data) && ppSubRes.value.data.length > 0;
     const hasPpCom = ppComRes.status === 'fulfilled' && Array.isArray(ppComRes.value?.data) && ppComRes.value.data.length > 0;
-    const hasCc =
-        ccRes.status === 'fulfilled' &&
-        typeof ccRes.value === 'string' &&
-        !ccRes.value.includes('No Captures found') &&
-        ccRes.value.includes('onlyfans.com');
 
-    if (hasUrlscan || hasPpSub || hasPpCom || hasCc) {
-        return true;
-    }
-
-    // If OnlyFans API explicitly returned 404 User not found and no OnlyFans index had it, return false
-    return false;
+    return hasUrlscan || hasPpSub || hasPpCom;
 }
 
 async function checkInstagramSource(handle) {
@@ -141,37 +126,36 @@ async function checkInstagramSource(handle) {
     if (reserved.has(clean)) return false;
 
     try {
-        const [igRes, threadsRes] = await Promise.allSettled([
-            fetch(`https://www.instagram.com/${encodeURIComponent(clean)}/`, {
-                method: 'GET',
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                    'Accept-Language': 'en-US,en;q=0.9'
-                },
-                redirect: 'follow',
-                signal: AbortSignal.timeout(4500)
-            }),
-            fetch(`https://www.threads.net/@${encodeURIComponent(clean)}`, {
-                method: 'GET',
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
-                    'Accept': 'text/html,application/xhtml+xml'
-                },
-                redirect: 'follow',
-                signal: AbortSignal.timeout(4500)
-            })
-        ]);
+        const igRes = await fetch(`https://www.instagram.com/${encodeURIComponent(clean)}/`, {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9'
+            },
+            redirect: 'follow',
+            signal: AbortSignal.timeout(4000)
+        });
 
-        if (igRes.status === 'fulfilled' && igRes.value.status === 200) {
-            const html = await igRes.value.text();
+        if (igRes.status === 200) {
+            const html = await igRes.text();
             const hasOgTitle = /property=["']og:title["']/i.test(html);
             const isNotFound = /Sorry, this page isn't available|Page Not Found|<title>\s*Instagram\s*<\/title>/i.test(html);
             if (hasOgTitle && !isNotFound) return true;
         }
 
-        if (threadsRes.status === 'fulfilled' && threadsRes.value.status === 200) {
-            const html = await threadsRes.value.text();
+        const threadsRes = await fetch(`https://www.threads.net/@${encodeURIComponent(clean)}`, {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
+                'Accept': 'text/html,application/xhtml+xml'
+            },
+            redirect: 'follow',
+            signal: AbortSignal.timeout(3500)
+        });
+
+        if (threadsRes.status === 200) {
+            const html = await threadsRes.text();
             const title = (html.match(/<title[^>]*>([^<]*)<\/title>/i) || [])[1] || '';
             if (title && !/Threads\s*•\s*Log in/i.test(title) && /@|&#064;|Threads/i.test(title)) {
                 return true;
@@ -202,7 +186,7 @@ async function checkTikTokSource(handle) {
                 'Accept-Language': 'en-US,en;q=0.9'
             },
             redirect: 'follow',
-            signal: AbortSignal.timeout(4500)
+            signal: AbortSignal.timeout(4000)
         });
         if (res.status !== 200) return false;
         const html = await res.text();
@@ -231,7 +215,7 @@ async function checkXSource(handle) {
             method: 'GET',
             headers: { 'Accept': 'application/json' },
             redirect: 'follow',
-            signal: AbortSignal.timeout(4500)
+            signal: AbortSignal.timeout(4000)
         });
         if (res.status !== 200) return false;
         const data = await res.json().catch(() => null);
@@ -298,6 +282,7 @@ async function handleValidateRequest(request) {
         });
     }
 
+    // 4 concurrent checks (under Cloudflare Workers' 6-connection limit)
     const [ig, tt, x, of] = await Promise.all([
         checkInstagramSource(handle),
         checkTikTokSource(handle),

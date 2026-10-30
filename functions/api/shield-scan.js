@@ -146,7 +146,7 @@ async function probeX(handle) {
 async function probeOnlyFans(handle) {
     if (!/^[a-zA-Z0-9._-]{3,40}$/.test(handle)) return { exists: false };
     try {
-        const rules = await fetchOnlyFansRules();
+        const rules = DEFAULT_OF_RULES;
         const path = `/api2/v2/users/${encodeURIComponent(handle)}`;
         const time = Date.now().toString();
         const msg = [rules.static_param, time, path, '0'].join('\n');
@@ -168,7 +168,7 @@ async function probeOnlyFans(handle) {
                 'time': time,
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
             },
-            signal: AbortSignal.timeout(4500)
+            signal: AbortSignal.timeout(4000)
         });
 
         if (res.status === 200) {
@@ -367,13 +367,16 @@ async function handleShieldScan(request) {
         });
     }
 
-    // Run real internet scan across all 5 sources in parallel
-    const [igRes, ttRes, xRes, ofRes, ytRes, redditRes, urlscanRes, ghRes, webRes] = await Promise.allSettled([
+    // Run real internet scan in two waves (<= 5 concurrent connections each) to respect Cloudflare Workers' 6-connection limit
+    const [igRes, ttRes, xRes, ofRes, ytRes] = await Promise.allSettled([
         probeInstagram(handle),
         probeTikTok(handle),
         probeX(handle),
         probeOnlyFans(handle),
-        probeYouTube(handle),
+        probeYouTube(handle)
+    ]);
+
+    const [redditRes, urlscanRes, ghRes, webRes] = await Promise.allSettled([
         scanRedditLeaks(handle),
         scanUrlscanCrawls(handle),
         scanGitHubRepos(handle),
