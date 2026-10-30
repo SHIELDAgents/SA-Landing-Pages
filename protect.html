@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protect My IP // SHIELD AP</title>
-    <meta name="description" content="AI Labyrinth, scraper bot block, bi-weekly leak scans, auto DMCA takedowns, voice and face clone shield.">
+    <title>Shield My CONTENT // SHIELD AP</title>
+    <meta name="description" content="Shield My CONTENT — Proactive Protection + PrintFlow. Stop AI scraping your IP and get paid when they try.">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -345,6 +345,235 @@
             visibility: visible;
             transform: translateY(0) scale(1);
             pointer-events: auto;
+        }
+
+        /* Protocol Card One-liner + Tetris Shield Field Stacking Visual */
+        .benefit-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: left;
+        }
+
+        .benefit-human-tag {
+            display: inline-block;
+            color: var(--ice-blue);
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .benefit-oneline {
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            line-height: 1.45;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .benefit::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 13px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            background:
+                repeating-linear-gradient(90deg,
+                    rgba(167, 231, 255, 0.92) 0px,
+                    rgba(167, 231, 255, 0.92) 16px,
+                    transparent 16px,
+                    transparent 22px
+                ),
+                repeating-linear-gradient(0deg,
+                    rgba(47, 134, 214, 0.92) 0px,
+                    rgba(47, 134, 214, 0.92) 16px,
+                    transparent 16px,
+                    transparent 22px
+                );
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            padding: 3px;
+            box-shadow: 0 0 18px rgba(167, 231, 255, 0.55);
+        }
+
+        .benefit:hover::after,
+        .benefit:focus-within::after,
+        .benefit.is-active::after {
+            opacity: 1;
+            animation: shieldTetrisPulse 1.4s steps(4) infinite;
+        }
+
+        @keyframes shieldTetrisPulse {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(167, 231, 255, 0.85)); }
+            50% { filter: drop-shadow(0 0 12px rgba(0, 138, 214, 1)); }
+        }
+
+        .popup-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .popup-top-row .popup-badge {
+            margin-bottom: 0;
+        }
+
+        .tetris-blocks {
+            display: inline-flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .tetris-blocks span {
+            width: 8px;
+            height: 8px;
+            background: var(--ice-blue);
+            border: 1px solid #ffffff;
+            box-shadow: 0 0 6px rgba(167, 231, 255, 0.85);
+            display: inline-block;
+            animation: tetrisStackDrop 0.45s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .tetris-blocks span:nth-child(2) { animation-delay: 0.07s; background: var(--blue-bright); }
+        .tetris-blocks span:nth-child(3) { animation-delay: 0.14s; }
+        .tetris-blocks span:nth-child(4) { animation-delay: 0.21s; background: var(--warn-yellow); }
+        .tetris-blocks span:nth-child(5) { animation-delay: 0.28s; }
+
+        @keyframes tetrisStackDrop {
+            from { opacity: 0; transform: translateY(-6px) scale(0.6); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Gaia + Ghost Protocol Future Hint & Bottom Waitlist CTA */
+        .future-protocol-box {
+            max-width: 680px;
+            width: 100%;
+            margin: 56px auto 0;
+            padding: 22px 24px;
+            background: linear-gradient(135deg, rgba(167, 231, 255, 0.08), rgba(0, 15, 32, 0.78));
+            border: 1px solid rgba(167, 231, 255, 0.38);
+            border-radius: 12px;
+            box-shadow: 0 0 24px rgba(0, 138, 214, 0.2), inset 0 0 14px rgba(167, 231, 255, 0.06);
+            text-align: left;
+            position: relative;
+        }
+
+        .future-protocol-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ice-blue);
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px rgba(167, 231, 255, 0.5);
+        }
+
+        .future-protocol-title {
+            color: #FFFFFF;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .future-protocol-desc {
+            color: #cbd5e1;
+            font-size: 0.86rem;
+            line-height: 1.55;
+        }
+
+        .bottom-waitlist-cta {
+            max-width: 680px;
+            width: 100%;
+            margin: 28px auto 0;
+            padding: 28px 24px;
+            background: linear-gradient(160deg, rgba(167, 231, 255, 0.11), rgba(6, 18, 34, 0.72));
+            border: 1.5px solid rgba(167, 231, 255, 0.45);
+            border-radius: 14px;
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75), 0 0 22px rgba(167, 231, 255, 0.16);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 14px;
+        }
+
+        .bottom-waitlist-badge {
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--ice-blue);
+        }
+
+        .bottom-waitlist-badge .yt-handle {
+            color: #FFFFFF;
+        }
+
+        .bottom-waitlist-badge .yt-red {
+            color: #FF0000;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.45);
+        }
+
+        .btn-waitlist-silver {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 260px;
+            height: 54px;
+            padding: 0 28px;
+            border-radius: 10px;
+            border: 1.5px solid #e2e8f0;
+            background: linear-gradient(110deg,
+                #8f96a0 0%,
+                #cdd3dc 20%,
+                #ffffff 45%,
+                #eef6ff 50%,
+                #ffffff 55%,
+                #b8c0cc 80%,
+                #8f96a0 100%);
+            background-size: 260% 100%;
+            animation: chromeShine 9s linear infinite;
+            color: #05080f;
+            font: inherit;
+            font-size: 0.96rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            box-shadow: 0 0 18px rgba(255, 255, 255, 0.35), 0 0 28px rgba(167, 231, 255, 0.3);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .btn-waitlist-silver:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 26px rgba(255, 255, 255, 0.65), 0 0 36px rgba(167, 231, 255, 0.55);
+        }
+
+        .yt-link-sub {
+            color: var(--ice-blue);
+            font-size: 0.82rem;
+            text-decoration: none;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
+
+        .yt-link-sub:hover {
+            opacity: 1;
+            color: #FFFFFF;
+            text-decoration: underline;
         }
 
         /* ---------- CTA ROW (MIDDLE): CARD A & CARD B ---------- */
@@ -783,34 +1012,40 @@
         <!-- HEADER: CENTERED AP WITH METALLIC LUXURY SHINE -->
         <header>
             <h1 class="title-ap">AP</h1>
-            <div class="subtitle">Anti-Agent Protocol</div>
+            <div class="subtitle">CONTENT PROTECTION PROTOCOL</div>
             <div class="tagline-block">
-                <p>AI bots scrape your IP, clone your face, and leak your content in seconds.</p>
+                <p>Stop AI scraping your IP and get paid when they try.</p>
             </div>
         </header>
 
         <!-- HERO: Door #1 -->
         <section>
             <h2 class="hero-headline">
-                Protect my
-                <span class="line2">INTELLECTUAL PROPERTY</span>
+                Shield My CONTENT
+                <span class="line2">Proactive Protection + PrintFlow</span>
             </h2>
         </section>
 
-        <!-- TOP 5 BENEFITS: Subtle warning yellow glow + hover/touch pop-up -->
+        <!-- TOP 5 PROTOCOLS: Tetris block stacking shield field + human titles + tech hover -->
         <section class="benefits">
             <div class="benefit" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">
                 <div class="benefit-header">
                     <div class="benefit-left">
                         <span class="benefit-num">01</span>
-                        <span class="benefit-title">BI-WEEKLY LEAK SCANS</span>
+                        <div class="benefit-copy">
+                            <span class="benefit-title">Pay Per Crawl PrintFlow</span>
+                            <span class="benefit-oneline">Set price per AI crawl, AI pays via 402 handshake when it scrapes you.</span>
+                        </div>
                     </div>
                     <span class="benefit-indicator" aria-hidden="true">+</span>
                 </div>
                 <div class="benefit-popup" role="tooltip">
                     <div class="popup-pointer"></div>
-                    <div class="popup-badge">SHIELD INTEL 01</div>
-                    <div class="popup-text">2 deep scans/month across 200M+ sites, Telegram, Reddit, Google.</div>
+                    <div class="popup-top-row">
+                        <div class="popup-badge">PROTOCOL BLOCK 01 // PAY PER CRAWL</div>
+                        <div class="tetris-blocks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="popup-text">Cloudflare 402 + Stripe Payout via BTCPay 0% + Dashboard showing owed: $4.20. Self-serve on-ramp Cloudflare didn't ship.</div>
                 </div>
             </div>
 
@@ -818,14 +1053,21 @@
                 <div class="benefit-header">
                     <div class="benefit-left">
                         <span class="benefit-num">02</span>
-                        <span class="benefit-title">AI LABYRINTH + BOT BLOCK</span>
+                        <div class="benefit-copy">
+                            <span class="benefit-human-tag">Auto-Snapshot</span>
+                            <span class="benefit-title">Shield Bolt</span>
+                            <span class="benefit-oneline">Anomaly detected? Auto-snapshot your content to R2 before leak.</span>
+                        </div>
                     </div>
                     <span class="benefit-indicator" aria-hidden="true">+</span>
                 </div>
                 <div class="benefit-popup" role="tooltip">
                     <div class="popup-pointer"></div>
-                    <div class="popup-badge">SHIELD INTEL 02</div>
-                    <div class="popup-text">Cloudflare-grade. One-click block + decoy pages waste scraper bots.</div>
+                    <div class="popup-top-row">
+                        <div class="popup-badge">PROTOCOL BLOCK 02 // SHIELD BOLT</div>
+                        <div class="tetris-blocks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="popup-text">Logpush + R2 + Preserves proof for TAKE IT DOWN Act 48h filing.</div>
                 </div>
             </div>
 
@@ -833,14 +1075,21 @@
                 <div class="benefit-header">
                     <div class="benefit-left">
                         <span class="benefit-num">03</span>
-                        <span class="benefit-title">AUTO DMCA TAKEDOWNS</span>
+                        <div class="benefit-copy">
+                            <span class="benefit-human-tag">Block Before Scrape</span>
+                            <span class="benefit-title">Pre-Block</span>
+                            <span class="benefit-oneline">Block fake AI bots using residential proxies before they scrape.</span>
+                        </div>
                     </div>
                     <span class="benefit-indicator" aria-hidden="true">+</span>
                 </div>
                 <div class="benefit-popup" role="tooltip">
                     <div class="popup-pointer"></div>
-                    <div class="popup-badge">SHIELD INTEL 03</div>
-                    <div class="popup-text">Auto notices to host + Google. 4-24h Google delist, 2-4 days site removal. Private filing.</div>
+                    <div class="popup-top-row">
+                        <div class="popup-badge">PROTOCOL BLOCK 03 // PRE-BLOCK</div>
+                        <div class="tetris-blocks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="popup-text">Cloudforce One Botnet Threat Feed + AI Crawl Control analytics &mdash; blocks fake Googlebot with 0.3% anomaly.</div>
                 </div>
             </div>
 
@@ -848,14 +1097,21 @@
                 <div class="benefit-header">
                     <div class="benefit-left">
                         <span class="benefit-num">04</span>
-                        <span class="benefit-title">VOICE &amp; FACE CLONE SHIELD</span>
+                        <div class="benefit-copy">
+                            <span class="benefit-human-tag">48h Federal Removal</span>
+                            <span class="benefit-title">TAKE IT DOWN Act Filer</span>
+                            <span class="benefit-oneline">Deepfake or leak? 48h federal removal with $53k penalty, not 14-day DMCA.</span>
+                        </div>
                     </div>
                     <span class="benefit-indicator" aria-hidden="true">+</span>
                 </div>
                 <div class="benefit-popup" role="tooltip">
                     <div class="popup-pointer"></div>
-                    <div class="popup-badge">SHIELD INTEL 04</div>
-                    <div class="popup-text">Under ELVIS + NO FAKES Act. Invisible watermark + content credentials.</div>
+                    <div class="popup-top-row">
+                        <div class="popup-badge">PROTOCOL BLOCK 04 // TAKE IT DOWN ACT</div>
+                        <div class="tetris-blocks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="popup-text">TAKE IT DOWN Act + FTC enforcement since May 2026 &mdash; Steps 3&ndash;5 auto-filer for DMCA fallback.</div>
                 </div>
             </div>
 
@@ -863,32 +1119,39 @@
                 <div class="benefit-header">
                     <div class="benefit-left">
                         <span class="benefit-num">05</span>
-                        <span class="benefit-title">OWNED VAULT</span>
+                        <div class="benefit-copy">
+                            <span class="benefit-human-tag">Real vs Fake Bots</span>
+                            <span class="benefit-title">Fake Googlebot Detector</span>
+                            <span class="benefit-oneline">95.9% of Googlebot claims are fake. We detect real vs fake via Logpush.</span>
+                        </div>
                     </div>
                     <span class="benefit-indicator" aria-hidden="true">+</span>
                 </div>
                 <div class="benefit-popup" role="tooltip">
                     <div class="popup-pointer"></div>
-                    <div class="popup-badge">SHIELD INTEL 05</div>
-                    <div class="popup-text">Receipts + files in PWA Vault. No platform can delete.</div>
+                    <div class="popup-top-row">
+                        <div class="popup-badge">PROTOCOL BLOCK 05 // BOT DETECTOR</div>
+                        <div class="tetris-blocks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="popup-text">Cloudflare Logpush + Verified Bot list &mdash; Shows if residential IP faking Googlebot.</div>
                 </div>
             </div>
         </section>
 
         <!-- MIDDLE CTA: two cards, Card B highlighted -->
         <section class="cta-row">
-            <!-- Card A: Protect My IP -->
+            <!-- Card A: Shield My CONTENT -->
             <div class="card">
-                <h3>Protect My IP</h3>
+                <h3>Shield My CONTENT</h3>
                 <div class="card-price">$49.99/month <span style="font-size:0.85rem;font-weight:400;color:#9a9a9a;">or <a href="payments.html?plan=protect_yearly">$399/year</a></span></div>
                 <ul class="card-list">
-                    <li>2 deep leak scans/month</li>
-                    <li>AI Labyrinth + scraper bot block</li>
-                    <li>Unlimited auto DMCA takedowns</li>
-                    <li>Voice &amp; face clone shield + Vault</li>
+                    <li>Pay Per Crawl 402 PrintFlow</li>
+                    <li>Shield Bolt R2 Auto-Snapshot</li>
+                    <li>Pre-Block + Fake Googlebot Detector</li>
+                    <li>TAKE IT DOWN Act 48h Federal Filer</li>
                 </ul>
                 <div class="card-foot">
-                    <button type="button" class="btn-card" onclick="window.location.href='payments.html?plan=protect_monthly'">Start Protection &gt;</button>
+                    <button type="button" class="btn-card" onclick="window.location.href='payments.html?plan=protect_monthly'">Shield My CONTENT &gt;</button>
                 </div>
             </div>
 
@@ -934,6 +1197,26 @@
                 </svg>
                 <span><span class="big-dollar">$</span>tart Printing NOW &gt;</span>
             </button>
+        </section>
+
+        <!-- GAIA + GHOST PROTOCOL FUTURE HINT -->
+        <section class="future-protocol-box" aria-label="Future Protocol Stack">
+            <div class="future-protocol-tag">[ NEXT STACK: GAIA + GHOST PROTOCOL ]</div>
+            <div class="future-protocol-title">Print While Ghost &mdash; Avatar + Legacy Stack</div>
+            <p class="future-protocol-desc">
+                Every protocol block you stack unlocks higher levels: <strong>GAIA Avatar</strong> (steps into your workspace and prints 70/30 while you go ghost IRL on the beach) &amp; <strong>Trillionaire Ghost Protocol</strong> (invisible to scrapers and trackers when you want, immortal character legacy when you choose).
+            </p>
+        </section>
+
+        <!-- BOTTOM WAITLIST + YOUTUBE ITOPS 650K CTA -->
+        <section class="bottom-waitlist-cta" aria-label="Join Waitlist">
+            <div class="bottom-waitlist-badge">
+                Early Nov Launch Access. follow <span class="yt-handle">@iTOpsSHIELD</span> on <span class="yt-red">YouTube</span> (ITOPS 650k)
+            </div>
+            <a class="btn-waitlist-silver" href="index.html#waitlist-section">Join Waitlist</a>
+            <a class="yt-link-sub" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener noreferrer">
+                youtube.com/@iTOpsSHIELD &bull; ITOPS 650K Launch Stream &rarr;
+            </a>
         </section>
 
     </main>
