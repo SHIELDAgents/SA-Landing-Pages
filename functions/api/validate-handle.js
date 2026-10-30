@@ -1,3 +1,130 @@
+async function checkInstagramDirect(handle) {
+    try {
+        const res = await fetch(`https://www.instagram.com/${encodeURIComponent(handle)}/`, {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9'
+            },
+            redirect: 'follow',
+            signal: AbortSignal.timeout(4000)
+        });
+        if (res.status !== 200) return false;
+        const html = await res.text();
+        const hasOgTitle = /property=["']og:title["']/i.test(html);
+        const isNotFound = /Sorry, this page isn't available|Page Not Found|<title>\s*Instagram\s*<\/title>/i.test(html);
+        return hasOgTitle && !isNotFound;
+    } catch (_) {
+        return false;
+    }
+}
+
+async function checkThreadsDirect(handle) {
+    try {
+        const res = await fetch(`https://www.threads.net/@${encodeURIComponent(handle)}`, {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
+                'Accept': 'text/html,application/xhtml+xml'
+            },
+            redirect: 'follow',
+            signal: AbortSignal.timeout(4000)
+        });
+        if (res.status !== 200) return false;
+        const html = await res.text();
+        const title = (html.match(/<title[^>]*>([^<]*)<\/title>/i) || [])[1] || '';
+        return Boolean(title && !/Threads\s*•\s*Log in/i.test(title) && /@|&#064;|Threads/i.test(title));
+    } catch (_) {
+        return false;
+    }
+}
+
+async function checkTikTokDirect(handle) {
+    if (!/^[a-zA-Z0-9._]{2,24}(?<!\.)$/.test(handle)) return false;
+    try {
+        const res = await fetch(`https://www.tiktok.com/@${encodeURIComponent(handle)}`, {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9'
+            },
+            redirect: 'follow',
+            signal: AbortSignal.timeout(4000)
+        });
+        if (res.status !== 200) return false;
+        const html = await res.text();
+        const hasOgTitle = /property=["']og:title["']/i.test(html);
+        const isSoft404 = /Visit TikTok to discover profiles!|"statusCode"\s*:\s*102(02|21)|Couldn't find this account/i.test(html);
+        return hasOgTitle && !isSoft404;
+    } catch (_) {
+        return false;
+    }
+}
+
+async function checkXDirect(handle) {
+    if (!/^[a-zA-Z0-9_]{1,15}$/.test(handle)) return false;
+    try {
+        const oembedUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(`https://twitter.com/${handle}`)}`;
+        const res = await fetch(oembedUrl, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' },
+            redirect: 'follow',
+            signal: AbortSignal.timeout(4000)
+        });
+        if (res.status !== 200) return false;
+        const data = await res.json().catch(() => null);
+        return Boolean(data && (data.author_name || data.url || data.html));
+    } catch (_) {
+        return false;
+    }
+}
+
+async function checkYouTubeDirect(handle) {
+    try {
+        const res = await fetch(`https://www.youtube.com/@${encodeURIComponent(handle)}`, {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)'
+            },
+            redirect: 'follow',
+            signal: AbortSignal.timeout(4000)
+        });
+        if (res.status !== 200) return false;
+        const html = await res.text();
+        return /property=["']og:title["']/i.test(html);
+    } catch (_) {
+        return false;
+    }
+}
+
+async function checkWebFootprint(handle) {
+    const [redditRes, urlscanRes, igDirect, threadsDirect, ttDirect, xDirect, ytDirect] = await Promise.allSettled([
+        fetch(`https://api.pullpush.io/reddit/search/submission/?q=${encodeURIComponent(`"${handle}"`)}&size=5`, {
+            signal: AbortSignal.timeout(4000)
+        }).then((r) => r.json()),
+        fetch(`https://urlscan.io/api/v1/search/?q=page.title:${encodeURIComponent(handle)}&size=5`, {
+            signal: AbortSignal.timeout(4000)
+        }).then((r) => r.json()),
+        checkInstagramDirect(handle),
+        checkThreadsDirect(handle),
+        checkTikTokDirect(handle),
+        checkXDirect(handle),
+        checkYouTubeDirect(handle)
+    ]);
+
+    const hasReddit = redditRes.status === 'fulfilled' && Array.isArray(redditRes.value?.data) && redditRes.value.data.length > 0;
+    const hasUrlscan = urlscanRes.status === 'fulfilled' && Number(urlscanRes.value?.total) > 0;
+    const hasIg = igDirect.status === 'fulfilled' && igDirect.value === true;
+    const hasThreads = threadsDirect.status === 'fulfilled' && threadsDirect.value === true;
+    const hasTt = ttDirect.status === 'fulfilled' && ttDirect.value === true;
+    const hasX = xDirect.status === 'fulfilled' && xDirect.value === true;
+    const hasYt = ytDirect.status === 'fulfilled' && ytDirect.value === true;
+
+    return hasIg || hasThreads || hasTt || hasX || hasYt || hasReddit || hasUrlscan;
+}
+
 const PLATFORM_CONFIG = {
     instagram: {
         validPattern: /^(?!.*\.\.)(?!\.)[a-zA-Z0-9._]{1,30}(?<!\.)$/,
@@ -6,21 +133,9 @@ const PLATFORM_CONFIG = {
             'direct', 'about', 'legal', 'developer', 'tv', 'session'
         ]),
         checkExists: async (handle) => {
-            const res = await fetch(`https://www.instagram.com/${encodeURIComponent(handle)}/`, {
-                method: 'GET',
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                    'Accept-Language': 'en-US,en;q=0.9'
-                },
-                redirect: 'follow',
-                signal: AbortSignal.timeout(4500)
-            });
-            if (res.status !== 200) return false;
-            const html = await res.text();
-            const hasOgTitle = /property=["']og:title["']/i.test(html);
-            const isNotFound = /Sorry, this page isn't available|Page Not Found|<title>\s*Instagram\s*<\/title>/i.test(html);
-            return hasOgTitle && !isNotFound;
+            // Check direct Instagram, Meta Threads, and web/cross-platform footprint in parallel
+            // so Cloudflare edge IPs rate-limited by instagram.com still verify real creators while rejecting fake handles
+            return checkWebFootprint(handle);
         }
     },
     tiktok: {
@@ -30,21 +145,7 @@ const PLATFORM_CONFIG = {
             'upload', 'about', 'legal', 'login', 'signup', 'search'
         ]),
         checkExists: async (handle) => {
-            const res = await fetch(`https://www.tiktok.com/@${encodeURIComponent(handle)}`, {
-                method: 'GET',
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                    'Accept-Language': 'en-US,en;q=0.9'
-                },
-                redirect: 'follow',
-                signal: AbortSignal.timeout(4500)
-            });
-            if (res.status !== 200) return false;
-            const html = await res.text();
-            const hasOgTitle = /property=["']og:title["']/i.test(html);
-            const isSoft404 = /Visit TikTok to discover profiles!|"statusCode"\s*:\s*102(02|21)|Couldn't find this account/i.test(html);
-            return hasOgTitle && !isSoft404;
+            return checkTikTokDirect(handle);
         }
     },
     x: {
@@ -54,18 +155,7 @@ const PLATFORM_CONFIG = {
             'i', 'search', 'login', 'signup', 'tos', 'privacy', 'compose'
         ]),
         checkExists: async (handle) => {
-            const oembedUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(`https://twitter.com/${handle}`)}`;
-            const res = await fetch(oembedUrl, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                },
-                redirect: 'follow',
-                signal: AbortSignal.timeout(4500)
-            });
-            if (res.status !== 200) return false;
-            const data = await res.json().catch(() => null);
-            return Boolean(data && (data.author_name || data.url || data.html));
+            return checkXDirect(handle);
         }
     },
     onlyfans: {
@@ -75,29 +165,7 @@ const PLATFORM_CONFIG = {
             'lists', 'settings', 'terms', 'privacy', 'help', 'login', 'signup'
         ]),
         checkExists: async (handle) => {
-            // OnlyFans serves an identical SPA shell for all paths, so verify creator footprint
-            // across Reddit leak/mention index, URLScan crawl index, or cross-platform handle presence
-            const [redditRes, urlscanRes, igExists, xExists] = await Promise.allSettled([
-                fetch(`https://api.pullpush.io/reddit/search/submission/?q=${encodeURIComponent(`"${handle}"`)}&size=5`, {
-                    signal: AbortSignal.timeout(4000)
-                }).then((r) => r.json()),
-                fetch(`https://urlscan.io/api/v1/search/?q=page.title:${encodeURIComponent(handle)}&size=5`, {
-                    signal: AbortSignal.timeout(4000)
-                }).then((r) => r.json()),
-                PLATFORM_CONFIG.instagram.validPattern.test(handle)
-                    ? PLATFORM_CONFIG.instagram.checkExists(handle)
-                    : Promise.resolve(false),
-                PLATFORM_CONFIG.x.validPattern.test(handle)
-                    ? PLATFORM_CONFIG.x.checkExists(handle)
-                    : Promise.resolve(false)
-            ]);
-
-            const hasReddit = redditRes.status === 'fulfilled' && Array.isArray(redditRes.value?.data) && redditRes.value.data.length > 0;
-            const hasUrlscan = urlscanRes.status === 'fulfilled' && Number(urlscanRes.value?.total) > 0;
-            const hasIg = igExists.status === 'fulfilled' && igExists.value === true;
-            const hasX = xExists.status === 'fulfilled' && xExists.value === true;
-
-            return hasReddit || hasUrlscan || hasIg || hasX;
+            return checkWebFootprint(handle);
         }
     }
 };
