@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@zoom/meetingsdk": "^6.10.0"
+  }
+}
