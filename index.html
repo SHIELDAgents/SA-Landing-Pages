@@ -450,7 +450,144 @@
             gap: 18px;
             width: 100%;
             align-items: center;
+            margin-bottom: 30px;
+        }
+
+        /* ---------- WAITLIST SECTION (LAST ITEM) ---------- */
+        .waitlist-section {
+            width: 100%;
+            max-width: 640px;
+            margin-top: 10px;
             margin-bottom: 40px;
+            padding: 18px 22px;
+            background: rgba(167, 231, 255, 0.06);
+            border: 1px solid rgba(167, 231, 255, 0.32);
+            border-radius: 12px;
+            box-shadow: 0 0 18px rgba(167, 231, 255, 0.18), inset 0 0 14px rgba(167, 231, 255, 0.08);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            text-align: left;
+        }
+
+        .waitlist-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .waitlist-title {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            color: var(--ice-blue);
+            text-shadow: 0 0 10px rgba(167, 231, 255, 0.45);
+        }
+
+        .waitlist-title .wt-handle {
+            color: #FFFFFF;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
+        }
+
+        .waitlist-title .wt-yt {
+            color: #FF0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.55);
+        }
+
+        .waitlist-badge {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(167, 231, 255, 0.38);
+            background: rgba(167, 231, 255, 0.12);
+            color: #FFFFFF;
+        }
+
+        .waitlist-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .waitlist-input {
+            flex: 1 1 180px;
+            height: 46px;
+            padding: 0 14px;
+            background: rgba(0, 0, 0, 0.78);
+            border: 1px solid rgba(167, 231, 255, 0.38);
+            border-radius: 8px;
+            color: #FFFFFF;
+            font: inherit;
+            font-size: 13.5px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .waitlist-input:focus {
+            border-color: var(--ice-blue);
+            box-shadow: 0 0 12px rgba(167, 231, 255, 0.45);
+        }
+
+        .waitlist-input::placeholder {
+            color: #7c8b95;
+        }
+
+        /* Silver chrome button with moving shine effect matching AP */
+        .btn-waitlist {
+            flex: 1 1 100%;
+            height: 48px;
+            border: 1.5px solid var(--ice-blue);
+            border-radius: 8px;
+            background: linear-gradient(110deg, #8b959e 0%, #E4E8EC 18%, #FFFFFF 30%, #9CA6AF 42%, #FFFFFF 52%, #7c8690 66%, #E0E4E8 80%, #FFFFFF 90%, #8b959e 100%);
+            background-size: 300% auto;
+            animation: chromeShine 2.4s linear infinite;
+            color: #000000;
+            font: inherit;
+            font-size: 14.5px;
+            font-weight: 900;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 18px rgba(167, 231, 255, 0.55), inset 0 0 10px rgba(255, 255, 255, 0.45);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+        }
+
+        .btn-waitlist:hover:not(:disabled) {
+            box-shadow: 0 0 28px rgba(167, 231, 255, 0.9), inset 0 0 14px rgba(255, 255, 255, 0.65);
+            transform: translateY(-2px);
+        }
+
+        .btn-waitlist:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        .waitlist-msg {
+            display: none;
+            margin-top: 10px;
+            padding: 9px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+        }
+
+        .waitlist-msg.is-success {
+            display: block;
+            border: 1px solid rgba(167, 231, 255, 0.55);
+            background: rgba(167, 231, 255, 0.12);
+            color: var(--ice-blue);
+            text-shadow: 0 0 8px rgba(167, 231, 255, 0.45);
+        }
+
+        .waitlist-msg.is-error {
+            display: block;
+            border: 1px solid rgba(255, 59, 71, 0.55);
+            background: rgba(255, 26, 36, 0.12);
+            color: #ff4d58;
         }
 
         /* Button Styling */
@@ -1172,7 +1309,7 @@
         </section>
 
         <!-- TASK 2: GET CREATOR LICENSE BUTTON (FROM PROTECT.HTML) -->
-        <section class="creator-license-section" id="waitlist" aria-label="Get Creator License">
+        <section class="creator-license-section" aria-label="Get Creator License">
             <button type="button" class="btn-card btn-card-premium" data-pwa-trigger="license">Get Creator License (FREE) &gt;</button>
         </section>
 
@@ -1279,6 +1416,20 @@
             </a>
 
         </div>
+
+        <!-- TASK 5: WAITLIST SECTION (LAST ITEM) -->
+        <section class="waitlist-section" id="waitlist">
+            <div class="waitlist-header">
+                <h2 class="waitlist-title">Early Nov Launch Access. follow <span class="wt-handle">@iTOpsSHIELD</span> on <span class="wt-yt">YouTube</span>.</h2>
+                <span class="waitlist-badge">PROTOCOL ACCESS</span>
+            </div>
+            <form class="waitlist-form" id="waitlist-form">
+                <input class="waitlist-input" id="waitlist-email" type="email" name="email" placeholder="Enter your email" aria-label="Email address" required>
+                <input class="waitlist-input" id="waitlist-handle" type="text" name="handle" placeholder="@handle" aria-label="Your handle" required>
+                <button class="btn-waitlist" id="waitlist-btn" type="submit">Join Waitlist</button>
+            </form>
+            <div class="waitlist-msg" id="waitlist-msg" role="status" aria-live="polite"></div>
+        </section>
 
     </main>
 
@@ -1605,7 +1756,7 @@
                         ${locationsLine}
                         <p>Estimated owed: $${scanData.estimated_owed}</p>
                         <p>Badge: ${scanData.badge_status}</p>
-                        <button type="button" data-pwa-trigger="license">Get Creator License to Collect &gt;</button>
+                        <button type="button" onclick="window.location.href='#waitlist'">Join Waitlist to collect</button>
                       </div>
                     `;
                 } else {
@@ -1614,8 +1765,8 @@
                       <div class="result-clean">
                         <h3>No leaks found for ${handle}</h3>
                         <p>You're clean - but still not protected from future scrapes.</p>
-                        <p>Get creator license to lock Shield.</p>
-                        <button type="button" data-pwa-trigger="license">Get Creator License (FREE) &gt;</button>
+                        <p>Join waitlist to lock Shield.</p>
+                        <button type="button" onclick="window.location.href='#waitlist'">Join Waitlist - Early Nov</button>
                       </div>
                     `;
                 }
