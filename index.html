@@ -1436,18 +1436,18 @@
     <!-- PWA Home Screen Save & Auth Token Modal -->
     <div class="pwa-modal-backdrop" id="pwa-modal" role="dialog" aria-modal="true" aria-labelledby="pwa-modal-title">
         <div class="pwa-modal">
-            <div class="pwa-modal-badge">AUTH TOKEN GENERATED</div>
-            <h3 class="pwa-modal-title" id="pwa-modal-title">Save Creator PrintFlow</h3>
-            <p class="pwa-modal-desc">Your encrypted Creator Auth Token is now active and bound to this device. Save SHIELD AP to your Home Screen to access your PrintFlow &amp; Vault.</p>
+            <div class="pwa-modal-badge">CREATOR LICENSE READY</div>
+            <h3 class="pwa-modal-title" id="pwa-modal-title">Creator Auth Token</h3>
+            <p class="pwa-modal-desc">Your encrypted Creator License Token is active and bound to this device. Copy your token below to access your My IP dashboard in PrintFlow.</p>
             <div class="pwa-token-box">
                 <div class="pwa-token-label">ACTIVE CREATOR AUTH TOKEN</div>
                 <div class="pwa-token-value" id="pwa-token-display">GENERATING...</div>
             </div>
             <div class="pwa-steps" id="pwa-install-instructions">
-                Tap <strong>Add to Home Screen</strong> (in your browser Share / menu bar) to install your standalone PrintFlow app.
+                Click <strong>Copy &amp; Open My IP</strong> to copy your credential and continue to your dashboard.
             </div>
             <div class="pwa-modal-actions">
-                <button type="button" class="btn-pwa-action" id="pwa-copy-btn">Copy Auth Token &amp; Save</button>
+                <button type="button" class="btn-pwa-action" id="pwa-copy-btn">Copy &amp; Open My IP &gt;</button>
                 <button type="button" class="btn-pwa-close" id="pwa-close-btn">Close</button>
             </div>
         </div>
@@ -1798,22 +1798,50 @@
             deferredPrompt = e;
         });
 
-        function generateAuthToken(source) {
-            const bytes = new Uint8Array(16);
+        const ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+        function localTokenFallback() {
+            const bytes = new Uint8Array(8);
             if (window.crypto && window.crypto.getRandomValues) {
                 window.crypto.getRandomValues(bytes);
             } else {
-                for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
+                for (let i = 0; i < 8; i++) bytes[i] = Math.floor(Math.random() * 256);
             }
-            const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
-            const token = 'SHLD-PF-' + hex.slice(0, 8) + '-' + hex.slice(8, 16) + '-' + hex.slice(16, 24);
+            return 'SHIELD-' + Array.from(bytes, (b) => ALPHABET[b % ALPHABET.length]).join('');
+        }
+
+        function saveToken(token, source) {
             try {
+                localStorage.setItem('shield_token', token);
                 localStorage.setItem('shield_auth_token', token);
                 localStorage.setItem('shield_auth_source', source || 'pwa');
                 localStorage.setItem('shield_auth_ts', String(Date.now()));
+                document.cookie = 'shield_token=' + token + '; path=/; max-age=31536000; SameSite=Lax';
                 document.cookie = 'shield_auth_token=' + token + '; path=/; max-age=31536000; SameSite=Lax';
             } catch (_) {}
-            return token;
+        }
+
+        async function fetchOrIssueToken(source) {
+            let existingToken = localStorage.getItem('shield_token') || localStorage.getItem('shield_auth_token');
+            if (existingToken && /^SHIELD-[A-Z0-9]{4,12}$/.test(existingToken)) {
+                saveToken(existingToken, source);
+                return existingToken;
+            }
+            try {
+                const res = await fetch('/api/verify-token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'issue' })
+                });
+                const data = await res.json();
+                if (data && data.token) {
+                    saveToken(data.token, source);
+                    return data.token;
+                }
+            } catch (_) {}
+
+            const fallback = localTokenFallback();
+            saveToken(fallback, source);
+            return fallback;
         }
 
         const pwaModal = document.getElementById('pwa-modal');
@@ -1823,7 +1851,10 @@
 
         async function triggerPwaInstall(source) {
             if (!pwaModal) return;
-            const token = generateAuthToken(source);
+            if (pwaTokenDisplay) pwaTokenDisplay.textContent = 'GENERATING...';
+            pwaModal.classList.add('is-open');
+
+            const token = await fetchOrIssueToken(source);
             if (pwaTokenDisplay) pwaTokenDisplay.textContent = token;
 
             if (deferredPrompt) {
@@ -1833,8 +1864,6 @@
                 } catch (_) {}
                 deferredPrompt = null;
             }
-
-            pwaModal.classList.add('is-open');
         }
 
         document.addEventListener('click', (e) => {
@@ -1845,15 +1874,23 @@
         });
 
         if (pwaCopyBtn) {
-            pwaCopyBtn.addEventListener('click', () => {
-                const token = pwaTokenDisplay ? pwaTokenDisplay.textContent : '';
+            pwaCopyBtn.addEventListener('click', async () => {
+                const token = (pwaTokenDisplay ? pwaTokenDisplay.textContent : '').trim();
+                const validToken = (token && token !== 'GENERATING...') ? token : await fetchOrIssueToken('license_copy');
+                saveToken(validToken, 'license_copy');
+
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(token).catch(() => {});
+                    try {
+                        await navigator.clipboard.writeText(validToken);
+                    } catch (_) {}
                 }
-                pwaCopyBtn.textContent = 'Token Copied & Saved';
+
+                pwaCopyBtn.textContent = 'Token Copied! Opening My IP...';
+                pwaCopyBtn.disabled = true;
+
                 setTimeout(() => {
-                    pwaCopyBtn.textContent = 'Copy Auth Token & Save';
-                }, 2000);
+                    window.location.href = '/app/myip.html?token=' + encodeURIComponent(validToken);
+                }, 400);
             });
         }
 

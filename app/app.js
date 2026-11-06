@@ -2,14 +2,23 @@
 const PF = (() => {
   const KEY = 'shield_token', USER = 'shield_user';
   const $ = (s, r = document) => r.querySelector(s);
+  const isToken = (t) => /^SHIELD-[A-Z0-9]{4,12}$/.test(t);
   const store = {
-    get token() { return localStorage.getItem(KEY) || ''; },
+    get token() {
+      try {
+        const q = new URLSearchParams(window.location.search).get('token');
+        if (q && isToken(q)) {
+          localStorage.setItem(KEY, q);
+          return q;
+        }
+      } catch (_) {}
+      return localStorage.getItem(KEY) || '';
+    },
     get user() { try { return JSON.parse(localStorage.getItem(USER) || '{}'); } catch (_) { return {}; } },
     setUser(patch) { localStorage.setItem(USER, JSON.stringify({ ...store.user, ...patch })); }
   };
 
   let pending = false;
-  const isToken = (t) => /^SHIELD-[A-Z0-9]{4,12}$/.test(t);
 
   // Authenticated fetch: the token is the credential, sent as X-Shield-Token.
   async function api(path, { method = 'GET', body, form, token } = {}) {
