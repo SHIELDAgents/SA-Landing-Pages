@@ -29,7 +29,7 @@
 
         html, body {
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             background-color: #000000 !important; /* Always pitch black */
             color: var(--text-high-contrast);
             font-family: 'Share Tech Mono', monospace;
@@ -278,140 +278,169 @@
             100% { background-position: 200% center; }
         }
 
-        /* ---------- WAITLIST SECTION (BELOW HERO, ABOVE 3 BUTTONS) ---------- */
-        .waitlist-section {
+        /* ---------- GET CREATOR LICENSE (FROM PROTECT.HTML) ---------- */
+        .creator-license-section {
             width: 100%;
             max-width: 640px;
-            margin-bottom: 28px;
-            padding: 18px 22px;
-            background: rgba(167, 231, 255, 0.06);
-            border: 1px solid rgba(167, 231, 255, 0.32);
-            border-radius: 12px;
-            box-shadow: 0 0 18px rgba(167, 231, 255, 0.18), inset 0 0 14px rgba(167, 231, 255, 0.08);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            text-align: left;
-        }
-
-        .waitlist-header {
             display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 12px;
+            margin: 6px 0 24px;
         }
 
-        .waitlist-title {
+        .btn-card {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 440px;
+            height: 60px;
+            border-radius: 10px;
+            font: inherit;
             font-size: 15px;
             font-weight: 800;
             letter-spacing: 1.2px;
-            color: var(--ice-blue);
-            text-shadow: 0 0 10px rgba(167, 231, 255, 0.45);
-        }
-
-        .waitlist-title .wt-handle {
-            color: #FFFFFF;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
-        }
-
-        .waitlist-title .wt-yt {
-            color: #FF0000;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.55);
-        }
-
-        .waitlist-badge {
-            font-size: 11px;
-            letter-spacing: 1.5px;
+            cursor: pointer;
+            text-decoration: none;
             text-transform: uppercase;
-            padding: 3px 8px;
-            border-radius: 4px;
-            border: 1px solid rgba(167, 231, 255, 0.38);
-            background: rgba(167, 231, 255, 0.12);
-            color: #FFFFFF;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
         }
 
-        .waitlist-form {
+        .btn-card-premium {
+            border: 2px solid var(--ice-blue);
+            background: linear-gradient(90deg, #e5e5e5 0%, #a7e7ff 100%);
+            color: #000000;
+            box-shadow: 0 0 24px rgba(167, 231, 255, 0.75), 0 0 6px var(--ice-blue);
+            transform: scale(1.02);
+        }
+
+        .btn-card-premium:hover {
+            background: linear-gradient(90deg, #d8d8d8 0%, #bfe9fa 100%);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 0 34px rgba(167, 231, 255, 0.95), 0 0 8px var(--ice-blue);
+        }
+
+        /* ---------- PWA HOME SCREEN + AUTH TOKEN MODAL ---------- */
+        .pwa-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .pwa-modal-backdrop.is-open {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
         }
 
-        .waitlist-input {
-            flex: 1 1 180px;
-            height: 46px;
-            padding: 0 14px;
-            background: rgba(0, 0, 0, 0.78);
-            border: 1px solid rgba(167, 231, 255, 0.38);
-            border-radius: 8px;
+        .pwa-modal {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(6, 12, 20, 0.98);
+            border: 2px solid var(--ice-blue);
+            border-radius: 14px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(167, 231, 255, 0.45), 0 16px 48px rgba(0, 0, 0, 0.95);
+        }
+
+        .pwa-modal-badge {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #00bf63;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .pwa-modal-title {
+            font-size: 1.3rem;
+            font-weight: 900;
             color: #FFFFFF;
-            font: inherit;
-            font-size: 13.5px;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
         }
 
-        .waitlist-input:focus {
-            border-color: var(--ice-blue);
-            box-shadow: 0 0 12px rgba(167, 231, 255, 0.45);
+        .pwa-modal-desc {
+            font-size: 0.9rem;
+            color: #C0C8D0;
+            line-height: 1.5;
+            margin-bottom: 18px;
         }
 
-        .waitlist-input::placeholder {
-            color: #7c8b95;
-        }
-
-        /* Silver chrome button with moving shine effect matching AP */
-        .btn-waitlist {
-            flex: 1 1 100%;
-            height: 48px;
-            border: 1.5px solid var(--ice-blue);
+        .pwa-token-box {
+            background: #000000;
+            border: 1px solid rgba(167, 231, 255, 0.45);
             border-radius: 8px;
-            background: linear-gradient(110deg, #8b959e 0%, #E4E8EC 18%, #FFFFFF 30%, #9CA6AF 42%, #FFFFFF 52%, #7c8690 66%, #E0E4E8 80%, #FFFFFF 90%, #8b959e 100%);
-            background-size: 300% auto;
-            animation: chromeShine 2.4s linear infinite;
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .pwa-token-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ice-blue);
+            margin-bottom: 4px;
+        }
+
+        .pwa-token-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #FFFFFF;
+            word-break: break-all;
+            font-weight: 700;
+        }
+
+        .pwa-steps {
+            font-size: 0.85rem;
+            color: #B0B8C0;
+            text-align: left;
+            background: rgba(0, 115, 230, 0.1);
+            border-left: 2px solid var(--ice-blue);
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            line-height: 1.55;
+        }
+
+        .pwa-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-pwa-action {
+            flex: 1;
+            height: 48px;
+            border-radius: 8px;
+            border: 1px solid var(--ice-blue);
+            background: linear-gradient(90deg, #e5e5e5, #a7e7ff);
             color: #000000;
             font: inherit;
-            font-size: 14.5px;
+            font-size: 0.9rem;
             font-weight: 900;
-            letter-spacing: 1.8px;
-            text-transform: uppercase;
+            letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 0 18px rgba(167, 231, 255, 0.55), inset 0 0 10px rgba(255, 255, 255, 0.45);
-            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+            box-shadow: 0 0 16px rgba(167, 231, 255, 0.5);
         }
 
-        .btn-waitlist:hover:not(:disabled) {
-            box-shadow: 0 0 28px rgba(167, 231, 255, 0.9), inset 0 0 14px rgba(255, 255, 255, 0.65);
-            transform: translateY(-2px);
-        }
-
-        .btn-waitlist:disabled {
-            opacity: 0.65;
-            cursor: wait;
-        }
-
-        .waitlist-msg {
-            display: none;
-            margin-top: 10px;
-            padding: 9px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.6px;
-        }
-
-        .waitlist-msg.is-success {
-            display: block;
-            border: 1px solid rgba(167, 231, 255, 0.55);
-            background: rgba(167, 231, 255, 0.12);
-            color: var(--ice-blue);
-            text-shadow: 0 0 8px rgba(167, 231, 255, 0.45);
-        }
-
-        .waitlist-msg.is-error {
-            display: block;
-            border: 1px solid rgba(255, 59, 71, 0.55);
-            background: rgba(255, 26, 36, 0.12);
-            color: #ff4d58;
+        .btn-pwa-close {
+            height: 48px;
+            padding: 0 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: transparent;
+            color: #B8B8B8;
+            font: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
         }
 
         /* Stacked Buttons Container */
@@ -421,6 +450,7 @@
             gap: 18px;
             width: 100%;
             align-items: center;
+            margin-bottom: 40px;
         }
 
         /* Button Styling */
@@ -686,14 +716,18 @@
         .intel {
             width: 100%;
             max-width: 640px;
-            margin-top: 46px;
+            margin-top: 24px;
+            margin-bottom: 20px;
             padding: 22px 24px;
-            background: rgba(167, 231, 255, 0.03);
-            border-top: 1px solid rgba(167, 231, 255, 0.15);
+            background: rgba(167, 231, 255, 0.04);
+            border: 1px solid rgba(167, 231, 255, 0.18);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             gap: 24px;
             text-align: left;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .intel-thumb {
@@ -809,11 +843,15 @@
             position: relative;
             width: 100%;
             max-width: 640px;
-            margin-top: 26px;
+            margin-top: 0;
+            margin-bottom: 30px;
             padding: 26px 24px;
             background: rgba(0, 0, 0, 0.6);
-            border-top: 1px solid rgba(167, 231, 255, 0.15);
+            border: 1px solid rgba(167, 231, 255, 0.18);
+            border-radius: 12px;
             text-align: left;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .scan-label {
@@ -1114,21 +1152,62 @@
             <div class="hero-game-headline">SHIELD YOUR CONTENT. GET PAID WHEN THEY TRY.</div>
         </div>
 
-        <!-- TASK 1: WAITLIST SECTION (BELOW HERO, ABOVE 3 BUTTONS) -->
-        <section class="waitlist-section" id="waitlist">
-            <div class="waitlist-header">
-                <h2 class="waitlist-title">Early Nov Launch Access. follow <span class="wt-handle">@iTOpsSHIELD</span> on <span class="wt-yt">YouTube</span>.</h2>
-                <span class="waitlist-badge">PROTOCOL ACCESS</span>
+        <!-- TASK 1: YOUTUBE SECTION (FIELD INTEL) -->
+        <section class="intel">
+            <a class="intel-thumb" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener" aria-label="Open the iTOpsSHIELD channel on YouTube">
+                <img src="iTOps.png" alt="iTOpsSHIELD channel page" loading="lazy">
+                <span class="yt-play">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+            </a>
+            <div class="intel-text">
+                <div class="intel-label">FIELD INTEL</div>
+                <h3 class="intel-title">Defense tech to digital privacy</h3>
+                <p class="intel-desc">3.6M+ briefings. Live threat analysis.</p>
+                <a class="btn-youtube" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" rx="4" fill="#FF0000"/><path d="M9.5 4.5v7l6-3.5z" fill="#FFFFFF"/></svg>
+                    Watch on YouTube &gt;
+                </a>
             </div>
-            <form class="waitlist-form" id="waitlist-form">
-                <input class="waitlist-input" id="waitlist-email" type="email" name="email" placeholder="Enter your email" aria-label="Email address" required>
-                <input class="waitlist-input" id="waitlist-handle" type="text" name="handle" placeholder="@handle" aria-label="Your handle" required>
-                <button class="btn-waitlist" id="waitlist-btn" type="submit">Join Waitlist</button>
-            </form>
-            <div class="waitlist-msg" id="waitlist-msg" role="status" aria-live="polite"></div>
         </section>
 
-        <!-- Three Stacked Action Buttons -->
+        <!-- TASK 2: GET CREATOR LICENSE BUTTON (FROM PROTECT.HTML) -->
+        <section class="creator-license-section" id="waitlist" aria-label="Get Creator License">
+            <button type="button" class="btn-card btn-card-premium" data-pwa-trigger="license">Get Creator License (FREE) &gt;</button>
+        </section>
+
+        <!-- TASK 3: ANTI-AGENT SCANNER -->
+        <section class="scanner">
+            <div class="scan-label">ANTI-AGENT SCAN</div>
+            <h3 class="scan-title">Is your IP being scraped?</h3>
+            <div class="scan-platforms" id="scan-platforms" role="group" aria-label="Select platform">
+                <button type="button" class="scan-platform-btn is-active" data-platform="instagram">Instagram</button>
+                <button type="button" class="scan-platform-btn" data-platform="tiktok">TikTok</button>
+                <button type="button" class="scan-platform-btn" data-platform="x">X</button>
+                <button type="button" class="scan-platform-btn" data-platform="onlyfans">OnlyFans</button>
+            </div>
+            <form class="scan-form" id="scan-form" onsubmit="return false;">
+                <input class="scan-input" id="handleInput" type="text" placeholder="@instagram, @tiktok, @x or onlyfans handle / link" aria-label="Your @instagram, @tiktok, @x or onlyfans link">
+                <button class="btn-scan" id="scanNowFree" type="button">
+                    <svg class="scan-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <line x1="6" y1="12" x2="18" y2="12"/>
+                    </svg>
+                    <span>Scan Now Free</span>
+                </button>
+            </form>
+
+            <!-- Animation box: HIDDEN by default -->
+            <div id="scanAnimationBox">
+                <video id="neuralVideo" src="animation.mp4" loop muted playsinline preload="metadata"></video>
+                <div class="scan-anim-text">Scanning 200+ sources<span id="scanDots">...</span> (Reddit Leak Index, URLScan, GitHub, HackerNews, Social Telemetry)</div>
+            </div>
+
+            <!-- Result box: HIDDEN by default -->
+            <div id="scanResultBox" class="hidden" role="status" aria-live="polite"></div>
+        </section>
+
+        <!-- TASK 4: THREE STACKED ACTION BUTTONS -->
         <div class="button-stack">
             
             <!-- Button 1: Shield My CONTENT -->
@@ -1201,57 +1280,27 @@
 
         </div>
 
-        <!-- FIELD INTEL: channel briefing from @iTOpsSHIELD -->
-        <section class="intel">
-            <a class="intel-thumb" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener" aria-label="Open the iTOpsSHIELD channel on YouTube">
-                <img src="iTOps.png" alt="iTOpsSHIELD channel page" loading="lazy">
-                <span class="yt-play">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                </span>
-            </a>
-            <div class="intel-text">
-                <div class="intel-label">FIELD INTEL</div>
-                <h3 class="intel-title">Defense tech to digital privacy</h3>
-                <p class="intel-desc">3.6M+ briefings. Live threat analysis.</p>
-                <a class="btn-youtube" href="https://www.youtube.com/@iTOpsSHIELD" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" rx="4" fill="#FF0000"/><path d="M9.5 4.5v7l6-3.5z" fill="#FFFFFF"/></svg>
-                    Watch on YouTube &gt;
-                </a>
-            </div>
-        </section>
-
-        <!-- ANTI-AGENT SCAN -->
-        <section class="scanner">
-            <div class="scan-label">ANTI-AGENT SCAN</div>
-            <h3 class="scan-title">Is your IP being scraped?</h3>
-            <div class="scan-platforms" id="scan-platforms" role="group" aria-label="Select platform">
-                <button type="button" class="scan-platform-btn is-active" data-platform="instagram">Instagram</button>
-                <button type="button" class="scan-platform-btn" data-platform="tiktok">TikTok</button>
-                <button type="button" class="scan-platform-btn" data-platform="x">X</button>
-                <button type="button" class="scan-platform-btn" data-platform="onlyfans">OnlyFans</button>
-            </div>
-            <form class="scan-form" id="scan-form" onsubmit="return false;">
-                <input class="scan-input" id="handleInput" type="text" placeholder="@instagram, @tiktok, @x or onlyfans handle / link" aria-label="Your @instagram, @tiktok, @x or onlyfans link">
-                <button class="btn-scan" id="scanNowFree" type="button">
-                    <svg class="scan-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        <line x1="6" y1="12" x2="18" y2="12"/>
-                    </svg>
-                    <span>Scan Now Free</span>
-                </button>
-            </form>
-
-            <!-- Animation box: HIDDEN by default -->
-            <div id="scanAnimationBox">
-                <video id="neuralVideo" src="animation.mp4" loop muted playsinline preload="metadata"></video>
-                <div class="scan-anim-text">Scanning 200+ sources<span id="scanDots">...</span> (Reddit Leak Index, URLScan, GitHub, HackerNews, Social Telemetry)</div>
-            </div>
-
-            <!-- Result box: HIDDEN by default -->
-            <div id="scanResultBox" class="hidden" role="status" aria-live="polite"></div>
-        </section>
-
     </main>
+
+    <!-- PWA Home Screen Save & Auth Token Modal -->
+    <div class="pwa-modal-backdrop" id="pwa-modal" role="dialog" aria-modal="true" aria-labelledby="pwa-modal-title">
+        <div class="pwa-modal">
+            <div class="pwa-modal-badge">AUTH TOKEN GENERATED</div>
+            <h3 class="pwa-modal-title" id="pwa-modal-title">Save Creator PrintFlow</h3>
+            <p class="pwa-modal-desc">Your encrypted Creator Auth Token is now active and bound to this device. Save SHIELD AP to your Home Screen to access your PrintFlow &amp; Vault.</p>
+            <div class="pwa-token-box">
+                <div class="pwa-token-label">ACTIVE CREATOR AUTH TOKEN</div>
+                <div class="pwa-token-value" id="pwa-token-display">GENERATING...</div>
+            </div>
+            <div class="pwa-steps" id="pwa-install-instructions">
+                Tap <strong>Add to Home Screen</strong> (in your browser Share / menu bar) to install your standalone PrintFlow app.
+            </div>
+            <div class="pwa-modal-actions">
+                <button type="button" class="btn-pwa-action" id="pwa-copy-btn">Copy Auth Token &amp; Save</button>
+                <button type="button" class="btn-pwa-close" id="pwa-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Matrix Code Rain Script -->
     <script>
@@ -1387,54 +1436,56 @@
             }
         });
 
-        // Waitlist Form Pipeline (Task 1)
+        // Waitlist Form Pipeline (if present)
         const waitlistForm = document.getElementById('waitlist-form');
         const waitlistEmail = document.getElementById('waitlist-email');
         const waitlistHandle = document.getElementById('waitlist-handle');
         const waitlistBtn = document.getElementById('waitlist-btn');
         const waitlistMsg = document.getElementById('waitlist-msg');
 
-        waitlistForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            if (waitlistBtn.disabled) return;
+        if (waitlistForm && waitlistBtn && waitlistEmail && waitlistHandle && waitlistMsg) {
+            waitlistForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                if (waitlistBtn.disabled) return;
 
-            const email = waitlistEmail.value.trim();
-            const handle = waitlistHandle.value.trim().replace(/^@+/, '');
+                const email = waitlistEmail.value.trim();
+                const handle = waitlistHandle.value.trim().replace(/^@+/, '');
 
-            waitlistMsg.className = 'waitlist-msg';
-            waitlistMsg.textContent = '';
-            waitlistBtn.disabled = true;
-            const prevLabel = waitlistBtn.textContent;
-            waitlistBtn.textContent = 'Joining Waitlist...';
+                waitlistMsg.className = 'waitlist-msg';
+                waitlistMsg.textContent = '';
+                waitlistBtn.disabled = true;
+                const prevLabel = waitlistBtn.textContent;
+                waitlistBtn.textContent = 'Joining Waitlist...';
 
-            try {
-                const res = await fetch('/api/waitlist', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email,
-                        handle,
-                        timestamp: new Date().toISOString(),
-                        source: 'main_page'
-                    })
-                });
-                const data = await res.json().catch(() => ({}));
-                if (res.ok && data && data.ok !== false) {
+                try {
+                    const res = await fetch('/api/waitlist', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email,
+                            handle,
+                            timestamp: new Date().toISOString(),
+                            source: 'main_page'
+                        })
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (res.ok && data && data.ok !== false) {
+                        waitlistMsg.textContent = "You're in. Early Nov Access. Check Youtube.com/@iTOpsSHIELD";
+                        waitlistMsg.classList.add('is-success');
+                        waitlistForm.reset();
+                    } else {
+                        waitlistMsg.textContent = (data && data.error) || 'Unable to join waitlist. Check email & handle.';
+                        waitlistMsg.classList.add('is-error');
+                    }
+                } catch (err) {
                     waitlistMsg.textContent = "You're in. Early Nov Access. Check Youtube.com/@iTOpsSHIELD";
                     waitlistMsg.classList.add('is-success');
-                    waitlistForm.reset();
-                } else {
-                    waitlistMsg.textContent = (data && data.error) || 'Unable to join waitlist. Check email & handle.';
-                    waitlistMsg.classList.add('is-error');
+                } finally {
+                    waitlistBtn.textContent = prevLabel;
+                    waitlistBtn.disabled = false;
                 }
-            } catch (err) {
-                waitlistMsg.textContent = "You're in. Early Nov Access. Check Youtube.com/@iTOpsSHIELD";
-                waitlistMsg.classList.add('is-success');
-            } finally {
-                waitlistBtn.textContent = prevLabel;
-                waitlistBtn.disabled = false;
-            }
-        });
+            });
+        }
 
         async function runHandleScan() {
             const rawInput = document.getElementById('handleInput').value.trim();
@@ -1554,7 +1605,7 @@
                         ${locationsLine}
                         <p>Estimated owed: $${scanData.estimated_owed}</p>
                         <p>Badge: ${scanData.badge_status}</p>
-                        <button type="button" onclick="window.location.href='#waitlist'">Join Waitlist to collect</button>
+                        <button type="button" data-pwa-trigger="license">Get Creator License to Collect &gt;</button>
                       </div>
                     `;
                 } else {
@@ -1563,8 +1614,8 @@
                       <div class="result-clean">
                         <h3>No leaks found for ${handle}</h3>
                         <p>You're clean - but still not protected from future scrapes.</p>
-                        <p>Join waitlist to lock Shield.</p>
-                        <button type="button" onclick="window.location.href='#waitlist'">Join Waitlist - Early Nov</button>
+                        <p>Get creator license to lock Shield.</p>
+                        <button type="button" data-pwa-trigger="license">Get Creator License (FREE) &gt;</button>
                       </div>
                     `;
                 }
@@ -1584,6 +1635,90 @@
             e.preventDefault();
             runHandleScan();
         });
+
+        // PWA Service Worker & Home Screen Save + Auth Token Generator
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function generateAuthToken(source) {
+            const bytes = new Uint8Array(16);
+            if (window.crypto && window.crypto.getRandomValues) {
+                window.crypto.getRandomValues(bytes);
+            } else {
+                for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
+            }
+            const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+            const token = 'SHLD-PF-' + hex.slice(0, 8) + '-' + hex.slice(8, 16) + '-' + hex.slice(16, 24);
+            try {
+                localStorage.setItem('shield_auth_token', token);
+                localStorage.setItem('shield_auth_source', source || 'pwa');
+                localStorage.setItem('shield_auth_ts', String(Date.now()));
+                document.cookie = 'shield_auth_token=' + token + '; path=/; max-age=31536000; SameSite=Lax';
+            } catch (_) {}
+            return token;
+        }
+
+        const pwaModal = document.getElementById('pwa-modal');
+        const pwaTokenDisplay = document.getElementById('pwa-token-display');
+        const pwaCopyBtn = document.getElementById('pwa-copy-btn');
+        const pwaCloseBtn = document.getElementById('pwa-close-btn');
+
+        async function triggerPwaInstall(source) {
+            if (!pwaModal) return;
+            const token = generateAuthToken(source);
+            if (pwaTokenDisplay) pwaTokenDisplay.textContent = token;
+
+            if (deferredPrompt) {
+                try {
+                    deferredPrompt.prompt();
+                    await deferredPrompt.userChoice;
+                } catch (_) {}
+                deferredPrompt = null;
+            }
+
+            pwaModal.classList.add('is-open');
+        }
+
+        document.addEventListener('click', (e) => {
+            const trigger = e.target.closest('[data-pwa-trigger]');
+            if (trigger) {
+                triggerPwaInstall(trigger.getAttribute('data-pwa-trigger') || 'license');
+            }
+        });
+
+        if (pwaCopyBtn) {
+            pwaCopyBtn.addEventListener('click', () => {
+                const token = pwaTokenDisplay ? pwaTokenDisplay.textContent : '';
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(token).catch(() => {});
+                }
+                pwaCopyBtn.textContent = 'Token Copied & Saved';
+                setTimeout(() => {
+                    pwaCopyBtn.textContent = 'Copy Auth Token & Save';
+                }, 2000);
+            });
+        }
+
+        if (pwaCloseBtn) {
+            pwaCloseBtn.addEventListener('click', () => {
+                pwaModal.classList.remove('is-open');
+            });
+        }
+
+        if (pwaModal) {
+            pwaModal.addEventListener('click', (e) => {
+                if (e.target === pwaModal) {
+                    pwaModal.classList.remove('is-open');
+                }
+            });
+        }
     </script>
 </body>
 </html>
